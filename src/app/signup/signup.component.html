@@ -1,0 +1,58 @@
+<div class="container-fluid d-flex align-items-center justify-content-center min-vh-100">
+    <div class="login-form-container shadow p-3 rounded">
+    <h2 class="form-heading mb-4">Sign-Up</h2>
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="studentNumber">MUT Number:</label>
+        <input
+          type="text"
+          id="studentNumber"
+          class="form-control"
+          
+          [(ngModel)]="studentNumber"
+          name="studentNumber"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input
+          type="email"
+          id="email"
+          class="form-control"
+          
+          [(ngModel)]="email"
+          name="email"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          class="form-control"
+          
+          [(ngModel)]="password"
+          name="password"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password:</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          class="form-control"
+          
+          [(ngModel)]="confirmPassword"
+          name="confirmPassword"
+          required
+        />
+      </div>
+      <button type="submit" class="btn btn-primary mt-4">Sign Up</button>
+    </form>
+  </div>
+</div>
+  
+  

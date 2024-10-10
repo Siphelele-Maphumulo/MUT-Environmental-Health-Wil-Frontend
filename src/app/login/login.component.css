@@ -1,0 +1,136 @@
+/* Full height for html and body */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Container for login form, fills space without extra padding */
+.container-fluid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Full viewport height */
+  padding-top: 230px; /* Adds space above form */
+  padding-bottom: 90px; /* Space at bottom to keep footer clear */
+  box-sizing: border-box;
+}
+
+/* Login form container with minimal padding */
+.login-form-container {
+  width: 100%;
+  max-width: 320px;
+  padding: 1rem; /* Close padding to ensure the form is close to the footer */
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Reduce padding and font size for smaller screens */
+@media (max-width: 576px) {
+  .login-form-container {
+    padding: 0.8rem;
+  }
+
+  /* Form input styling adjustments for smaller screens */
+  .form-control-lg {
+    font-size: 1rem;
+    padding: 0.5rem;
+  }
+
+  .form-heading {
+    font-size: 1.4rem;
+  }
+}
+
+/* Footer styling */
+.footer {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffc40c;
+  color: #FFFFFF;
+  padding: 0.5rem 1rem;
+  text-align: center;
+}
+
+/* Footer content centered and compact */
+.footer-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+/* Footer logo adjustments */
+.footer-logo-container {
+  display: flex;
+  justify-content: center;
+}
+
+.footer-logo {
+  max-height: 40px;
+  width: auto;
+}
+
+/* Responsive adjustments for footer */
+@media (max-width: 576px) {
+  .footer {
+    flex-direction: column;
+    padding: 0.5rem;
+  }
+
+  .footer-content {
+    text-align: center;
+  }
+
+  .footer-logo-container {
+    margin-top: 0.5rem;
+  }
+}
+.password-toggle {
+  margin-top: 0.5rem;
+  cursor: pointer;
+  color: #050505;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Moves the toggle to the right */
+  font-size: 1.2rem; /* Larger font size for visibility */
+  font-weight: bold;
+}
+.icon {
+  margin-top: 0.5rem;
+  cursor: pointer;
+  color: #050505;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Moves the toggle to the right */
+  font-size: 1.2rem; /* Larger font size for visibility */
+  font-weight: bold;
+}
+
+.password-toggle i {
+  margin-left: 0.3rem; /* Adjust margin to position the icon correctly */
+}
+
+.password-toggle:hover {
+  color: #040404;
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400, /* Increase weight for a bolder look */
+    'GRAD' 0,
+    'opsz' 20; /* Increase opsz for a more prominent icon */
+}
+
+
+

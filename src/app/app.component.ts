@@ -1,13 +1,14 @@
+// src/app/app.component.ts
 import { Component } from '@angular/core';
+import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from './footer/footer.component';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css'],
+  imports: [HeaderComponent, FooterComponent, RouterOutlet]
 })
-export class AppComponent {
-  title = 'WilSystem';
-}
+export class AppComponent {}

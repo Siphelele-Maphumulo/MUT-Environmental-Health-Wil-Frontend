@@ -1,0 +1,157 @@
+<!-- Header -->
+<div class="container-fluid d-flex align-items-center justify-content-center min-vh-100">
+    <div class="login-form-container shadow p-3 rounded">
+<div id="header"></div>
+
+<div class="container mt-5">
+  <h1 class="text-center mb-4">   </h1>
+
+  <h2 class="text-center">Daily Log Sheet</h2>
+  <p class="text-center">
+    Instruction: Details below must be completed per each activity undertaken
+    by the student each day and verified by the instructor.
+  </p>
+
+  <!-- Form -->
+  <form>
+    <!-- Date field -->
+    <div class="form-group">
+        <label for="date">Date:</label>
+        <input
+          type="date"
+          class="form-control"
+          id="date"
+          name="date"
+          [value]="today"
+          readonly
+          style="width: 28%;"
+        />
+      </div>
+
+    <!-- Activities section -->
+    <h3>WIL Activities Conducted</h3>
+    <p class="text-center">Please select an activity and indicate how many hours spent.</p>
+
+    <div id="activities-container">
+      <!-- Initial Activity Row -->
+      <div class="activity-row" *ngFor="let activity of activities; let i = index">
+        <select class="form-control" [(ngModel)]="activity.activity" name="activity{{i}}">
+          <option value="">--Select Activity--</option>
+          <option value="Food control">Food control</option>
+          <option value="Monitoring water quality">Monitoring water quality</option>
+          <option value="Waste management">Waste management</option>
+          <option value="Site inspections">Site inspections</option>
+          <option value="Data analysis">Data analysis</option>
+          <option value="Training sessions">Training sessions</option>
+          <option value="Health surveillance of premises">
+            Health surveillance of premises
+          </option>
+          <option value="Surveillance & prevention of communicable diseases">
+            Surveillance & prevention of communicable diseases
+          </option>
+          <option value="Monitoring of hazardous substances">
+            Monitoring of hazardous substances
+          </option>
+          <option value="General hygiene monitoring">
+            General hygiene monitoring
+          </option>
+          <option value="Vector control monitoring">Vector control monitoring</option>
+          <option value="Chemical safety">Chemical safety</option>
+          <option value="Noise control">Noise control</option>
+          <option value="Environmental pollution control">
+            Environmental pollution control
+          </option>
+          <option value="Port health">Port health</option>
+          <option value="Radiation monitoring and control">
+            Radiation monitoring and control
+          </option>
+          <option value="Administration">Administration</option>
+        </select>
+        <input type="number" class="form-control" name="hours{{i}}" placeholder="Hours" min="0" max="6"/>
+        <button type="button" class="remove-btn"> <img src="./remove.svg" alt="add activity" /></button>
+      </div>
+    </div>
+    <div style="padding-top:10px">
+        <button type="button" class="add-btn"><img src="./add.svg" alt="add activity" /></button>
+    </div>
+
+      
+    <!-- Description and reflection section -->
+    <div class="container form-container">
+      <div class="form-section">
+        <h3>Description of WIL Activities Conducted</h3>
+        <div class="form-group">
+          <label for="description">Reflect on the most significant events:</label>
+          <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="situation">Describe the situation: What happened?</label>
+          <textarea class="form-control" id="situation" name="situation" rows="4" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="evaluation">Evaluate the situation: Why was this event significant?</label>
+          <textarea class="form-control" id="evaluation" name="evaluation" rows="4" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="interpretation">Interpret the situation: What did you learn?</label>
+          <textarea class="form-control" id="interpretation" name="interpretation" rows="4" required></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Signatures section -->
+    <h3 style="padding-bottom: 40px">Signatures</h3>
+    <div class="row">
+      <div class="col-md-4 form-group" style="padding-left:50px">
+        <label for="student_signature">Student Signature:</label>
+        <div class="d-flex align-items-center">
+          <div class="empty-square mr-2"></div>
+          <input
+            type="file"
+            class="form-control-file"
+            id="student_signature"
+            name="student_signature"
+            accept="image/*"
+          />
+        </div>
+      </div>
+      <div class="col-md-4 form-group text-center">
+        <label for="supervisor_signature">Supervisor/EHP Signature:</label>
+        <div class="d-flex align-items-center">
+          <div class="empty-square mr-2"></div>
+          <input
+            type="file"
+            class="form-control-file"
+            id="supervisor_signature"
+            name="supervisor_signature"
+            accept="image/*"
+            disabled
+          />
+        </div>
+      </div>
+      <div class="col-md-4 form-group">
+        <label for="date_stamp">Date Stamp:</label>
+        <div class="d-flex align-items-center">
+          <div class="empty-square mr-2"></div>
+          <input
+            type="file"
+            class="form-control-file"
+            id="date_stamp"
+            name="date_stamp"
+            accept="image/*"
+            disabled
+          />
+        </div>
+      </div>
+    </div>
+    <h5 style="padding-bottom: 10px; text-align:center">Upload as Image</h5>
+
+    <!-- Submit button -->
+    <button type="submit" class="btn btn-primary submit-button">Submit</button>
+  </form>
+</div>
+
+<!-- Footer -->
+<div id="footer" style="padding-top: 10px; display: flex; justify-content: space-between; align-items: center;"></div>
+</div>
+</div>

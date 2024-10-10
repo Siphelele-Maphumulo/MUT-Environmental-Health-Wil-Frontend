@@ -1,0 +1,57 @@
+/* Header styling */
+.header {
+    display: flex;
+    align-items: center;
+    background-color: #800000;
+    color: #FFFFFF;
+    padding: 0.5rem 1rem;
+    width: 100%;
+  }
+  
+  /* Layout for header content */
+  .header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 0.5rem;
+  }
+  
+  /* Logo styling */
+  .header-logo img {
+    max-height: 50px; /* Adjusts logo size for better fit */
+    width: auto;
+  }
+  
+  /* Center title in the header */
+  .header-title {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 1.2rem;
+    margin: 0;
+    padding-left: 13%;
+  }
+  
+  /* Navigation bar styling - align to the far right */
+  .header-nav {
+    display: flex;
+    margin-left: auto;
+    font-size: 0.9rem; /* Smaller font for menu items */
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 576px) {
+    .header-content {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .header-title {
+      font-size: 1rem;
+    }
+  
+    .navbar {
+      width: 100%;
+    }
+  }
+  
