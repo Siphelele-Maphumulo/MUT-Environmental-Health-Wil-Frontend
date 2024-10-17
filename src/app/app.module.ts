@@ -4,10 +4,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { SignupComponent } from './components/auth/signup/signup.component';
-import { LoginComponent } from './components/auth/login/login.component';
+import { SignupComponent } from './signup/signup.component';
+import { LoginComponent } from './auth/login/login.component';
 import { LogsheetComponent } from './logsheet/logsheet.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -20,7 +19,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    FontAwesomeModule,
     BrowserAnimationsModule, // Add this line
   ],
   providers: [],
