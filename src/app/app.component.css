@@ -1,0 +1,20 @@
+.header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+  }
+  
+  .footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 1000;
+  }
+  
+  .main-content {
+    margin-top: 40px; /* Add space equal to header height */
+    margin-bottom: 0%; /* Add space equal to footer height */
+    padding: 1rem;
+  }
+  

@@ -1,0 +1,48 @@
+<div class="container-fluid d-flex align-items-center justify-content-center min-vh-100">
+    <div class="login-form-container shadow p-3 rounded">
+      <h2 style="text-align: center;">Login</h2>
+      <form (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <!-- Image between login heading and radio buttons 
+          <div class="image-container">
+            <img src="./mut.png"  alt="" style="width: 30%; height: 30%; margin-bottom: 5px;">
+          </div> -->
+          <!-- Radio buttons for selecting user type -->
+          <div style="padding-bottom:5%">
+            <input type="radio" id="student" name="userType" value="student" [(ngModel)]="userType" (change)="onUserTypeChange('student')" checked>
+            <label for="student" style="padding-right: 10%; margin-right: 0%;">Student</label>
+            <input type="radio" id="personnel" name="userType" value="personnel" [(ngModel)]="userType" (change)="onUserTypeChange('personnel')">
+            <label for="personnel">Personnel</label>
+          </div>
+          <!-- Username label changes based on selected user type -->
+          <label for="username">{{ usernameLabel }}</label>
+          <input
+            type="text"
+            class="form-control form-control-sm"
+            id="username"
+            [(ngModel)]="username"
+            name="username"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            class="form-control form-control-sm"
+            id="password"
+            [(ngModel)]="password"
+            name="password"
+            required
+          />
+          <!-- Eye icon to toggle password visibility -->
+          <div class="password-toggle" (click)="togglePasswordVisibility()">
+            <span class="material-symbols-outlined" *ngIf="!showPassword">visibility</span>
+            <img *ngIf="showPassword" src="./visibility_off.svg" alt="Hide Password" class="icon" />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm btn-block mt-2" style="background-color: #0C314D;">Login</button>
+      </form>
+    </div>
+  </div>
+  

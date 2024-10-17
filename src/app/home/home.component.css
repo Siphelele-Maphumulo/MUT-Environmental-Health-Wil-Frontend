@@ -3,24 +3,24 @@
     padding: 2rem;
 }
 
-/* Full height for html and body with overflow */
+/* Full height for html and body without unnecessary overflow */
 html, body {
     height: 100%;
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 /* Container for image, centered in the viewport */
 .container-fluid {
+    flex: 1; /* Take remaining space */
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100vh;
-    padding-top: 160px; /* Default padding at the top */
-    padding-bottom: 100px; /* Space at bottom to avoid footer overlap */
+    /*/*padding-top: 20px; /* Reduced padding to eliminate excessive space */
+    padding-bottom: 20px; /* Smaller space to make it tighter and start from the top */
     box-sizing: border-box;
 }
 
@@ -36,8 +36,8 @@ html, body {
 
 /* Logo styling with larger size for bigger screens */
 .environmental-logo {
-    max-width: 100%; /* Occupies full viewport width */
-    max-height: 80vh; /* Occupies almost full viewport height */
+    max-width: 50%; /* Occupies full viewport width */
+    max-height: 40vh; /* Occupies almost full viewport height */
     width: auto;
     height: auto;
     animation: float 5s ease-in-out infinite; /* Floating animation */
@@ -46,7 +46,7 @@ html, body {
 /* Footer styling */
 .footer {
     width: 100%;
-    position: fixed;
+    position: relative;
     bottom: 0;
     left: 0;
     display: flex;
@@ -55,60 +55,242 @@ html, body {
     color: #FFFFFF;
     padding: 0.5rem 1rem;
     text-align: center;
-}
-
-/* Floating animation keyframes */
-@keyframes float {
-    0% {
-        transform: translateX(0); /* Start position */
-    }
-    50% {
-        transform: translateX(-20px); /* Move up slightly */
-    }
-    100% {
-        transform: translateX(0); /* Return to start */
-    }
+    margin-top: auto; /* Push the footer to the bottom if possible */
 }
 
 /* Responsive adjustments */
 @media (max-width: 1024px) {
     .container-fluid {
-        padding-top: 150px;
+        /*padding-top: 10px; /* Further reduce padding for smaller screens */
     }
     .environmental-logo {
-        max-width: 90%; /* Still large but slightly smaller */
+        max-width: 90%; /* Slightly smaller for smaller screens */
         max-height: 80vh;
     }
 }
 
-@media (max-width: 568px) {
+@media (max-width: 768px) {
     .container-fluid {
-        padding-top: 100px;
+        /*padding-top: 10px;*/
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
     }
     .environmental-logo {
         max-width: 80%;
         max-height: 70vh;
     }
+    .hexagon-container {
+        flex-direction: column;
+        gap: 10px; /* Reduce gap for smaller screens */
+        align-items: center; /* Align everything to the center */
+    }
 }
 
 @media (max-width: 576px) {
     .container-fluid {
-        padding-top: 80px;
-        padding-bottom: 40px;
+        /*padding-top: 10px;*/
+        padding-bottom: 20px;
     }
     .environmental-logo {
         max-width: 70%;
         max-height: 60vh;
     }
+    .hexagon {
+        width: 80px; /* Smaller size for smaller screens */
+        height: 80px;
+    }
+    .hexagon-container {
+        gap: 15px; /* Smaller gap for better visibility */
+    }
 }
 
 @media (max-width: 300px) {
     .container-fluid {
-        padding-top: 50px;
-        padding-bottom: 30px;
+       /*padding-top: 10px;*/
+        padding-bottom: 20px;
     }
     .environmental-logo {
         max-width: 65%;
         max-height: 50vh;
+    }
+    .hexagon {
+        width: 60px; /* Even smaller hexagons */
+        height: 60px;
+    }
+    .hexagon-container {
+        gap: 10px;
+        align-items: center;
+        text-align: center;
+    }
+}
+
+.header-toolbar {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    background-color: #7B1E1E;
+    color: white;
+}
+
+.logo {
+    height: 50px;
+    margin-right: 15px;
+}
+
+.toolbar-title {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.spacer {
+    flex: 1;
+}
+
+.nav-button {
+    margin-right: 10px;
+    color: #f39c12; 
+}
+
+.home-card {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    text-align: center;
+    background-color: #ffffff; 
+}
+
+.welcome-message {
+    margin: 40px;
+}
+
+h1 {
+    font-size: 2em;
+    font-weight: bold;
+    line-height: 1.2;
+    color: #333;
+}
+
+p {
+    font-size: 1.1em;
+    color: #555;
+}
+
+/* Hexagon Container Styling */
+.hexagon-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    /* margin-top: 20px; Reduced margin to remove unnecessary space */
+    flex-wrap: wrap; /* Allow wrapping for smaller screens */
+}
+
+.hexagon {
+    width: 100px;
+    height: 100px;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: bold;
+}
+
+/* Hexagon 1 - Up and Down */
+.hexagon-1 {
+    animation: floatUpDown 3s ease-in-out infinite;
+}
+
+/* Hexagon 2 - Down and Up */
+.hexagon-2 {
+    animation: floatDownUp 3s ease-in-out infinite;
+}
+
+/* Hexagon 3 - Left and Right */
+.hexagon-3 {
+    animation: floatLeftRight 3s ease-in-out infinite;
+}
+
+/* Hexagon 4 - Right and Left */
+.hexagon-4 {
+    animation: floatRightLeft 3s ease-in-out infinite;
+}
+
+/* Hexagon 5 - Diagonal Movement */
+.hexagon-5 {
+    animation: floatDiagonal 3s ease-in-out infinite;
+}
+
+/* Animation Keyframes */
+
+/* Up and Down */
+@keyframes floatUpDown {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+/* Down and Up */
+@keyframes floatDownUp {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(20px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+/* Left and Right */
+@keyframes floatLeftRight {
+    0% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(-20px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+/* Right and Left */
+@keyframes floatRightLeft {
+    0% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(20px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+/* Diagonal Movement */
+@keyframes floatDiagonal {
+    0% {
+        transform: translate(0, 0);
+    }
+    25% {
+        transform: translate(15px, -15px);
+    }
+    50% {
+        transform: translate(0, 20px);
+    }
+    75% {
+        transform: translate(-15px, -15px);
+    }
+    100% {
+        transform: translate(0, 0);
     }
 }

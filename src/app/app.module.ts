@@ -1,22 +1,27 @@
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms'; // Add FormsModule for ngModel
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { SignupComponent } from './signup/signup.component';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './auth/login/login.component';
+import { LogsheetComponent } from './logsheet/logsheet.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SignupComponent,
     LoginComponent,
+    LogsheetComponent,
   ],
   imports: [
     BrowserModule,
-    FormsModule, // Ensure FormsModule is included
+    FormsModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule, // Add this line
   ],
   providers: [],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
-export class AppModule {} // Ensure the export is correct
+export class AppModule {}
