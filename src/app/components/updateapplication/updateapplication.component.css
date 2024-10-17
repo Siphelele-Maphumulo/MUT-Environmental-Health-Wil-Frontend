@@ -1,0 +1,177 @@
+/* Full height for html and body with overflow */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Prevents scrolling on the body */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Fixed header */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px; /* Adjusted to reduce header height */
+    background-color: #800000; /* Header background color */
+    z-index: 1000;
+}
+
+/* Main content container to ensure form is properly aligned between header and footer */
+.main-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 40px; /* Space added to avoid overlap with the header (height of the header) */
+    padding-bottom: 60px; /* Space below form to cater for fixed footer */
+    box-sizing: border-box;
+    overflow: auto;
+}
+
+/* Sign-Up form container with margin to avoid footer overlap */
+.login-form-container {
+    width: 100%;
+    max-width: 700px; /* Increased width for larger form */
+    padding: 1rem; /* Adjusted padding for more spacing */
+    margin: 0 auto; /* Center the form horizontally */
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Centering the Sign-Up heading and button */
+.form-heading {
+    font-size: 1.5rem; /* Adjusted heading for better readability */
+    text-align: center;
+    margin-bottom: 1.5rem; /* Great bottom margin */
+    font-weight: bold;
+}
+
+/* Grid layout for form elements */
+.form-group-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    width: 100%;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+/* Full-width for individual form groups */
+.form-group-full {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+/* Styling for the form controls */
+.form-control {
+    font-size: 1rem; /* Adjusted input font size */
+    padding: 0.75rem; /* Great padding for input fields */
+    width: 100%; /* Ensure inputs take full width of the container */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+
+/* Button styling */
+.btn-primary {
+    width: 100%;
+    padding: 1rem; /* Great padding for button */
+    font-size: 1rem; /* Adjusted button font size */
+    font-weight: bold;
+    background-color: #0069D9;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #98fb98;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    .main-content {
+        padding-top: 20%; /* Add extra top padding for mobile devices to prevent content from being blocked */
+    }
+
+    .login-form-container {
+        padding: 1rem; /* Less padding for smaller screens */
+        max-width: 90%; /* Increase width to take up more space on mobile */
+    }
+
+    .form-heading {
+        font-size: 1.3rem; /* Slightly smaller heading size */
+    }
+
+    .form-control {
+        font-size: 0.9rem; /* Smaller font size for inputs */
+        padding: 0.6rem; /* Adjusted padding for inputs */
+    }
+
+    .btn-primary {
+        font-size: 0.9rem; /* Smaller button size */
+        padding: 0.75rem; /* Adjusted button padding */
+    }
+}
+
+/* Footer styling */
+.footer {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    background-color: #D8A02E;
+    color: #FFFFFF;
+    padding: 0.75rem 1rem; /* Increased padding */
+    text-align: center;
+}
+
+/* Additional tweaks for very small screens */
+@media (max-width: 480px) {
+    .form-control {
+        font-size: 0.8rem; /* Smaller font size for very small screens */
+        padding: 0.5rem; /* Adjusted padding for inputs */
+    }
+
+    .btn-primary {
+        font-size: 0.85rem; /* Smaller button size */
+        padding: 0.6rem; /* Adjusted button padding */
+    }
+
+    .form-group-grid {
+        grid-template-columns: 1fr; /* Change to single column on very small screens */
+    }
+}
+
+/* Styling for the form container to align items in a grid */
+form {
+    width: 100%;
+}
+
+/* Styling for submit button */
+button[type="submit"] {
+    width: 100%;
+    margin-top: 1.5rem; /* Increased margin for spacing */
+}
+
+/* Grid arrangement of form fields */
+/* Title/Initials, Name/Surname, Contact/Gender, Password/Confirm Password in 2 column grids */
+.form-group-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    width: 100%;
+    align-items: center;
+    margin-bottom: 1.5rem; /* Great margin for spacing between groups */
+}

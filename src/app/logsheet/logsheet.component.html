@@ -1,108 +1,156 @@
 <!-- Header -->
 <div class="container-fluid d-flex align-items-center justify-content-center min-vh-100">
-    <div class="login-form-container shadow p-3 rounded">
-<div id="header"></div>
+  <div class="login-form-container shadow p-3 rounded">
+    <div id="header"></div>
+    <div class="container mt-5">
+      <h1 class="text-center mb-4"></h1>
 
-<div class="container mt-5">
-  <h1 class="text-center mb-4">   </h1>
+      <h2 class="text-center">Daily Log Sheet</h2>
+      <p class="text-center">
+        Instruction: Details below must be completed per each activity undertaken
+        by the student each day and verified by the instructor.
+      </p>
 
-  <h2 class="text-center">Daily Log Sheet</h2>
-  <p class="text-center">
-    Instruction: Details below must be completed per each activity undertaken
-    by the student each day and verified by the instructor.
-  </p>
+      <!-- Form -->
 
-  <!-- Form -->
-  <form>
-    <!-- Date field -->
+          <!-- Date field -->
     <div class="form-group">
-        <label for="date">Date:</label>
-        <input
-          type="date"
-          class="form-control"
-          id="date"
-          name="date"
-          [value]="today"
-          readonly
-          style="width: 28%;"
-        />
-      </div>
-
-    <!-- Activities section -->
-    <h3>WIL Activities Conducted</h3>
-    <p class="text-center">Please select an activity and indicate how many hours spent.</p>
-
-    <div id="activities-container">
-      <!-- Initial Activity Row -->
-      <div class="activity-row" *ngFor="let activity of activities; let i = index">
-        <select class="form-control" [(ngModel)]="activity.activity" name="activity{{i}}">
-          <option value="">--Select Activity--</option>
-          <option value="Food control">Food control</option>
-          <option value="Monitoring water quality">Monitoring water quality</option>
-          <option value="Waste management">Waste management</option>
-          <option value="Site inspections">Site inspections</option>
-          <option value="Data analysis">Data analysis</option>
-          <option value="Training sessions">Training sessions</option>
-          <option value="Health surveillance of premises">
-            Health surveillance of premises
-          </option>
-          <option value="Surveillance & prevention of communicable diseases">
-            Surveillance & prevention of communicable diseases
-          </option>
-          <option value="Monitoring of hazardous substances">
-            Monitoring of hazardous substances
-          </option>
-          <option value="General hygiene monitoring">
-            General hygiene monitoring
-          </option>
-          <option value="Vector control monitoring">Vector control monitoring</option>
-          <option value="Chemical safety">Chemical safety</option>
-          <option value="Noise control">Noise control</option>
-          <option value="Environmental pollution control">
-            Environmental pollution control
-          </option>
-          <option value="Port health">Port health</option>
-          <option value="Radiation monitoring and control">
-            Radiation monitoring and control
-          </option>
-          <option value="Administration">Administration</option>
-        </select>
-        <input type="number" class="form-control" name="hours{{i}}" placeholder="Hours" min="0" max="6"/>
-        <button type="button" class="remove-btn"> <img src="./remove.svg" alt="add activity" /></button>
-      </div>
+      <label for="date">Date:</label>
+      <input
+        type="date"
+        class="form-control"
+        id="date"
+        name="date"
+        [value]="today"
+        readonly
+        style="width: 32%; font-size:small"
+      />
     </div>
-    <div style="padding-top:10px">
-        <button type="button" class="add-btn"><img src="./add.svg" alt="add activity" /></button>
-    </div>
+      <form>
+        <h3 class="text-center">WIL Activities Conducted</h3>
+        <p class="text-center">Please select up to 6 activities and indicate how many hours spent.</p>
 
-      
-    <!-- Description and reflection section -->
-    <div class="container form-container">
-      <div class="form-section">
-        <h3>Description of WIL Activities Conducted</h3>
-        <div class="form-group">
-          <label for="description">Reflect on the most significant events:</label>
-          <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+        <!-- Activities section -->
+        <div id="activities-container">
+          <!-- Checkboxes for each activity in a grid format -->
+          <div class="activity-item">
+            <label>
+              <input type="checkbox" name="activities" value="Food control" onclick="limitSelection()"> Food control
+            </label>
+            <input type="number" class="form-control hours-input" placeholder="Hours" min="0" max="6" />
+          </div>
+          <div class="activity-item">
+            <label>
+              <input type="checkbox" name="activities" value="Monitoring water quality and availability" onclick="limitSelection()"> Monitoring water quality and availability
+            </label>
+            <input type="number" class="form-control hours-input" placeholder="Hours" min="0" max="6" />
+          </div>
+          <div class="activity-item">
+            <label>
+              <input type="checkbox" name="activities" value="Waste management" onclick="limitSelection()"> Waste management
+            </label>
+            <input type="number" class="form-control hours-input" placeholder="Hours" min="0" max="6" />
+          </div>
+          <div class="activity-item">
+            <label>
+              <input type="checkbox" name="activities" value="General hygiene monitoring" onclick="limitSelection()"> General hygiene monitoring
+            </label>
+            <input type="number" class="form-control hours-input" placeholder="Hours" min="0" max="6" />
+          </div>
+          <div class="activity-item">
+            <label>
+              <input type="checkbox" name="activities" value="Vector control monitoring" onclick="limitSelection()"> Vector control monitoring
+            </label>
+            <input type="number" class="form-control hours-input" placeholder="Hours" min="0" max="6" />
+          </div>
+          <div class="activity-item">
+            <label>
+              <input type="checkbox" name="activities" value="Chemical safety" onclick="limitSelection()"> Chemical safety
+            </label>
+            <input type="number" class="form-control hours-input" placeholder="Hours" min="0" max="6" />
+          </div>
+          <div class="activity-item">
+            <label>
+              <input type="checkbox" name="activities" value="Noise control" onclick="limitSelection()"> Noise control
+            </label>
+            <input type="number" class="form-control hours-input" placeholder="Hours" min="0" max="6" />
+          </div>
+          <div class="activity-item">
+            <label>
+              <input type="checkbox" name="activities" value="Environmental pollution control (water & air)" onclick="limitSelection()"> Environmental pollution control (water & air)
+            </label>
+            <input type="number" class="form-control hours-input" placeholder="Hours" min="0" max="6" />
+          </div>
+          <div class="activity-item">
+            <label>
+              <input type="checkbox" name="activities" value="Radiation monitoring and control" onclick="limitSelection()"> Radiation monitoring and control
+            </label>
+            <input type="number" class="form-control hours-input" placeholder="Hours" min="0" max="6" />
+          </div>
+          <div class="activity-item">
+            <label>
+              <input type="checkbox" name="activities" value="Health surveillance of premises" onclick="limitSelection()"> Health surveillance of premises
+            </label>
+            <input type="number" class="form-control hours-input" placeholder="Hours" min="0" max="6" />
+          </div>
+          <div class="activity-item">
+            <label>
+              <input type="checkbox" name="activities" value="Surveillance & prevention of communicable diseases and Malaria control" onclick="limitSelection()"> Surveillance & prevention of communicable diseases and Malaria control
+            </label>
+            <input type="number" class="form-control hours-input" placeholder="Hours" min="0" max="6" />
+          </div>
+          <div class="activity-item">
+            <label>
+              <input type="checkbox" name="activities" value="Port health (air, land and seaports)" onclick="limitSelection()"> Port health (air, land and seaports)
+            </label>
+            <input type="number" class="form-control hours-input" placeholder="Hours" min="0" max="6" />
+          </div>
+          <div class="activity-item">
+            <label>
+              <input type="checkbox" name="activities" value="Control & monitoring of hazardous substances" onclick="limitSelection()"> Control & monitoring of hazardous substances
+            </label>
+            <input type="number" class="form-control hours-input" placeholder="Hours" min="0" max="6" />
+          </div>
+          <div class="activity-item">
+            <label>
+              <input type="checkbox" name="activities" value="Disposal of the dead" onclick="limitSelection()"> Disposal of the dead
+            </label>
+            <input type="number" class="form-control hours-input" placeholder="Hours" min="0" max="6" />
+          </div>
+          <div class="activity-item">
+            <label>
+              <input type="checkbox" name="activities" value="Administration" onclick="limitSelection()"> Administration
+            </label>
+            <input type="number" class="form-control hours-input" placeholder="Hours" min="0" max="6" />
+          </div>
         </div>
-        <div class="form-group">
-          <label for="situation">Describe the situation: What happened?</label>
-          <textarea class="form-control" id="situation" name="situation" rows="4" required></textarea>
+        
+        <!-- Description and reflection section -->
+        <div class="container form-container">
+          <div class="form-section">
+            <h3>Description of WIL Activities Conducted</h3>
+            <div class="form-group">
+              <label for="description">Reflect on the most significant events:</label>
+              <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="situation">Describe the situation: What happened?</label>
+              <textarea class="form-control" id="situation" name="situation" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="evaluation">Evaluate the situation: Why was this event significant?</label>
+              <textarea class="form-control" id="evaluation" name="evaluation" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="interpretation">Interpret the situation: What did you learn?</label>
+              <textarea class="form-control" id="interpretation" name="interpretation" rows="4" required></textarea>
+            </div>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="evaluation">Evaluate the situation: Why was this event significant?</label>
-          <textarea class="form-control" id="evaluation" name="evaluation" rows="4" required></textarea>
-        </div>
-        <div class="form-group">
-          <label for="interpretation">Interpret the situation: What did you learn?</label>
-          <textarea class="form-control" id="interpretation" name="interpretation" rows="4" required></textarea>
-        </div>
-      </div>
-    </div>
-
-    <!-- Signatures section -->
-    <h3 style="padding-bottom: 40px">Signatures</h3>
+        <!-- Signatures section -->
+    <h3 class="text-center" style="padding-bottom: 40px">Signatures</h3>
     <div class="row">
-      <div class="col-md-4 form-group" style="padding-left:50px">
+      <div class=" col-md-4 form-group" style="padding-left:50px">
         <label for="student_signature">Student Signature:</label>
         <div class="d-flex align-items-center">
           <div class="empty-square mr-2"></div>
@@ -144,14 +192,117 @@
         </div>
       </div>
     </div>
-    <h5 style="padding-bottom: 10px; text-align:center">Upload as Image</h5>
+        
+        <!-- Submit button -->
 
-    <!-- Submit button -->
-    <button type="submit" class="btn btn-primary submit-button">Submit</button>
-  </form>
+        <!-- Submit button -->
+    <button type="button" class="btn btn-primary submit-button" (click)="validateActivitySelection()"  style="background-color: #0C314D;">Submit</button>
+
+        
+      </form>
+    </div>
+  </div>
+  
 </div>
 
-<!-- Footer -->
-<div id="footer" style="padding-top: 10px; display: flex; justify-content: space-between; align-items: center;"></div>
-</div>
-</div>
+<!-- CSS -->
+<style>
+  .container-fluid {
+    max-width: 100%;
+  }
+
+  .login-form-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Activities grid layout */
+  #activities-container {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
+
+  .activity-item {
+    display: contents;
+  }
+
+  /* Input adjustments */
+  .hours-input {
+    width: 100%;
+    max-width: 100px;
+  }
+
+  /* Signature square */
+  .empty-square {
+    width: 50px;
+    height: 50px;
+    border: 1px solid #000;
+    margin-right: 10px;
+  }
+
+  /* Flex and alignment utilities */
+  .align-items-center {
+    align-items: center;
+  }
+
+  /* Button styles */
+  .submit-button {
+    margin-top: 2rem;
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 767px) {
+    .container {
+      padding: 1rem;
+    }
+
+    #activities-container {
+      grid-template-columns: 1fr;
+    }
+
+    .hours-input,
+    .submit-button {
+      width: 100%;
+      margin-top: 1rem;
+    }
+
+    .empty-square {
+      width: 40px;
+      height: 40px;
+    }
+  }
+</style>
+
+<!-- JavaScript -->
+<script>
+  function limitSelection() {
+    const checkboxes = document.querySelectorAll(
+      'input[name="activities"]:checked'
+    );
+    if (checkboxes.length > 6) {
+      alert("You can select a maximum of 6 activities.");
+      event.target.checked = false;
+    }
+  }
+
+  function validateForm() {
+    const checkboxes = document.querySelectorAll(
+      'input[name="activities"]:checked'
+    );
+    if (checkboxes.length < 1) {
+      alert("You must select at least 1 activity.");
+      return false;
+    }
+    return true;
+  }
+</script>

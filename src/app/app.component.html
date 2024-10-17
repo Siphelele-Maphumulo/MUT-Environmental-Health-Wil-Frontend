@@ -1,6 +1,9 @@
-<!-- src/app/app.component.html -->
-<app-header></app-header>
-<main>
-  <router-outlet></router-outlet> <!-- Loads home, login, or signup pages here -->
-</main>
-<app-footer></app-footer>
+<div class="app-container">
+  <app-header></app-header> <!-- Fixed Header -->
+  
+  <div class="main-content">
+    <router-outlet></router-outlet> <!-- Routed components appear here -->
+  </div>
+
+  <app-footer></app-footer> <!-- Fixed Footer -->
+</div>

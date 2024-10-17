@@ -1,0 +1,72 @@
+.sidebar {
+    height: 100vh;
+    background-color: #f8f9fa;
+    padding-top: 20px;
+}
+.sidebar a {
+    text-decoration: none;
+    font-size: 16px;
+    padding: 10px;
+    display: block;
+    color: #000;
+}
+.sidebar a:hover {
+    background-color: #e9ecef;
+}
+.card {
+    border: none;
+}
+.card-header {
+    
+    background-color: #D8A02E;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+}
+.card-footer {
+    background-color: #f1f1f1;
+    text-align: center;
+}
+.card-footer a {
+    text-decoration: none;
+    color: #296786;
+    font-weight: bold;
+}
+.container-fluid {
+    padding-top: 70px;
+}
+
+.notification-container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .notification-icon {
+    position: relative;
+    font-size: 42px; /* Adjust the icon size as required */
+    color: #363434;  /* You can adjust the color to fit your design */
+}
+
+.mat-badge-content {
+    background-color: #1565C0; /* Adjust the badge color if needed */
+    color: white;
+    font-size: 6px; /* Very small font size for badge content */
+    line-height: 8px; /* Smaller line height to match the font size */
+    width: 10px; /* Smaller width for badge */
+    height: 10px; /* Smaller height for badge */
+    border-radius: 50%; /* Fully rounded badge */
+    display: flex; /* Align the number in the center */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    transform: translate(50%, -50%); /* Adjust positioning for a balanced appearance */
+    padding: 0; /* Remove padding to make the badge even smaller */
+}
+
+
+
+
+  
+  
+  
+  
