@@ -1,0 +1,26 @@
+<h2 mat-dialog-title class="dialog-title" style="display: flex; align-items: center;justify-content: center;">
+  <mat-icon class="title-icon">verified</mat-icon>
+  Mentor Verification
+</h2>
+
+<mat-dialog-content class="dialog-content">
+  <div class="confirmation-message">
+    <mat-icon class="message-icon">help_outline</mat-icon>
+    <p>Do you want to mark this logsheet as <span class="checked-text">checked</span>?</p>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="dialog-actions">
+  <button mat-stroked-button color="basic" mat-dialog-close class="action-button">
+    <mat-icon>close</mat-icon>
+    Cancel
+  </button>
+  <button mat-raised-button color="warn" (click)="confirm(false)" class="action-button uncheck-button">
+    <mat-icon>undo</mat-icon>
+    Uncheck
+  </button>
+  <button mat-raised-button color="primary" (click)="confirm(true)" class="action-button confirm-button">
+    <mat-icon>check_circle</mat-icon>
+    Confirm
+  </button>
+</mat-dialog-actions>

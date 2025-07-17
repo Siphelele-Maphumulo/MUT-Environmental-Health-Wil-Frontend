@@ -1,0 +1,145 @@
+<div class="logbook-container">
+  <!-- Header -->
+  <div class="header text-center mb-4">
+    <mat-dialog-actions align="end">
+      <button
+        mat-raised-button
+        color="warn"
+        (click)="closeDialog()"
+        style="
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+          font-size: 20px;
+          padding: 10px 20px;
+          z-index: 1000;
+        "
+      >
+        Close
+      </button>
+    </mat-dialog-actions>
+    <h2>Student Logbook</h2>
+    <p><strong>Name:</strong> {{ studentName }}</p>
+    <p><strong>Student Number:</strong> {{ studentNumber }}</p>
+  </div>
+
+  <!-- Summary Section -->
+  <div class="summary-box shadow-sm p-3 mb-4 rounded bg-light">
+    <h5 class="mb-3">Logbook Summary</h5>
+    <ul class="list-group list-group-flush">
+      <li
+        class="list-group-item d-flex justify-content-between align-items-center"
+      >
+        <span><strong>Total Hours Worked</strong></span>
+        <span
+          class="badge rounded-pill"
+          [ngClass]="{
+            'bg-primary': totalHoursWorked >= 180,
+            'bg-info': totalHoursWorked < 180
+          }"
+        >
+          {{ totalHoursWorked }} hrs
+        </span>
+      </li>
+      <li
+        class="list-group-item d-flex justify-content-between align-items-center"
+      >
+        <span><strong>Total Days Worked</strong></span>
+        <span
+          class="badge rounded-pill"
+          [ngClass]="{
+            'bg-success': totalDaysWorked >= 180,
+            'bg-info': totalDaysWorked < 180
+          }"
+        >
+          {{ totalDaysWorked }} days
+        </span>
+      </li>
+      <li
+        class="list-group-item d-flex justify-content-between align-items-center"
+      >
+        <span><strong>Days Left</strong></span>
+        <span class="badge rounded-pill" [class]="getProgressColorClass()">
+          {{ totalDaysLeft }} days
+        </span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Activities Table -->
+  <div class="activities-section mb-4">
+    <h5 class="mb-3">Activities and Hours</h5>
+    <table class="table table-bordered table-hover align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>Date</th>
+          <th>Activity</th>
+          <th>Hours</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let log of filteredLogSheets; let i = index">
+          <tr
+            *ngFor="let activity of getActivities(log); let first = first"
+            class="date-group-{{ i % 2 }}"
+          >
+            <!-- Date Cell -->
+            <td
+              *ngIf="first"
+              [rowSpan]="getActivities(log).length"
+              class="log-date align-middle"
+            >
+              {{ log.log_date | date : "mediumDate" }}
+            </td>
+
+            <!-- Activity and Hours -->
+            <td>{{ activity.name }}</td>
+            <td class="text-center">{{ activity.hours }} hrs</td>
+
+            <!-- Status (only show in first row) -->
+            <td
+              *ngIf="first"
+              [rowSpan]="getActivities(log).length"
+              class="text-center align-middle"
+            >
+              <div *ngIf="log.supervisor_signature; else pending">
+                <mat-icon color="accent">check_circle</mat-icon> Signed
+              </div>
+              <ng-template #pending>
+                <div>
+                  <mat-icon color="warn">hourglass_empty</mat-icon> Pending
+                </div>
+              </ng-template>
+            </td>
+
+            <!-- Unified Action (only show in first row) -->
+            <td
+              *ngIf="first"
+              [rowSpan]="getActivities(log).length"
+              class="text-center align-middle"
+            >
+              <button
+                mat-button
+                (click)="openSignDialog(log)"
+                [disabled]="!log.id"
+              >
+                <mat-icon color="primary">assignment_turned_in</mat-icon>
+                {{
+                  log.supervisor_signature ? "View Signature" : "Sign Logsheet"
+                }}
+                <span *ngIf="!log.id" class="error-text"> (Missing ID)</span>
+              </button>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Total at Bottom -->
+  <div class="total-footer text-end mt-5 mb-5">
+    <h5><strong>Total Hours:</strong> {{ totalHoursWorked }} hours</h5>
+  </div>
+</div>

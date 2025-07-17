@@ -1,0 +1,58 @@
+<mat-toolbar color="primary" class="header-toolbar">
+  <img src="assets/mut_logo.png" alt="MUT Logo" class="logo">
+  <span class="toolbar-title">Environmental Health</span>
+  <span class="spacer"></span>
+  <button mat-button class="toolbar-link">Guide</button>
+  <button mat-button class="toolbar-link">Contact</button>
+  <button mat-button class="toolbar-link">Report</button>
+  <button mat-button class="toolbar-link">Sign-Out</button>
+</mat-toolbar>
+
+<div class="container">
+  <mat-card class="report-card">
+    <p class="declaration-text">
+      I, [Mentor Name], employed by [Employer] in the capacity of [Job Title] HI No: [HI number], hereby certify
+      that [Student Name] completed work-integrated learning activities from [start date] to [end date] as required.
+    </p>
+
+    <!-- Criteria Section -->
+    <div class="criteria-section">
+      <div *ngFor="let criterion of criteria" class="criteria-item">
+        <p class="criteria-label">{{ criterion.label }}</p>
+        <mat-radio-group class="radio-group">
+          <mat-radio-button *ngFor="let option of criteriaOptions" [value]="option">
+            {{ option }}
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+
+    <!-- Comments Section -->
+    <mat-form-field appearance="outline" class="comments-field">
+      <mat-label>General Comments</mat-label>
+      <textarea matInput></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="comments-field">
+      <mat-label>Supervisor Signature</mat-label>
+      <textarea matInput></textarea>
+    </mat-form-field>
+
+    <!-- Office Stamp and Buttons -->
+    <mat-form-field appearance="outline" class="stamp-field">
+      <mat-label>Office Stamp</mat-label>
+      <textarea matInput></textarea>
+    </mat-form-field>
+
+    <div class="button-group">
+      <button mat-raised-button color="primary" (click)="saveReport()">Save</button>
+      <button mat-raised-button color="accent" (click)="submitReport()">Submit</button>
+    </div>
+  </mat-card>
+</div>
+
+<mat-toolbar color="accent" class="footer-toolbar">
+  <span>Guide</span>
+  <span class="spacer"></span>
+  <span>Contact</span>
+</mat-toolbar>

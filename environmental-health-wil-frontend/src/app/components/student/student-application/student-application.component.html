@@ -1,0 +1,690 @@
+<div
+  class="container-fluid d-flex align-items-center justify-content-center min-vh-100"
+>
+  <div class="login-form-container shadow p-3 rounded">
+    <div id="header"></div>
+    <div class="container mt-5">
+      <h1 class="text-center mb-4">
+        APPLICATION FORM FOR WORK INTEGRATED LEARNING PLACEMENT
+      </h1>
+
+      <form [formGroup]="studentApplicationForm" (ngSubmit)="onSubmit()">
+        <!-- Province Selection -->
+        <div class="section">
+          <h3 style="text-align: center">
+            Select Your Province where you reside
+          </h3>
+          <div
+            class="grid-container"
+            style="
+              display: grid;
+              grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+              gap: 10px;
+              text-align: left;
+            "
+          >
+            <div
+              class="grid-item"
+              *ngFor="let province of provinces"
+              style="display: flex; align-items: center"
+            >
+              <input
+                type="radio"
+                name="province"
+                [value]="province"
+                formControlName="province"
+                id="{{ province }}"
+                style="margin-right: 10px"
+              />
+              <label [for]="province" style="margin: 0">{{ province }}</label>
+            </div>
+          </div>
+          <div
+            *ngIf="
+              studentApplicationForm.get('province')?.invalid &&
+              studentApplicationForm.get('province')?.touched
+            "
+            class="text-danger"
+          >
+            <small>{{ getErrorMessage("province") }}</small>
+          </div>
+        </div>
+
+        <!-- Section A: Personal Information -->
+        <div class="section">
+          <h2
+            class="section-title"
+            style="background-color: #4a171e; color: #f0f0f0"
+          >
+            Section A: Personal Information
+          </h2>
+
+          <table class="personal-info-table">
+            <tr>
+              <td>Title</td>
+              <td style="background-color: #ffffff">
+                <select name="title" formControlName="title" required>
+                  <option value="" disabled selected>Select Title</option>
+                  <option value="Mr">Mr</option>
+                  <option value="Mrs">Mrs</option>
+                  <option value="Ms">Ms</option>
+                  <option value="Mx">Mx</option>
+                  <option value="Rev">Rev</option>
+                  <option value="Hon">Hon</option>
+                  <option value="Sir">Sir</option>
+                  <option value="Madam">Madam</option>
+                </select>
+                <div
+                  *ngIf="
+                    studentApplicationForm.get('title')?.invalid &&
+                    studentApplicationForm.get('title')?.touched
+                  "
+                  class="text-danger"
+                >
+                  <small>{{ getErrorMessage("title") }}</small>
+                </div>
+              </td>
+
+              <td>Initials</td>
+              <td style="background-color: #ffffff">
+                <input
+                  type="text"
+                  name="initials"
+                  formControlName="initials"
+                  required
+                  maxlength="6"
+                  pattern="^[A-Z]+$"
+                />
+                <div
+                  *ngIf="
+                    studentApplicationForm.get('initials')?.invalid &&
+                    studentApplicationForm.get('initials')?.touched
+                  "
+                  class="text-danger"
+                >
+                  <small>{{ getErrorMessage("initials") }}</small>
+                </div>
+              </td>
+
+              <td>Surname</td>
+              <td style="background-color: #ffffff">
+                <input
+                  type="text"
+                  name="surname"
+                  formControlName="surname"
+                  required
+                  pattern="^[A-Za-z]+$"
+                />
+                <div
+                  *ngIf="
+                    studentApplicationForm.get('surname')?.invalid &&
+                    studentApplicationForm.get('surname')?.touched
+                  "
+                  class="text-danger"
+                >
+                  <small>{{ getErrorMessage("surname") }}</small>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td><strong>First Names (in full) *</strong></td>
+              <td
+                colspan="6"
+                style="background-color: #ffffff; text-align: center"
+              >
+                <input
+                  type="text"
+                  name="firstNames"
+                  formControlName="firstNames"
+                  required
+                  pattern="^[A-Za-z ]+$"
+                  style="width: 100%; box-sizing: border-box"
+                />
+                <div
+                  *ngIf="
+                    studentApplicationForm.get('firstNames')?.invalid &&
+                    studentApplicationForm.get('firstNames')?.touched
+                  "
+                  class="text-danger"
+                >
+                  <small>{{ getErrorMessage("firstNames") }}</small>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td>Student Number</td>
+              <td style="background-color: #ffffff">
+                <input
+                  type="text"
+                  name="studentNumber"
+                  formControlName="studentNumber"
+                  required
+                  pattern="^[0-9]{8}$"
+                />
+                <div
+                  *ngIf="
+                    studentApplicationForm.get('studentNumber')?.invalid &&
+                    studentApplicationForm.get('studentNumber')?.touched
+                  "
+                  class="text-danger"
+                >
+                  <small>{{ getErrorMessage("studentNumber") }}</small>
+                </div>
+              </td>
+
+              <td>Level of Study</td>
+              <td style="background-color: #ffffff">
+                <input
+                  type="number"
+                  name="levelOfStudy"
+                  formControlName="levelOfStudy"
+                  required
+                  min="1"
+                  max="4"
+                />
+                <div
+                  *ngIf="
+                    studentApplicationForm.get('levelOfStudy')?.invalid &&
+                    studentApplicationForm.get('levelOfStudy')?.touched
+                  "
+                  class="text-danger"
+                >
+                  <small>{{ getErrorMessage("levelOfStudy") }}</small>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td>Race</td>
+              <td style="background-color: #ffffff">
+                <select name="race" formControlName="race" required>
+                  <option value="" disabled selected>Select Race</option>
+                  <option value="African">African</option>
+                  <option value="White">White</option>
+                  <option value="Indian">Indian</option>
+                  <option value="Coloured">Coloured</option>
+                  <option value="Other">Other</option>
+                </select>
+                <div
+                  *ngIf="
+                    studentApplicationForm.get('race')?.invalid &&
+                    studentApplicationForm.get('race')?.touched
+                  "
+                  class="text-danger"
+                >
+                  <small>{{ getErrorMessage("race") }}</small>
+                </div>
+              </td>
+
+              <td>Gender</td>
+              <td style="background-color: #ffffff">
+                <select name="gender" formControlName="gender" required>
+                  <option value="" disabled selected>Select Gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </select>
+                <div
+                  *ngIf="
+                    studentApplicationForm.get('gender')?.invalid &&
+                    studentApplicationForm.get('gender')?.touched
+                  "
+                  class="text-danger"
+                >
+                  <small>{{ getErrorMessage("gender") }}</small>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td><strong>Email Address *</strong></td>
+              <td style="background-color: #ffffff">
+                <input
+                  type="email"
+                  name="emailAddress"
+                  formControlName="emailAddress"
+                  required
+                />
+                <div
+                  *ngIf="
+                    studentApplicationForm.get('emailAddress')?.invalid &&
+                    studentApplicationForm.get('emailAddress')?.touched
+                  "
+                  class="text-danger"
+                >
+                  <small>{{ getErrorMessage("emailAddress") }}</small>
+                </div>
+              </td>
+
+              <td>Physical Address</td>
+              <td style="background-color: #ffffff">
+                <input
+                  type="text"
+                  name="physicalAddress"
+                  formControlName="physicalAddress"
+                  required
+                  pattern="^[A-Za-z0-9 ,.-]+$"
+                />
+                <div
+                  *ngIf="
+                    studentApplicationForm.get('physicalAddress')?.invalid &&
+                    studentApplicationForm.get('physicalAddress')?.touched
+                  "
+                  class="text-danger"
+                >
+                  <small>{{ getErrorMessage("physicalAddress") }}</small>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td>Cell Phone Number</td>
+              <td style="background-color: #ffffff">
+                <input
+                  type="text"
+                  name="cellPhoneNumber"
+                  formControlName="cellPhoneNumber"
+                  required
+                  pattern="^[0-9]{10,13}$"
+                />
+                <div
+                  *ngIf="
+                    studentApplicationForm.get('cellPhoneNumber')?.invalid &&
+                    studentApplicationForm.get('cellPhoneNumber')?.touched
+                  "
+                  class="text-danger"
+                >
+                  <small>{{ getErrorMessage("cellPhoneNumber") }}</small>
+                </div>
+              </td>
+
+              <td>Home Town</td>
+              <td style="background-color: #ffffff">
+                <input
+                  type="text"
+                  name="homeTown"
+                  formControlName="homeTown"
+                  pattern="^[A-Za-z ]+$"
+                />
+                <div
+                  *ngIf="
+                    studentApplicationForm.get('homeTown')?.invalid &&
+                    studentApplicationForm.get('homeTown')?.touched
+                  "
+                  class="text-danger"
+                >
+                  <small>{{ getErrorMessage("homeTown") }}</small>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- Section B: Preferred Area of WIL Placement -->
+        <div class="section">
+          <h2
+            class="section-title"
+            style="background-color: #4a171e; color: #ffffff"
+          >
+            Section B: Preferred Area of WIL Placement
+          </h2>
+          <div
+            class="centered"
+            style="
+              background-color: #d8a02e;
+              color: #ffffff;
+              font-weight: bolder;
+              font-size: larger;
+            "
+          >
+            Choice A: Municipal Health Services
+          </div>
+          <table class="personal-info-table">
+            <tr>
+              <td>Municipality</td>
+              <td style="background-color: #ffffff">
+                <select
+                  name="municipalityName"
+                  formControlName="municipalityName"
+                  class="form-control"
+                >
+                  <option value="">Select Municipality</option>
+                  <option
+                    *ngFor="let municipality of southAfricanMunicipalities"
+                    [value]="municipality"
+                  >
+                    {{ municipality }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="
+                    studentApplicationForm.get('municipalityName')?.invalid &&
+                    studentApplicationForm.get('municipalityName')?.touched
+                  "
+                  class="text-danger"
+                >
+                  <small>{{ getErrorMessage("municipalityName") }}</small>
+                </div>
+              </td>
+
+              <td>Town Situated</td>
+              <td style="background-color: #ffffff">
+                <select
+                  name="townSituated"
+                  formControlName="townSituated"
+                  class="form-control"
+                  required
+                >
+                  <option value="">Select Town</option>
+                  <option *ngFor="let town of southAfricanTowns" [value]="town">
+                    {{ town }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="
+                    studentApplicationForm.get('townSituated')?.invalid &&
+                    studentApplicationForm.get('townSituated')?.touched
+                  "
+                  class="text-danger"
+                >
+                  <small>{{ getErrorMessage("townSituated") }}</small>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td>Contact Person</td>
+              <td style="background-color: #ffffff">
+                <input
+                  type="text"
+                  name="contactPerson"
+                  formControlName="contactPerson"
+                />
+                <div
+                  *ngIf="
+                    studentApplicationForm.get('contactPerson')?.invalid &&
+                    studentApplicationForm.get('contactPerson')?.touched
+                  "
+                  class="text-danger"
+                >
+                  <small>{{ getErrorMessage("contactPerson") }}</small>
+                </div>
+              </td>
+
+              <td>Email Address</td>
+              <td style="background-color: #ffffff">
+                <input
+                  type="text"
+                  name="contactEmail"
+                  formControlName="contactEmail"
+                  pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                />
+                <div
+                  *ngIf="
+                    studentApplicationForm.get('contactEmail')?.invalid &&
+                    studentApplicationForm.get('contactEmail')?.touched
+                  "
+                  class="text-danger"
+                >
+                  <small>{{ getErrorMessage("contactEmail") }}</small>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td>Telephone Number</td>
+              <td style="background-color: #ffffff">
+                <input
+                  type="text"
+                  name="telephoneNumber"
+                  formControlName="telephoneNumber"
+                  pattern="^[0-9]{10,13}$"
+                />
+                <div
+                  *ngIf="
+                    studentApplicationForm.get('telephoneNumber')?.invalid &&
+                    studentApplicationForm.get('telephoneNumber')?.touched
+                  "
+                  class="text-danger"
+                >
+                  <small>{{ getErrorMessage("telephoneNumber") }}</small>
+                </div>
+              </td>
+
+              <td>Cell Phone</td>
+              <td style="background-color: #ffffff">
+                <input
+                  type="text"
+                  name="contactCellPhone"
+                  formControlName="contactCellPhone"
+                  pattern="^[0-9]{10,13}$"
+                />
+                <div
+                  *ngIf="
+                    studentApplicationForm.get('contactCellPhone')?.invalid &&
+                    studentApplicationForm.get('contactCellPhone')?.touched
+                  "
+                  class="text-danger"
+                >
+                  <small>{{ getErrorMessage("contactCellPhone") }}</small>
+                </div>
+              </td>
+            </tr>
+          </table>
+          <div class="centered">
+            <strong
+              >Note: Applicants are not responsible for their own travel and
+              accommodation during WIL placement.</strong
+            >
+          </div>
+        </div>
+
+        <!-- Section C: Declaration -->
+        <div class="section">
+          <h2 class="section-title maroon-bg">Section C: Declaration</h2>
+          <table
+            class="declaration-table"
+            style="background-color: #ffffff; width: 100%"
+          >
+            <tr>
+              <td style="width: 90%; font-weight: bold">
+                I DECLARE THE FOLLOWING
+              </td>
+              <td style="width: 10%; text-align: right">Tick</td>
+            </tr>
+            <tr>
+              <td style="background-color: #ffffff; width: 90%">
+                The information in the application is true and correct
+              </td>
+              <td
+                style="background-color: #ffffff; width: 10%; text-align: right"
+              >
+                <input
+                  type="checkbox"
+                  name="declarationInfo1"
+                  formControlName="declarationInfo1"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td style="background-color: #ffffff; width: 90%">
+                Preferred area of WIL has been communicated with my Parents or
+                Guardians
+              </td>
+              <td
+                style="background-color: #ffffff; width: 10%; text-align: right"
+              >
+                <input
+                  type="checkbox"
+                  name="declarationInfo2"
+                  formControlName="declarationInfo2"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td style="background-color: #ffffff; width: 90%">
+                I know no reason that could prevent me from attending WIL
+                sessions or from successfully completing the specified period
+              </td>
+              <td
+                style="background-color: #ffffff; width: 10%; text-align: right"
+              >
+                <input
+                  type="checkbox"
+                  name="declarationInfo3"
+                  formControlName="declarationInfo3"
+                />
+              </td>
+            </tr>
+          </table>
+          <div
+            *ngFor="
+              let control of [
+                'declarationInfo1',
+                'declarationInfo2',
+                'declarationInfo3'
+              ]
+            "
+          >
+            <div
+              *ngIf="
+                studentApplicationForm.get(control)?.invalid &&
+                studentApplicationForm.get(control)?.touched
+              "
+              class="text-danger"
+            >
+              <small>{{ getErrorMessage(control) }}</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rules for Application -->
+        <div class="section">
+          <h2 class="bold centered">Rules for Application</h2>
+          <ul class="bullet-points">
+            <li>Incomplete forms will not be accepted</li>
+            <li>Forms must be submitted before the closing date</li>
+            <li>Provide certified ID and CV</li>
+            <li>Attend all compulsory WIL sessions</li>
+          </ul>
+        </div>
+
+        <!-- Signature Section -->
+        <div class="section">
+          <h2 class="section-title maroon-bg" style="text-align: center">
+            Signature and Document Uploads
+          </h2>
+          <div class="upload-container">
+            <!-- Signature Upload -->
+            <div class="file-upload-group">
+              <label for="signatureImage" class="file-label"
+                >Upload Signature (Image) *</label
+              >
+              <input
+                type="file"
+                name="signatureImage"
+                id="signatureImage"
+                formControlName="signatureImage"
+                accept="image/*"
+                (change)="onFileChange($event, 'signatureImage')"
+                aria-label="Upload Signature Image"
+                required
+              />
+              <div
+                *ngIf="
+                  studentApplicationForm.get('signatureImage')?.invalid &&
+                  studentApplicationForm.get('signatureImage')?.touched
+                "
+                class="text-danger"
+              >
+                <small>{{ getErrorMessage("signatureImage") }}</small>
+              </div>
+            </div>
+
+            <!-- ID Document Upload -->
+            <div class="file-upload-group">
+              <label for="idDocument" class="file-label"
+                >Upload ID Document *</label
+              >
+              <input
+                type="file"
+                name="idDocument"
+                id="idDocument"
+                formControlName="idDocument"
+                accept=".pdf,.jpg,.jpeg,.png"
+                (change)="onFileChange($event, 'idDocument')"
+                aria-label="Upload ID Document"
+                required
+              />
+              <div
+                *ngIf="
+                  studentApplicationForm.get('idDocument')?.invalid &&
+                  studentApplicationForm.get('idDocument')?.touched
+                "
+                class="text-danger"
+              >
+                <small>{{ getErrorMessage("idDocument") }}</small>
+              </div>
+            </div>
+
+            <!-- CV Upload -->
+            <div class="file-upload-group">
+              <label for="cvDocument" class="file-label"
+                >Upload CV (PDF) *</label
+              >
+              <input
+                type="file"
+                name="cvDocument"
+                id="cvDocument"
+                formControlName="cvDocument"
+                accept=".pdf"
+                (change)="onFileChange($event, 'cvDocument')"
+                aria-label="Upload CV Document"
+                required
+              />
+              <div
+                *ngIf="
+                  studentApplicationForm.get('cvDocument')?.invalid &&
+                  studentApplicationForm.get('cvDocument')?.touched
+                "
+                class="text-danger"
+              >
+                <small>{{ getErrorMessage("cvDocument") }}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="section centered button-container">
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="studentApplicationForm.invalid || isSubmitting"
+            aria-label="Submit Application"
+          >
+            <span *ngIf="!isSubmitting">Submit Application</span>
+            <span
+              *ngIf="isSubmitting"
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+            ></span>
+            <span *ngIf="isSubmitting"> Submitting...</span>
+          </button>
+          <button
+            mat-raised-button
+            color="warn"
+            type="button"
+            (click)="goBack()"
+            aria-label="Cancel Application"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,64 @@
+<footer class="footer-container">
+  <div class="footer-content">
+    <!-- Left Section: Logo and Name -->
+    <div class="footer-left">
+      <img src="./mut-logo.png" alt="MUT Logo" class="footer-logo" />
+      <span class="footer-brand"
+        >MUT FACULTY OF NATURAL SCIENCES: DEPARTMENT OF ENVIRONMENTAL
+        HEALTH</span
+      >
+    </div>
+
+    <!-- Center Section: Links -->
+    <div class="footer-links">
+      <!-- <a routerLink="/home" class="footer-link">Home</a> -->
+      <a
+        href="javascript:void(0)"
+        class="footer-link"
+        (click)="openAboutusModal()"
+        aria-label="Open about us modal"
+        role="button"
+      >
+        Guidelines
+      </a>
+      <a
+        href="javascript:void(0)"
+        class="footer-link"
+        (click)="openContactsModal()"
+        aria-label="Open contact information modal"
+        role="button"
+      >
+        Contact Us
+      </a>
+      <a routerLink="/privacy" class="footer-link">Privacy Policy</a>
+    </div>
+
+    <!-- Right Section: Social Media Icons -->
+    <div class="footer-right">
+      <a
+        href="https://www.facebook.com/MUTUmlazi/"
+        target="_blank"
+        aria-label="Facebook"
+      >
+        <mat-icon class="social-icon">facebook</mat-icon>
+      </a>
+      <a
+        href="https://twitter.com/MUTCampus"
+        target="_blank"
+        aria-label="Twitter"
+      >
+        <mat-icon class="social-icon">twitter</mat-icon>
+      </a>
+      <a
+        href="https://za.linkedin.com/school/mangosuthu-university-of-technology/"
+        target="_blank"
+        aria-label="LinkedIn"
+      >
+        <mat-icon class="social-icon">linkedin</mat-icon>
+      </a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    &copy; 2024 Mangosuthu University of Technology, All rights reserved.
+  </div>
+</footer>

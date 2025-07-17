@@ -1,0 +1,333 @@
+<div class="aboutus-modal">
+  <div class="modal-header">
+    <h2
+      style="text-align: center; justify-content: center; align-items: center"
+    >
+      Work Integrated Learning Guide
+    </h2>
+    <button mat-icon-button (click)="closeModal()">
+      <mat-icon style="color: red">close</mat-icon>
+    </button>
+  </div>
+
+  <div class="content-container">
+    <!-- Content sections -->
+    <div class="content-section" *ngIf="currentPage === 0">
+      <h3>List of Content</h3>
+      <ul class="content-list">
+        <li>
+          Introduction
+          ........................................................................................................
+          2
+        </li>
+        <li>
+          Communication Tips For Students
+          ............................................................ 3
+        </li>
+        <li>
+          Guidelines To Students
+          ...................................................................................
+          4
+        </li>
+        <li>
+          Guidelines To Industry Mentors
+          ................................................................... 5
+        </li>
+        <li>
+          Benefits
+          ................................................................................................................
+          6
+        </li>
+      </ul>
+    </div>
+
+    <div class="content-section" *ngIf="currentPage === 1">
+      <h3>INTRODUCTION</h3>
+      <p>
+        Work Integrated learning (WIL) is a broad term that encompasses various
+        learning opportunities centred on the integration of academic learning
+        and practical application in a chosen work environment (Sattler, 2011).
+        The delivery of WIL by Institutions of higher learning for the students
+        enrolled for the Environmental Health profession is mandated by the
+        Health Professions Council of South Africa (HPCSA). The Health HPCSA
+        requires that this practical engagement be done before students complete
+        their qualifications, without which they are unable to obtain their
+        qualifications. Environmental Health WIL Implementation is highly
+        contextualized and has an impact on the expectations of students,
+        industry, universities and the HPCSA Professional Board.
+      </p>
+      <p>
+        The Department of Environmental Health (DoEH) at the Mangosuthu
+        University of Technology (MUT) is implementing Work Integrated Learning
+        (WIL) programme which conforms to the Health Professions Council of
+        South Africa (HPCSA) Professional Board for Environmental Health
+        Practitioners and MUT Co-operative Education Department. In this regard,
+        WIL implementation is guided by Standard Operating Procedure (SOP) for
+        the Management of Work Integrated Learning to be conducted by student
+        Environmental Health Practitioners registered with the Health
+        Professions Council of South Africa and MUT Co-operative Education
+        Policy.
+      </p>
+      <p>
+        Good WIL practice requires institutional vision, educational rigor and
+        strong partnership between university and placement WIL provider. This
+        requires collaboration and careful consideration of the context. At MUT,
+        DoEH has adopted a range of approaches and strategies that integrate
+        theory and practice, within designed Environmental Health curriculum.
+        These includes the following WIL activities:
+      </p>
+      <ul>
+        <li>
+          Work placement, this is primarily at the municipalities for the
+          purposes of Municipal Health Services (MHS) as provided for in the
+          National Health Act, 61 of 2003. However, other recognised service
+          providers with specialised services in the Environmental Health field
+          do provide assistance in their areas of speciality as long as those
+          services are aligned with the scope of practice of Environmental
+          Health.
+        </li>
+        <li>Educational Tours and Excursions Programme</li>
+        <li>Community engagement and service learning projects</li>
+        <li>
+          On-campus activities whereby industries come to class to conduct
+          trainings and guest lecturing
+        </li>
+        <li>
+          On-campus activities whereby university together with industries are
+          commemorating environmental health related events
+        </li>
+      </ul>
+    </div>
+
+    <div class="content-section" *ngIf="currentPage === 2">
+      <h3>COMMUNICATION TIPS FOR STUDENTS</h3>
+      <ul>
+        <li>
+          First impression – make eye contact, dress appropriately, punctuality
+        </li>
+        <li>
+          In person, either face-to-face or via phone, rather than by email
+        </li>
+        <li>
+          Language, both written and oral communication; use the language
+          correctly
+        </li>
+        <li>
+          Etiquette, e.g., always begin by asking the respondent if they have a
+          moment to talk
+        </li>
+        <li>
+          Challenge yourself and seek opportunities to talk in front of people
+          and make formal presentations
+        </li>
+        <li>Practice before making a formal presentation</li>
+        <li>Ask if you require assistance or don't understand</li>
+        <li>Formalize documents – letters and reports</li>
+        <li>
+          Proofread documents for spelling, grammar and format (Martin & Hughes,
+          2009)
+        </li>
+      </ul>
+    </div>
+
+    <div class="content-section" *ngIf="currentPage === 3">
+      <h3>GUIDELINES TO STUDENTS</h3>
+      <p>
+        The following are the do's and don'ts of students during WIL placement:
+      </p>
+      <p><strong>Students should:</strong></p>
+      <ul>
+        <li>Be loyal to the placement industry and active in its work</li>
+        <li>
+          Recognize their responsibilities to their employer or client, the
+          public, and fellow employees
+        </li>
+        <li>
+          Disclose any interest that they may have which may impair their
+          professional judgment when dealing with their employer
+        </li>
+        <li>
+          Maintain high standards of professional behaviour during placements.
+          This includes meeting the ethical expectations of the placement
+          industry, especially with regard to confidentiality and discretion in
+          comments to third parties
+        </li>
+        <li>
+          Be punctual to the daily routines of the agencies in which they are
+          placed. Professional practice requires that a framework of routine be
+          set and maintained
+        </li>
+        <li>
+          Meet the standard of dress required by the industry - if unsure of
+          expectations, ask
+        </li>
+        <li>
+          Complete logbook daily and correctly records all activities undertaken
+          during WIL placement
+        </li>
+      </ul>
+
+      <p><strong>Students should NOT:</strong></p>
+      <ul>
+        <li>
+          Conduct themselves in a manner as to prejudice the professional status
+          or reputation of the placement industry
+        </li>
+        <li>
+          Make comparison with, or statements about other members, that are not
+          based on verifiable facts
+        </li>
+        <li>
+          Disclose any confidential information or matter related to their work
+          or the business of their client, without the expressed authority of
+          their employer
+        </li>
+        <li>
+          Entertain or accept any covert reward, profit, or use (for personal
+          gain) any information obtained in their professional capacity
+        </li>
+        <li>
+          Misrepresent their competence nor, without disclosing its limits,
+          undertake work beyond it
+        </li>
+      </ul>
+    </div>
+
+    <div class="content-section" *ngIf="currentPage === 4">
+      <h3>GUIDELINES TO INDUSTRY MENTORS</h3>
+      <p>
+        The Department of Environmental Health at Mangosuthu University of
+        Technology would like to thank you for your continued support for Work
+        Integrated Learning (WIL) for students studying for the Environmental
+        Health qualification. We greatly value the time and the impartation of
+        practical professional knowledge to our students.
+      </p>
+      <p>
+        Ideally, EHP/Industry mentors undertake the following activities during
+        WIL placement:
+      </p>
+      <ul>
+        <li>
+          Responsible for the pre-agreed work performed by the student along
+          with the level of practice
+        </li>
+        <li>
+          Negotiate the work duties and learning goals with the academic
+          supervisor and in some cases, with the student
+        </li>
+        <li>Arrange a workplace induction for the student</li>
+        <li>
+          Provide ongoing supervision of the student, preferably through regular
+          timetabled meetings, with written outcomes forming a documentary
+          record of this journey
+        </li>
+        <li>
+          Provide constructive and ongoing feedback on the student's performance
+          in the workplace
+        </li>
+        <li>
+          Provide the student with the opportunity to reconcile workplace theory
+          and practice and the chance to reflect on workplace activities
+        </li>
+        <li>Verify whether learning goals have been met</li>
+        <li>Evaluate and report on student outcomes</li>
+      </ul>
+    </div>
+
+    <div class="content-section" *ngIf="currentPage === 5">
+      <h3>BENEFITS</h3>
+      <p><strong>For Students:</strong></p>
+      <ul>
+        <li>
+          WIL greatly enhances learning – including inter-disciplinary thinking;
+          the integration of knowledge, skills and competencies; the retention
+          of learning; and the application of subject knowledge
+        </li>
+        <li>
+          WIL affirms career choices – in developing a better understanding of
+          their chosen career, students can realistically evaluate their
+          interest and aptitude for their future work environment; WIL helps to
+          develop a professional identity and introduces the student to positive
+          work values and ethics
+        </li>
+        <li>
+          WIL enhances employability – the student is able to develop a work
+          experience record, and employeers are able to assess potential
+          employees; students are also able to develop a network of future
+          potential employers
+        </li>
+        <li>
+          WIL develops maturity and self-confidence – an understanding of the
+          workplace adds to knowledge of workplace etiquette, interpersonal
+          skills and improved and appropriate communication skills, team work,
+          leadership and co-operation
+        </li>
+      </ul>
+
+      <p><strong>For University:</strong></p>
+      <ul>
+        <li>
+          WIL greatly enhances the curriculum – practical experience lead to
+          more responsive curricula and pedagogy; increasing the validity and
+          relevance of learning programmes
+        </li>
+        <li>
+          WIL results in more motivated learners – improved retention and
+          throughput have been noted when students return to the university
+        </li>
+        <li>
+          WIL helps to build mutually beneficial partnerships – including work
+          placements for teaching staff, which result in up-to-date information
+          from industry; curricula are more closely aligned to work requirements
+        </li>
+        <li>
+          WIL enhances the reputation of the institution – responsiveness to
+          industry needs arise from close linkages and partnerships between
+          institutions and employers
+        </li>
+      </ul>
+
+      <p><strong>For Industry:</strong></p>
+      <ul>
+        <li>WIL provides students a source of potential employees</li>
+        <li>
+          WIL provides an opportunity to influence curricula – new, cutting edge
+          technologies, processes and methods become part of the curriculum
+        </li>
+        <li>
+          WIL is essential in improving the skills base of the country to the
+          benefit of education, training and industry
+        </li>
+      </ul>
+    </div>
+    <!-- Pagination controls -->
+    <div class="pagination-controls">
+      <button
+        mat-icon-button
+        (click)="prevPage()"
+        [disabled]="currentPage === 0"
+      >
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+
+      <div class="page-numbers">
+        <button
+          mat-button
+          *ngFor="let page of pages"
+          [class.active]="currentPage === page"
+          (click)="goToPage(page)"
+        >
+          {{ page + 1 }}
+        </button>
+      </div>
+
+      <button
+        mat-icon-button
+        (click)="nextPage()"
+        [disabled]="currentPage === pages.length - 1"
+      >
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

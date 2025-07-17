@@ -1,0 +1,199 @@
+<mat-toolbar
+  class="header-toolbar"
+  style="
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: white;
+    height: 60px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+  "
+>
+  <!-- Logo -->
+  <img src="./header-logo.png" alt="MUT Logo" style="height: 50px" />
+
+  <!-- Centered Title -->
+  <div
+    style="
+      position: absolute;
+      left: 0;
+      right: 0;
+      text-align: center;
+      pointer-events: none;
+    "
+  >
+    <span style="font-size: 22px; font-weight: bold; color: white">
+      Work Integrated Learning System
+    </span>
+  </div>
+
+  <!-- Desktop Nav Links -->
+  <div
+    class="nav-links"
+    *ngIf="showNavigationLinks"
+    style="display: flex; gap: 10px"
+  >
+    <!-- Public Links -->
+    <ng-container *ngIf="!isLoggedIn()">
+      <a
+        *ngIf="!isCurrentRoute('/home')"
+        mat-button
+        routerLink="/home"
+        style="color: white; font-weight: 500; text-transform: uppercase"
+        >Home</a
+      >
+
+      <!-- Login Dropdown -->
+      <div class="dropdown-container">
+        <button mat-button class="dropdown-btn" style="color: white; font-weight: 500; text-transform: uppercase">
+          Login
+          <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+        <div class="dropdown-content">
+          <a mat-button routerLink="/login">Student</a>
+          <a mat-button routerLink="/staff-login">Staff</a>
+          <a mat-button routerLink="/mentor-login">Mentor</a>
+          <a mat-button routerLink="/hpcsa-login">HPCSA</a>
+          <a mat-button routerLink="/guest">Guest</a>
+        </div>
+      </div>
+
+      <!-- Sign Up Dropdown -->
+      <div class="dropdown-container">
+        <button mat-button class="dropdown-btn" style="color: white; font-weight: 500; text-transform: uppercase">
+          Sign Up
+          <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+        <div class="dropdown-content">
+          <a mat-button routerLink="/signup">Student</a>
+          <a mat-button routerLink="/staff-signup">Staff</a>
+          <a mat-button routerLink="/mentor-signup">Mentor</a>
+        </div>
+      </div>
+      <a
+        *ngIf="!isCurrentRoute('/student-application')"
+        mat-button
+        routerLink="/student-application"
+        style="color: white; font-weight: 500; text-transform: uppercase"
+        >Application Form</a
+      >
+    </ng-container>
+
+    <!-- Private Links (only visible if logged in) -->
+    <ng-container *ngIf="isLoggedIn()">
+      <a
+        mat-button
+        routerLink="/student-dashboard"
+        style="color: white; font-weight: 500; text-transform: uppercase"
+        >Dashboard</a
+      >
+      <a
+        mat-button
+        (click)="logout()"
+        style="color: white; font-weight: 500; text-transform: uppercase"
+        >Logout</a
+      >
+    </ng-container>
+  </div>
+
+  <!-- Hamburger for mobile -->
+  <button
+    mat-icon-button
+    style="color: white; display: none"
+    class="hamburger"
+    (click)="toggleMenu()"
+  >
+    <mat-icon>menu</mat-icon>
+  </button>
+</mat-toolbar>
+
+<!-- Mobile Navigation -->
+<div
+  *ngIf="menuOpen && showNavigationLinks"
+  style="
+    background-color: #4a171e;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 999;
+  "
+>
+  <!-- Public -->
+  <ng-container *ngIf="!isLoggedIn()">
+    <a
+      *ngIf="!isCurrentRoute('/home')"
+      mat-button
+      routerLink="/home"
+      (click)="toggleMenu()"
+      style="color: white; margin: 10px"
+      >Home</a
+    >
+    
+    <!-- Mobile Login Options -->
+    <button mat-button (click)="toggleLoginMenu()" style="color: white; margin: 10px">
+      Login <mat-icon>{{showLoginMenu ? 'expand_less' : 'expand_more'}}</mat-icon>
+    </button>
+    <div *ngIf="showLoginMenu" style="display: flex; flex-direction: column; width: 100%;">
+      <a mat-button routerLink="/login" (click)="toggleMenu()" style="color: white; padding-left: 30px">Student</a>
+      <a mat-button routerLink="/staff-login" (click)="toggleMenu()" style="color: white; padding-left: 30px">Staff</a>
+      <a mat-button routerLink="/mentor-login" (click)="toggleMenu()" style="color: white; padding-left: 30px">Mentor</a>
+      <a mat-button routerLink="/hpcsa-login" (click)="toggleMenu()" style="color: white; padding-left: 30px">HPCSA</a>
+      <a mat-button routerLink="/guest" (click)="toggleMenu()" style="color: white; padding-left: 30px">Guest</a>
+    </div>
+
+    <!-- Mobile Sign Up Options -->
+    <button mat-button (click)="toggleSignupMenu()" style="color: white; margin: 10px">
+      Sign Up <mat-icon>{{showSignupMenu ? 'expand_less' : 'expand_more'}}</mat-icon>
+    </button>
+    <div *ngIf="showSignupMenu" style="display: flex; flex-direction: column; width: 100%;">
+      <a mat-button routerLink="/signup" (click)="toggleMenu()" style="color: white; padding-left: 30px">Student</a>
+      <a mat-button routerLink="/staff-signup" (click)="toggleMenu()" style="color: white; padding-left: 30px">Staff</a>
+      <a mat-button routerLink="/mentor-signup" (click)="toggleMenu()" style="color: white; padding-left: 30px">Mentor</a>
+    </div>
+
+    <a
+      *ngIf="!isCurrentRoute('/guest')"
+      mat-button
+      routerLink="/guest"
+      (click)="toggleMenu()"
+      style="color: white; margin: 10px"
+      >Guest</a
+    >
+    <a
+      *ngIf="!isCurrentRoute('/student-application')"
+      mat-button
+      routerLink="/student-application"
+      (click)="toggleMenu()"
+      style="color: white; margin: 10px"
+      >Application Form</a
+    >
+  </ng-container>
+
+  <!-- Private -->
+  <ng-container *ngIf="isLoggedIn()">
+    <a
+      mat-button
+      routerLink="/student-dashboard"
+      (click)="toggleMenu()"
+      style="color: white; margin: 10px"
+      >Dashboard</a
+    >
+    <a
+      mat-button
+      (click)="logout(); toggleMenu()"
+      style="color: white; margin: 10px"
+      >Logout</a
+    >
+  </ng-container>
+</div>

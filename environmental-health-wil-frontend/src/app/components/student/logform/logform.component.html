@@ -1,0 +1,47 @@
+<mat-toolbar color="primary" class="header-toolbar">
+    <img src="assets/mut.png" alt="MUT Logo" class="logo"> <!-- Replace with your logo path -->
+    <span class="toolbar-title">Environmental Health</span>
+    <span class="spacer"></span>
+    <button mat-button color="accent" class="nav-button">Dashboard</button>
+    <button mat-button color="accent" class="nav-button active">Log-Sheet</button>
+    <button mat-button color="accent" class="nav-button">Profile</button>
+    <button mat-button color="warn" class="nav-button">Sign-Out</button>
+  </mat-toolbar>
+  
+  <mat-card class="log-form-card">
+    <div class="log-form-content">
+      <p><strong>Description of WIL activities conducted:</strong> <em>I did this today... I learned that, did it that way...</em></p>
+  
+      <h3>Reflect on the most significant events</h3>
+  
+      <mat-form-field appearance="outline" class="input-field">
+        <mat-label>Description the situation</mat-label>
+        <textarea matInput rows="3" placeholder="This was the situation at my place of WIL..."></textarea>
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline" class="input-field">
+        <mat-label>Evaluate the situation</mat-label>
+        <textarea matInput rows="3" placeholder="This was the situation at my place of WIL..."></textarea>
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline" class="input-field">
+        <mat-label>Interpret the situation</mat-label>
+        <textarea matInput rows="3" placeholder="This was the situation at my place of WIL..."></textarea>
+      </mat-form-field>
+  
+      <div class="button-group">
+        <button mat-raised-button color="primary" (click)="onVerifyClick()">Verify</button>
+        <button mat-raised-button color="accent" (click)="onDoneClick()">Done</button>
+      </div>
+      
+    </div>
+  </mat-card>
+  
+  <mat-toolbar color="accent" class="footer-toolbar">
+    <span>Guide</span>
+    <span class="spacer"></span>
+    <button mat-button color="primary" class="footer-button">Contact</button>
+    <img src="assets/mut.png" alt="MUT Logo" class="logo"> <!-- Replace with your logo path -->
+    <span>Environmental Health</span>
+  </mat-toolbar>
+  

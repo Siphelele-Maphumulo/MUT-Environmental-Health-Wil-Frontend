@@ -1,0 +1,230 @@
+<div class="dashboard-container">
+ <!-- Close Button -->
+<button class="close-btn" mat-icon-button (click)="closeModal()">
+  <mat-icon>close</mat-icon>
+</button>
+
+
+  <!-- Filters -->
+  <div class="filters-section">
+    <mat-form-field appearance="outline" floatLabel="always">
+      <mat-label>Time Range</mat-label>
+      <mat-select [(value)]="timeRange" (selectionChange)="onTimeRangeChange()" disableRipple>
+        <mat-option value="7days"><mat-icon>schedule</mat-icon> Last 7 Days</mat-option>
+        <mat-option value="30days"><mat-icon>calendar_today</mat-icon> Last 30 Days</mat-option>
+        <mat-option value="90days"><mat-icon>event_note</mat-icon> Last 90 Days</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- Loading Indicator -->
+  <div *ngIf="loading" class="loading-spinner">
+    <mat-spinner diameter="60" strokeWidth="5" color="primary"></mat-spinner>
+    <p>Loading analytics data...</p>
+  </div>
+
+  <!-- Dashboard Content -->
+  <div *ngIf="!loading" class="dashboard-content">
+    <!-- Stats Cards -->
+    <div class="stats-row">
+      <mat-card class="stat-card glass-card glass-card" matRipple>
+        <mat-card-header>
+          <mat-icon class="header-icon total-apps">how_to_reg</mat-icon>
+          <mat-card-title>Total Applications</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="stat-value">{{ totalApplications || 0 }}</div>
+          <div
+            class="stat-change"
+            [class.positive]="applicationsChange >= 0"
+            [class.negative]="applicationsChange < 0"
+          >
+            <mat-icon
+              class="change-icon"
+              [ngClass]="{ positive: applicationsChange >= 0, negative: applicationsChange < 0 }"
+              >{{ applicationsChange >= 0 ? 'trending_up' : 'trending_down' }}</mat-icon
+            >
+            {{ applicationsChange || 0 }}% from last period
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="stat-card glass-card" matRipple>
+        <mat-card-header>
+          <mat-icon class="header-icon attendance">event_available</mat-icon>
+          <mat-card-title>Event Attendance</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="stat-value">{{ eventAttendance || 0 }}%</div>
+          <div
+            class="stat-change"
+            [class.positive]="attendanceChange >= 0"
+            [class.negative]="attendanceChange < 0"
+          >
+            <mat-icon
+              class="change-icon"
+              [ngClass]="{ positive: attendanceChange >= 0, negative: attendanceChange < 0 }"
+              >{{ attendanceChange >= 0 ? 'trending_up' : 'trending_down' }}</mat-icon
+            >
+            {{ attendanceChange || 0 }}% from last period
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="stat-card glass-card" matRipple>
+        <mat-card-header>
+          <mat-icon class="header-icon logsheets">description</mat-icon>
+          <mat-card-title>Logsheets Submitted</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="stat-value">{{ totalLogsheets || 0 }}</div>
+          <div
+            class="stat-change"
+            [class.positive]="logsheetsChange >= 0"
+            [class.negative]="logsheetsChange < 0"
+          >
+            <mat-icon
+              class="change-icon"
+              [ngClass]="{ positive: logsheetsChange >= 0, negative: logsheetsChange < 0 }"
+              >{{ logsheetsChange >= 0 ? 'trending_up' : 'trending_down' }}</mat-icon
+            >
+            {{ logsheetsChange || 0 }}% from last period
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="stat-card glass-card" matRipple>
+        <mat-card-header>
+          <mat-icon class="header-icon students-placed">school</mat-icon>
+          <mat-card-title>Students Placed</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="stat-value">{{ totalStudentsPlaced || 0 }}</div>
+          <div
+            class="stat-change"
+            [class.positive]="placementsChange >= 0"
+            [class.negative]="placementsChange < 0"
+          >
+            <mat-icon
+              class="change-icon"
+              [ngClass]="{ positive: placementsChange >= 0, negative: placementsChange < 0 }"
+              >{{ placementsChange >= 0 ? 'trending_up' : 'trending_down' }}</mat-icon
+            >
+            {{ placementsChange || 0 }}% from last period
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Charts Row 1 -->
+<!-- analytics-dashboard.component.html -->
+<div *ngIf="showCharts" class="charts-row">
+  <mat-card class="chart-card" matRipple>
+    <mat-card-header>
+      <mat-icon class="header-icon chart">donut_large</mat-icon>
+      <mat-card-title>Applications Status</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="chart-container" *ngIf="isBrowser">
+      <!-- analytics-dashboard.component.html -->
+      <app-chart-wrapper
+        [data]="applicationsChart"
+        type="doughnut"
+        [options]="applicationsOptions">
+      </app-chart-wrapper>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="chart-card" matRipple>
+    <mat-card-header>
+      <mat-icon class="header-icon chart">bar_chart</mat-icon>
+      <mat-card-title>Monthly Logsheets</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="chart-container">
+        <canvas baseChart
+          [data]="logsheetsChart"
+          [type]="'bar'"
+          [options]="logsheetsOptions"
+          class="animated-chart">
+        </canvas>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+
+
+    <!-- Charts Row 2 -->
+    <div class="charts-row">
+      <mat-card class="chart-card" matRipple>
+        <mat-card-header>
+          <mat-icon class="header-icon chart">pie_chart</mat-icon>
+          <mat-card-title>Event Attendance</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="chart-container">
+            <canvas
+              baseChart
+              [data]="attendanceChart"
+              [type]="'pie'"
+              [options]="attendanceOptions"
+              class="animated-chart"
+            ></canvas>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="chart-card placements-card" matRipple>
+        <mat-card-header>
+          <mat-icon class="header-icon map">location_city</mat-icon>
+          <mat-card-title>Placements by Municipality</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="placements-container">
+            <div
+              *ngFor="let placement of placementsMapData"
+              class="placement-item"
+              [@fadeInUp]>
+              <span class="municipality">{{ placement.municipality }}</span>
+              <mat-progress-bar
+                mode="determinate"
+                [value]="(placement.count / getMaxPlacementCount()) * 100"
+                color="primary"
+              ></mat-progress-bar>
+              <span class="count">{{ placement.count }} students</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Student Progress -->
+    <mat-card class="progress-card" *ngIf="studentProgressData.length > 0" matRipple>
+      <mat-card-header>
+        <mat-icon class="header-icon progress">trending_up</mat-icon>
+        <mat-card-title>Top Student Progress</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="progress-container">
+          <div
+            *ngFor="let student of studentProgressData"
+            class="student-progress"
+            [@fadeIn]>
+            <div class="student-info">
+              <span class="student-name">{{ student.student }}</span>
+              <span class="percentage">{{ student.percentage }}%</span>
+            </div>
+            <mat-progress-bar
+              mode="determinate"
+              [value]="student.percentage"
+              color="accent"
+              animationDuration="1000"
+            ></mat-progress-bar>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

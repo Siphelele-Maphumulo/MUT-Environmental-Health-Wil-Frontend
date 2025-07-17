@@ -1,0 +1,105 @@
+<form [formGroup]="placementForm" (ngSubmit)="onSubmit()">
+  <br /><br />
+  <mat-card class="reflection-card">
+    <br />
+    <h2 class="text-center mb-4">STUDENT PLACEMENT</h2>
+    <p class="text-center instruction">
+      Please fill in the student's placement details below.
+    </p>
+
+    <div class="form-grid-two-columns">
+      <mat-form-field appearance="outline" class="reflection-field">
+        <mat-label>Student Number</mat-label>
+        <input
+          matInput
+          placeholder="Enter student number"
+          formControlName="studentNumber"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="reflection-field">
+        <mat-label>Student Name</mat-label>
+        <input
+          matInput
+          formControlName="studentName"
+          placeholder="Student name"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="reflection-field">
+        <mat-label>Supervisor</mat-label>
+        <input
+          matInput
+          placeholder="Enter supervisor name"
+          formControlName="supervisor"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="reflection-field">
+        <mat-label>Municipality</mat-label>
+        <mat-select formControlName="municipality">
+          <mat-option
+            *ngFor="let municipality of municipalities"
+            [value]="municipality"
+          >
+            {{ municipality }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="reflection-field">
+        <mat-label>Cell Number</mat-label>
+        <input
+          matInput
+          placeholder="Enter cell number"
+          formControlName="cellNumber"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="reflection-field">
+        <mat-label>Email</mat-label>
+        <input matInput placeholder="Enter email" formControlName="email" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="reflection-field">
+        <mat-label>Hospital</mat-label>
+        <mat-select formControlName="hospital">
+          <mat-option *ngFor="let hospital of hospitals" [value]="hospital">
+            {{ hospital }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div>
+        <mat-form-field appearance="outline" class="reflection-field">
+          <mat-label>Abattoir</mat-label>
+          <input
+            matInput
+            placeholder="Enter abattoir name"
+            formControlName="abattoir"
+          />
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="button-group">
+      <button
+        mat-raised-button
+        color="primary"
+        class="save-button"
+        type="submit"
+      >
+        Proceed
+      </button>
+      <button
+        mat-button
+        type="button"
+        (click)="placementForm.reset()"
+        style="color: rgb(250, 143, 143)"
+        [disabled]="!placementForm.valid"
+      >
+        Clear
+      </button>
+    </div>
+  </mat-card>
+</form>

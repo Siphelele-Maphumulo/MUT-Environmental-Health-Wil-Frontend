@@ -1,0 +1,77 @@
+<mat-card class="event-management-card" style="margin-top: 50px">
+  <h2>Create A Guest Event Invitation</h2>
+
+  <form [formGroup]="eventForm">
+    <!-- Event Title Input -->
+    <mat-form-field appearance="outline">
+      <mat-label>Event Title</mat-label>
+      <input
+        matInput
+        type="text"
+        formControlName="title"
+        placeholder="Enter event title"
+        required
+      />
+      <mat-error *ngIf="eventForm.get('title')?.invalid"
+        >Title is required</mat-error
+      >
+    </mat-form-field>
+
+    <!-- Event Type Dropdown -->
+    <mat-form-field appearance="outline">
+      <mat-label>Event Type</mat-label>
+      <mat-select formControlName="event_type" required>
+        <mat-option value="Workshop">Workshop</mat-option>
+        <mat-option value="Guest Lecture">Guest Lecture</mat-option>
+        <mat-option value="Field Trip">Field Trip</mat-option>
+      </mat-select>
+      <mat-error *ngIf="eventForm.get('event_type')?.invalid"
+        >Event type is required</mat-error
+      >
+    </mat-form-field>
+
+    <!-- Date Picker -->
+    <mat-form-field appearance="outline">
+      <mat-label>Event Date</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        formControlName="event_date"
+        placeholder="Choose a date"
+        required
+      />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="eventForm.get('event_date')?.invalid"
+        >Event date is required</mat-error
+      >
+    </mat-form-field>
+
+    <!-- File Upload Field -->
+    <mat-form-field appearance="outline">
+      <mat-label>Upload Document</mat-label>
+      <input
+        matInput
+        type="text"
+        [value]="selectedFileName || ''"
+        placeholder="Choose file"
+        readonly
+      />
+      <input type="file" hidden #fileInput (change)="onFileSelect($event)" />
+      <button mat-icon-button matSuffix (click)="fileInput.click()">
+        <mat-icon>upload</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <mat-card>
+      <button
+        mat-raised-button
+        color="primary"
+        class="submit-button"
+        (click)="openPinDialog()"
+      >
+        Create Event
+      </button>
+    </mat-card>
+  </form>
+</mat-card>

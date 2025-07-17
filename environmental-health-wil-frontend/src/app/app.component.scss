@@ -1,0 +1,64 @@
+/* Apply flexbox layout to the root elements */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* App root takes up all available space */
+app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+/* Wrapper for router-outlet content */
+.content-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+app-footer {
+  background-color: #f5f5f5;
+  padding: 10px;
+  text-align: center;
+  width: 100%;
+  margin-top: auto; /* Pushes the footer to the bottom */
+}
+
+/* Snackbar custom styling */
+::ng-deep .snackbar-error {
+  background-color: #f44336;
+  color: white;
+  font-weight: bold;
+}
+
+* {
+  outline: none !important;
+  caret-color: transparent; /* hides the cursor in inputs (not recommended) */
+}
+
+.error-message {
+  color: red;
+  font-weight: bold;
+}
+
+.red-snackbar {
+  background-color: rgb(224, 46, 70) !important;
+  color: white !important;
+  font-weight: bold;
+}
+
+.green-snackbar {
+  background-color: rgb(77, 185, 77) !important;
+  color: white !important;
+  font-weight: bold;
+}
+
+.orange-snackbar {
+  background-color: orange !important;
+  color: white !important;
+  font-weight: bold;
+}

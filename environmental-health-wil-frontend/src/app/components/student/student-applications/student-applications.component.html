@@ -1,0 +1,390 @@
+<div *ngIf="error" class="error-alert">
+  <mat-icon>error_outline</mat-icon>
+  {{ error }}
+  <button mat-button color="primary" (click)="loadApplications()">Retry</button>
+</div>
+
+<div class="user-info-container">
+  <div class="user-info" style="">
+    <i class="fa fa-user-circle" aria-hidden="true"></i>
+    <span class="user-email" *ngIf="userEmail">Logged: {{ userEmail }}</span>
+    <span class="login-alert" *ngIf="!userEmail"
+      >User email not found. Please log in again.</span
+    >
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="container-fluid">
+  <div class="main-content">
+    <h2>
+      All Students Application Forms For Work Integration Learning Placements
+    </h2>
+
+    <!-- Filter Section -->
+    <div class="filter-section">
+      <div class="filter-row">
+        <!-- Search Input -->
+        <!-- Add this with your other filter controls -->
+        <mat-form-field appearance="outline">
+          <mat-label>Status</mat-label>
+          <mat-select [formControl]="searchStatusControl">
+            <mat-option value="" class="all-statuses-option">
+              <span class="status-indicator all"></span>
+              All Statuses
+            </mat-option>
+            <mat-option value="Pending" class="status-pending-option">
+              <span class="status-indicator pending"></span>
+              Pending
+            </mat-option>
+            <mat-option value="Accepted" class="status-accepted-option">
+              <span class="status-indicator accepted"></span>
+              Accepted
+            </mat-option>
+            <mat-option value="Rejected" class="status-rejected-option">
+              <span class="status-indicator rejected"></span>
+              Rejected
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- Log Date Filter -->
+        <mat-form-field
+          appearance="outline"
+          style="flex: 1 1 12%; min-width: 120px"
+        >
+          <mat-label>Application Month 1-31</mat-label>
+          <input
+            matInput
+            [matDatepicker]="applicationDatePicker"
+            [formControl]="applicationDateControl"
+            placeholder="Select date"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="applicationDatePicker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #applicationDatePicker></mat-datepicker>
+        </mat-form-field>
+
+        <!-- Surname Filter -->
+        <mat-form-field
+          appearance="outline"
+          style="flex: 1 1 12%; min-width: 120px"
+        >
+          <mat-label>Surname</mat-label>
+          <input
+            matInput
+            placeholder="Filter by surname"
+            [formControl]="searchSurnameControl"
+          />
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+
+        <!-- Student Number Filter -->
+        <mat-form-field
+          appearance="outline"
+          style="flex: 1 1 12%; min-width: 120px"
+        >
+          <mat-label>Student Number</mat-label>
+          <input
+            matInput
+            placeholder="Filter by student number"
+            [formControl]="searchStudentNumberControl"
+          />
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+
+        <!-- Level Filter -->
+        <mat-form-field
+          appearance="outline"
+          style="flex: 1 1 12%; min-width: 120px"
+        >
+          <mat-label>Level of Study</mat-label>
+          <mat-select [formControl]="searchLevelControl">
+            <mat-option value="">All Levels</mat-option>
+            <mat-option value="1">1st Year</mat-option>
+            <mat-option value="2">2nd Year</mat-option>
+            <mat-option value="3">3rd Year</mat-option>
+            <mat-option value="4">Undergraduate</mat-option>
+            <mat-option value="5">Postgraduate</mat-option>
+            <mat-option value="6">Doctorate</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- Email Filter -->
+        <mat-form-field
+          appearance="outline"
+          style="flex: 1 1 12%; min-width: 120px"
+        >
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            placeholder="Filter by email"
+            [formControl]="searchEmailControl"
+          />
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+
+        <!-- Clear Filters Button -->
+        <button
+          mat-stroked-button
+          color="warn"
+          (click)="clearFilters()"
+          style="
+            flex: 1 1 12%;
+            min-width: 50px;
+            max-width: 50px;
+            white-space: nowrap;
+          "
+        >
+          <mat-icon matSuffix>refresh</mat-icon>
+          Clear
+        </button>
+      </div>
+    </div>
+
+    <div class="flex-grow-1 overflow-auto">
+      <table
+        mat-table
+        [dataSource]="filteredApplications"
+        class="mat-elevation-z8 mat-table"
+      >
+        <!-- ID -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>ID</th>
+          <td mat-cell *matCellDef="let app">{{ app.id }}</td>
+        </ng-container>
+
+        <!-- Title -->
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef>Title</th>
+          <td mat-cell *matCellDef="let app">{{ app.title }}</td>
+        </ng-container>
+
+        <!-- Initials -->
+        <ng-container matColumnDef="initials">
+          <th mat-header-cell *matHeaderCellDef>Initials</th>
+          <td mat-cell *matCellDef="let app">{{ app.initials }}</td>
+        </ng-container>
+
+        <!-- First Names -->
+        <ng-container matColumnDef="first_names">
+          <th mat-header-cell *matHeaderCellDef>First Names</th>
+          <td mat-cell *matCellDef="let app">{{ app.first_names }}</td>
+        </ng-container>
+
+        <!-- Surname -->
+        <ng-container matColumnDef="surname">
+          <th mat-header-cell *matHeaderCellDef>Surname</th>
+          <td mat-cell *matCellDef="let app">{{ app.surname }}</td>
+        </ng-container>
+
+        <!-- Student Number -->
+        <ng-container matColumnDef="student_number">
+          <th mat-header-cell *matHeaderCellDef>Student Number</th>
+          <td mat-cell *matCellDef="let app">{{ app.student_number }}</td>
+        </ng-container>
+
+        <!-- Email Address -->
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef>Email</th>
+          <td mat-cell *matCellDef="let app">
+            <a href="mailto:{{ app.email }}" class="email-link">
+              {{ app.email }}
+            </a>
+          </td>
+        </ng-container>
+
+        <!-- Province -->
+        <ng-container matColumnDef="province">
+          <th mat-header-cell *matHeaderCellDef>Province</th>
+          <td mat-cell *matCellDef="let app">{{ app.province }}</td>
+        </ng-container>
+
+        <!-- Race -->
+        <ng-container matColumnDef="race">
+          <th mat-header-cell *matHeaderCellDef>Race</th>
+          <td mat-cell *matCellDef="let app">{{ app.race }}</td>
+        </ng-container>
+
+        <!-- Gender -->
+        <ng-container matColumnDef="gender">
+          <th mat-header-cell *matHeaderCellDef>Gender</th>
+          <td mat-cell *matCellDef="let app">{{ app.gender }}</td>
+        </ng-container>
+
+        <!-- Cell Phone -->
+        <ng-container matColumnDef="cell_phone_number">
+          <th mat-header-cell *matHeaderCellDef>Cell #</th>
+          <td mat-cell *matCellDef="let app">{{ app.cell_phone_number }}</td>
+        </ng-container>
+
+        <!-- Physical Address -->
+        <ng-container matColumnDef="physical_address">
+          <th mat-header-cell *matHeaderCellDef>Address</th>
+          <td mat-cell *matCellDef="let app">{{ app.physical_address }}</td>
+        </ng-container>
+
+        <!-- Home Town -->
+        <ng-container matColumnDef="home_town">
+          <th mat-header-cell *matHeaderCellDef>Home Town</th>
+          <td mat-cell *matCellDef="let app">{{ app.home_town }}</td>
+        </ng-container>
+
+        <!-- Institution -->
+        <ng-container matColumnDef="municipality_name">
+          <th mat-header-cell *matHeaderCellDef>Municipality</th>
+          <td mat-cell *matCellDef="let app">{{ app.municipality_name }}</td>
+        </ng-container>
+
+        <!-- Town Situated -->
+        <ng-container matColumnDef="town_situated">
+          <th mat-header-cell *matHeaderCellDef>Institution Town</th>
+          <td mat-cell *matCellDef="let app">{{ app.town_situated }}</td>
+        </ng-container>
+
+        <!-- Level of Study -->
+        <ng-container matColumnDef="level_of_study">
+          <th mat-header-cell *matHeaderCellDef>Level</th>
+          <td mat-cell *matCellDef="let app">
+            {{ getStudyLevelLabel(app.level_of_study) }}
+          </td>
+        </ng-container>
+
+        <!-- Contact Person -->
+        <ng-container matColumnDef="contact_person">
+          <th mat-header-cell *matHeaderCellDef>Contact Person</th>
+          <td mat-cell *matCellDef="let app">{{ app.contact_person }}</td>
+        </ng-container>
+
+        <!-- Contact Email -->
+        <ng-container matColumnDef="contact_email">
+          <th mat-header-cell *matHeaderCellDef>Contact Email</th>
+          <td mat-cell *matCellDef="let app">{{ app.contact_email }}</td>
+        </ng-container>
+
+        <!-- Telephone Number -->
+        <ng-container matColumnDef="telephone_number">
+          <th mat-header-cell *matHeaderCellDef>Tel #</th>
+          <td mat-cell *matCellDef="let app">{{ app.telephone_number }}</td>
+        </ng-container>
+
+        <!-- Contact Cell -->
+        <ng-container matColumnDef="contact_cell_phone">
+          <th mat-header-cell *matHeaderCellDef>Contact Cell</th>
+          <td mat-cell *matCellDef="let app">{{ app.contact_cell_phone }}</td>
+        </ng-container>
+
+        <!-- Declarations -->
+        <ng-container matColumnDef="declaration_info_1">
+          <th mat-header-cell *matHeaderCellDef>Dec 1</th>
+          <td mat-cell *matCellDef="let app">
+            {{ app.declaration_info_1 ? "Yes" : "No" }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="declaration_info_2">
+          <th mat-header-cell *matHeaderCellDef>Dec 2</th>
+          <td mat-cell *matCellDef="let app">
+            {{ app.declaration_info_2 ? "Yes" : "No" }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="declaration_info_3">
+          <th mat-header-cell *matHeaderCellDef>Dec 3</th>
+          <td mat-cell *matCellDef="let app">
+            {{ app.declaration_info_3 ? "Yes" : "No" }}
+          </td>
+        </ng-container>
+
+        <!-- Signature -->
+        <ng-container matColumnDef="signature_image">
+          <th mat-header-cell *matHeaderCellDef>Signature</th>
+          <td mat-cell *matCellDef="let app">
+            <img
+              [src]="getSafeUrl(app.signature_image)"
+              alt="Signature"
+              height="30"
+            />
+          </td>
+        </ng-container>
+
+        <!-- Status Column -->
+        <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let element">
+                <mat-form-field appearance="fill" class="status-select">
+                    <mat-select
+                        [class]="'status-' + element.status.toLowerCase()"
+                        [value]="element.status"
+                        disabled
+                        panelClass="status-select-panel hide-dropdown-arrow"
+                    >
+                        <mat-option value="Pending" class="status-pending-option">
+                            <span class="status-indicator pending"></span>
+                            Pending
+                        </mat-option>
+                        <mat-option value="Accepted" class="status-accepted-option">
+                            <span class="status-indicator accepted"></span>
+                            Accepted
+                        </mat-option>
+                        <mat-option value="Rejected" class="status-rejected-option">
+                            <span class="status-indicator rejected"></span>
+                            Rejected
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </td>
+        </ng-container>
+
+        <!-- Created At Column -->
+        <ng-container matColumnDef="created_at">
+          <th mat-header-cell *matHeaderCellDef>Created At</th>
+          <td mat-cell *matCellDef="let app">
+            {{ app.created_at | date : "M/d/yyyy" }}
+          </td>
+        </ng-container>
+
+        <!-- ID Document -->
+        <ng-container matColumnDef="id_document">
+          <th mat-header-cell *matHeaderCellDef>ID</th>
+          <td mat-cell *matCellDef="let app">
+            <button
+              mat-icon-button
+              (click)="openDocument(app.id_document)"
+              title="Download CV"
+            >
+              <mat-icon>download</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <!-- CV Document -->
+        <ng-container matColumnDef="cv_document">
+          <th mat-header-cell *matHeaderCellDef>CV</th>
+          <td mat-cell *matCellDef="let app">
+            <button
+              mat-icon-button
+              (click)="downloadDocument(app.cv_document, 'CV')"
+              title="Download CV"
+            >
+              <mat-icon>download</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Files</th>
+          <td mat-cell *matCellDef="let app">
+            <mat-icon style="color: red">picture_as_pdf</mat-icon>
+          </td>
+        </ng-container>
+
+        <!-- Header and Row definitions -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+  </div>
+</div>

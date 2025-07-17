@@ -1,0 +1,92 @@
+<div class="container">
+  <!-- Image Section -->
+  <div class="image-section">
+    <img
+      src="./MUT-DoEH-Logo-Stacked.png"
+      alt="WIL System Image"
+      class="big-image"
+    />
+  </div>
+
+  <!-- Login Section -->
+  <div class="login-section">
+    <mat-card class="login-card">
+      <mat-card-header>
+        <mat-card-title>Welcome Back HPCSA</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <!-- Email Field with Validation -->
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>HPCSA Email</mat-label>
+            <mat-icon matPrefix>email</mat-icon>
+            <input
+              matInput
+              formControlName="email"
+              type="email"
+              placeholder="Enter your email"
+            />
+            <!-- Validation Error Messages -->
+            <mat-error *ngIf="email?.hasError('required') && email?.touched">
+              Email is required
+            </mat-error>
+            <mat-error *ngIf="email?.hasError('email') && email?.touched">
+              Please enter a valid email address
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Password Field with Validation -->
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Password</mat-label>
+            <mat-icon matPrefix>lock</mat-icon>
+            <input
+              matInput
+              formControlName="password"
+              [type]="hide ? 'password' : 'text'"
+              placeholder="Enter your password"
+            />
+            <button
+              mat-icon-button
+              matSuffix
+              (click)="hide = !hide"
+              type="button"
+            >
+              <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+            </button>
+            <!-- Validation Error Messages -->
+            <mat-error
+              *ngIf="password?.hasError('required') && password?.touched"
+            >
+              Password is required
+            </mat-error>
+            <mat-error
+              *ngIf="password?.hasError('minlength') && password?.touched"
+            >
+              Password must be at least 6 characters long
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Submit Button -->
+          <div class="actions">
+            <button
+              mat-raised-button
+              color="primary"
+              type="submit"
+              [disabled]="loginForm.invalid"
+            >
+              Login
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+
+      <mat-card-actions class="additional-actions">
+        <p>
+          Don't have an account?
+          <a (click)="navigateToSignup()" class="sign-up-link">Sign up here</a>
+        </p>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

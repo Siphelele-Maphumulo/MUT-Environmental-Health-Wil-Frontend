@@ -1,0 +1,105 @@
+<!-- Loading Spinner -->
+<div *ngIf="isLoading" class="loading text-center mt-5">
+  <mat-spinner></mat-spinner>
+</div>
+
+<!-- Declaration Letter View -->
+<div *ngIf="!isLoading && declaration" class="container my-5">
+  <div class="letter-container shadow p-4 rounded bg-white">
+    <div class="text-center mb-4 text-uppercase">
+      <h2 class="text-center" style="color: black">DECLARATION LETTER</h2>
+    </div>
+
+    <h6 class="mb-4 text-center" style="color: black">
+      WORK INTEGRATED LEARNING <br />
+      REPORT BY EMPLOYER <br />
+      DECLARATION BY EMPLOYER / SUPERVISOR
+    </h6>
+
+    <div class="mb-3 row">
+      <div class="col-md-6">
+        <strong>Student Number:</strong> {{ declaration.student_number }}
+      </div>
+      <div class="col-md-6">
+        <strong>Student Name:</strong> {{ declaration.student_name || "N/A" }}
+      </div>
+    </div>
+
+    <div class="mb-3 row">
+      <div class="col-md-6">
+        <strong>Supervisor:</strong> {{ declaration.supervisor_name }}
+      </div>
+      <div class="col-md-6">
+        <strong>Employer:</strong> {{ declaration.employer }}
+      </div>
+    </div>
+
+    <div class="mb-3 row">
+      <div class="col-md-6">
+        <strong>Position:</strong> {{ declaration.position }}
+      </div>
+      <div class="col-md-6">
+        {{ declaration.start_date | date : "longDate" }} -
+        {{ declaration.end_date | date : "longDate" }}
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <strong>Evaluation:</strong>
+      <div class="row mt-2">
+        <div
+          class="col-md-6 mb-2"
+          *ngFor="let eval of getEvaluations(declaration)"
+        >
+          <div>
+            {{ eval.label }}: <span class="fw-semibold">{{ eval.value }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <strong>General Comments:</strong>
+      <p class="mt-2">{{ declaration.general_comments || "No comments" }}</p>
+    </div>
+
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <strong>Supervisor Signature:</strong><br />
+        <div *ngIf="declaration.supervisor_signature">
+          <img
+            [src]="getSignatureUrl(declaration.supervisor_signature)"
+            alt="Signature"
+            style="max-width: 200px; margin-top: 10px"
+          />
+        </div>
+        <div *ngIf="!declaration.supervisor_signature" class="text-muted">
+          No signature available
+        </div>
+      </div>
+      <div class="col-md-6">
+        <strong>Submitted Date:</strong><br />
+        {{ declaration.submittedDate | date : "longDate" }}
+      </div>
+    </div>
+
+    <!-- Action Button -->
+    <!-- Print Button -->
+    <div class="text-center mt-4 no-print">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="printDeclaration()"
+        class="d-flex align-items-center justify-content-center"
+      >
+        <mat-icon>print</mat-icon>
+        <span>Print Declaration</span>
+      </button>
+    </div>
+
+    <!-- No Data Found -->
+    <div *ngIf="!isLoading && !declaration" class="no-data text-center mt-5">
+      <p>No declaration letter found for this student.</p>
+    </div>
+  </div>
+</div>
