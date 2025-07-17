@@ -1,6 +1,6 @@
 
 export default {
-  basePath: '/',
+  basePath: 'https://github.com/Siphelele-Maphumulo/MUT-Environmental-Health-Wil-Frontend.git',
   supportedLocales: {
   "en-US": ""
 },
