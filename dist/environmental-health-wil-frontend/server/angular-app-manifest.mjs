@@ -2,7 +2,7 @@
 export default {
   bootstrap: () => import('./main.server.mjs').then(m => m.default),
   inlineCriticalCss: true,
-  baseHref: '/',
+  baseHref: '/MUT-Environmental-Health-Wil-Frontend/',
   locale: undefined,
   routes: undefined,
   entryPointToBrowserMapping: {
@@ -14,8 +14,8 @@ export default {
   ]
 },
   assets: {
-    'index.csr.html': {size: 134322, hash: '24a0e7c44d3bc695473d88802939d469ba0db6389fd3707e5c0762dcb2fd9151', text: () => import('./assets-chunks/index_csr_html.mjs').then(m => m.default)},
-    'index.server.html': {size: 33278, hash: 'd5d6106265b7b44804a77559ae5f40705f0d873b38a3364f63e56cdf29c6044c', text: () => import('./assets-chunks/index_server_html.mjs').then(m => m.default)},
+    'index.csr.html': {size: 134360, hash: 'fc091151fad0571358530189fcf5b5bb26e557ec8a7b91fed74b64848609c6ae', text: () => import('./assets-chunks/index_csr_html.mjs').then(m => m.default)},
+    'index.server.html': {size: 33316, hash: '58de2712b258d14d44dc31a142301bcbc653028970bd733401746d48ca77486f', text: () => import('./assets-chunks/index_server_html.mjs').then(m => m.default)},
     'styles-BF54USQ5.css': {size: 383295, hash: 'DqKqZMot1Zk', text: () => import('./assets-chunks/styles-BF54USQ5_css.mjs').then(m => m.default)}
   },
 };
