@@ -144,7 +144,7 @@ export class LetterComponent implements OnInit {
     try {
       const response = await lastValueFrom(
         this.http.get<any>( // using any to avoid type errors with created_at
-          `http://localhost:8080/api/letters/${studentNumber}`
+          `https://mut-environmental-health-wil-backend.onrender.com /api/letters/${studentNumber}`
         )
       );
 

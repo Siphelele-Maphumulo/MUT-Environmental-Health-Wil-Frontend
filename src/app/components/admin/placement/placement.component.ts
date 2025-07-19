@@ -73,7 +73,7 @@ export class PlacementComponent {
   }
 
   fetchHospitals(): void {
-    this.http.get<string[]>('http://localhost:8080/api/hospitals').subscribe({
+    this.http.get<string[]>('https://mut-environmental-health-wil-backend.onrender.com /api/hospitals').subscribe({
       next: (data) => (this.hospitals = data),
       error: (err) => console.error('Error fetching hospitals:', err),
     });
@@ -81,7 +81,7 @@ export class PlacementComponent {
 
   fetchMunicipalities(): void {
     this.http
-      .get<string[]>('http://localhost:8080/api/municipalities')
+      .get<string[]>('https://mut-environmental-health-wil-backend.onrender.com /api/municipalities')
       .subscribe({
         next: (data) => (this.municipalities = data),
         error: (err) => console.error('Error fetching municipalities:', err),
@@ -91,7 +91,7 @@ export class PlacementComponent {
   fetchStudentName(studentNumber: string): void {
     this.http
       .get<{ fullName: string }>(
-        `http://localhost:8080/api/student/${studentNumber}`
+        `https://mut-environmental-health-wil-backend.onrender.com /api/student/${studentNumber}`
       )
       .subscribe({
         next: (res) => {
@@ -108,7 +108,7 @@ export class PlacementComponent {
     if (this.placementForm.valid) {
       const formData = this.placementForm.getRawValue(); // includes disabled fields
       this.http
-        .post('http://localhost:8080/api/submit-placement', formData)
+        .post('https://mut-environmental-health-wil-backend.onrender.com /api/submit-placement', formData)
         .subscribe({
           next: (res: any) => {
             console.log('Success:', res.message);

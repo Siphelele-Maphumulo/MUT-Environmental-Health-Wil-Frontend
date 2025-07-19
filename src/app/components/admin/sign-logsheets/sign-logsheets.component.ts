@@ -22,7 +22,7 @@ export class SignLogsheetsComponent implements OnInit {
   logsheetId!: number;
   isLoading = true;
 
-  private apiUrl = 'http://localhost:8080/api/daily-logsheets'; // Backend API URL
+  private apiUrl = 'https://mut-environmental-health-wil-backend.onrender.com /api/daily-logsheets'; // Backend API URL
   logsheetsForm!: FormGroup<any>;
   logsheetsArray: any;
 

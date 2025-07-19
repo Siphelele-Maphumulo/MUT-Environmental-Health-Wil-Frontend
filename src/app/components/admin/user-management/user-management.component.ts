@@ -135,14 +135,14 @@ async fetchStudents(): Promise<void> {
   try {
     // Step 1: Auto-update inactive students
     await lastValueFrom(
-      this.http.post('http://localhost:8080/api/update-status-for-inactive-students', {})
+      this.http.post('https://mut-environmental-health-wil-backend.onrender.com /api/update-status-for-inactive-students', {})
     );
     console.log('Checked and updated inactive students if needed.');
 
     // Step 2: Fetch student data
     const response = await lastValueFrom(
       this.http.get<{ success: boolean; data: StudentApiResponse[] }>(
-        'http://localhost:8080/api/students'
+        'https://mut-environmental-health-wil-backend.onrender.com /api/students'
       )
     );
 
@@ -159,7 +159,7 @@ async fetchStudents(): Promise<void> {
         try {
           const res = await lastValueFrom(
             this.http.get<{ fullName: string }>(
-              `http://localhost:8080/api/student/${studentNumber}`
+              `https://mut-environmental-health-wil-backend.onrender.com /api/student/${studentNumber}`
             )
           );
 
@@ -205,7 +205,7 @@ async fetchStudents(): Promise<void> {
 
     this.http
       .post(
-        `http://localhost:8080/api/suspend-student/${student.student_number}`,
+        `https://mut-environmental-health-wil-backend.onrender.com /api/suspend-student/${student.student_number}`,
         {}
       )
       .subscribe({
@@ -225,7 +225,7 @@ async fetchStudents(): Promise<void> {
 
     this.http
       .post(
-        `http://localhost:8080/api/unenroll-student/${student.student_number}`,
+        `https://mut-environmental-health-wil-backend.onrender.com /api/unenroll-student/${student.student_number}`,
         {}
       )
       .subscribe({
@@ -245,7 +245,7 @@ async fetchStudents(): Promise<void> {
 
     this.http
       .post(
-        `http://localhost:8080/api/enroll-student/${student.student_number}`,
+        `https://mut-environmental-health-wil-backend.onrender.com /api/enroll-student/${student.student_number}`,
         {}
       )
       .subscribe({

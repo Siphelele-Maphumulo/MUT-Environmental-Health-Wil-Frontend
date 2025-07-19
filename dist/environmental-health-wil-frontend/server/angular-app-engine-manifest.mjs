@@ -1,6 +1,6 @@
 
 export default {
-  basePath: '/MUT-Environmental-Health-Wil-Frontend',
+  basePath: '/',
   supportedLocales: {
   "en-US": ""
 },

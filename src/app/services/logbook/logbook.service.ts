@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class LogbookService {
-  private apiUrl = 'http://localhost:8080/api';
+  private apiUrl = 'https://mut-environmental-health-wil-backend.onrender.com /api';
 
   constructor(private http: HttpClient) {}
 

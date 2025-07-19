@@ -102,7 +102,8 @@ export interface StudentAttendance {
   providedIn: 'root',
 })
 export class AuthService {
-  public apiUrl = 'http://localhost:8080/api'; // Base URL for the API
+  //public apiUrl = 'https://mut-environmental-health-wil-backend.onrender.com/api'; // Base URL for the API
+  public apiUrl = 'https://mut-environmental-health-wil-backend.onrender.com/api ';
   private headers = new HttpHeaders({
     'Content-Type': 'application/json',
     Accept: 'application/json',

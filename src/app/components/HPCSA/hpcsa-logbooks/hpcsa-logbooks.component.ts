@@ -115,7 +115,7 @@ export class HpcsaLogbooksComponent implements OnInit {
     try {
       const students = await lastValueFrom(
         this.http.get<Student[]>(
-          'http://localhost:8080/api/students-with-log-sheets'
+          'https://mut-environmental-health-wil-backend.onrender.com /api/students-with-log-sheets'
         )
       );
 
@@ -221,7 +221,7 @@ export class HpcsaLogbooksComponent implements OnInit {
     try {
       const response = await lastValueFrom(
         this.http.get<{ check_status: string }>(
-          `http://localhost:8080/api/hpcsa-status/${studentNumber}`
+          `https://mut-environmental-health-wil-backend.onrender.com /api/hpcsa-status/${studentNumber}`
         )
       );
       return response.check_status;
@@ -244,7 +244,7 @@ export class HpcsaLogbooksComponent implements OnInit {
     try {
       const response: LogSheet[] = await lastValueFrom(
         this.http.get<LogSheet[]>(
-          `http://localhost:8080/api/logbook?student_number=${studentNumber}`
+          `https://mut-environmental-health-wil-backend.onrender.com /api/logbook?student_number=${studentNumber}`
         )
       );
 

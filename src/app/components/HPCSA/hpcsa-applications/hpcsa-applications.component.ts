@@ -54,7 +54,7 @@ export class HpcsaApplicationsComponent implements OnInit {
     throw new Error('Method not implemented.');
   }
   // API URL for fetching applications
-  private apiUrl = 'http://localhost:8080/api/applications';
+  private apiUrl = 'https://mut-environmental-health-wil-backend.onrender.com /api/applications';
 
   // Data and state variables
   applications: Application[] = [];
@@ -324,7 +324,7 @@ export class HpcsaApplicationsComponent implements OnInit {
 
     const fullUrl = filename.startsWith('http')
       ? filename
-      : `http://localhost:8080/${filename}`;
+      : `https://mut-environmental-health-wil-backend.onrender.com /${filename}`;
 
     return this.sanitizer.bypassSecurityTrustResourceUrl(fullUrl);
   }
@@ -338,7 +338,7 @@ export class HpcsaApplicationsComponent implements OnInit {
     this.isLoading = true;
     const fullUrl = url.startsWith('http')
       ? url
-      : `http://localhost:8080/${url}`;
+      : `https://mut-environmental-health-wil-backend.onrender.com /${url}`;
 
     this.http
       .get(fullUrl, {
@@ -392,7 +392,7 @@ export class HpcsaApplicationsComponent implements OnInit {
 
     const fullUrl = url.startsWith('http')
       ? url
-      : `http://localhost:8080/${url}`;
+      : `https://mut-environmental-health-wil-backend.onrender.com /${url}`;
     window.open(fullUrl, '_blank', 'noopener,noreferrer');
   }
 

@@ -55,7 +55,7 @@ export class StudentApplicationsComponent implements OnInit {
   }
   // API URL for fetching applications
 get apiUrl(): string {
-  return `http://localhost:8080/api/student_applications?email=${encodeURIComponent(this.userEmail || '')}`;
+  return `https://mut-environmental-health-wil-backend.onrender.com /api/student_applications?email=${encodeURIComponent(this.userEmail || '')}`;
 }
 
 
@@ -328,7 +328,7 @@ get apiUrl(): string {
 
     const fullUrl = filename.startsWith('http')
       ? filename
-      : `http://localhost:8080/${filename}`;
+      : `https://mut-environmental-health-wil-backend.onrender.com /${filename}`;
 
     return this.sanitizer.bypassSecurityTrustResourceUrl(fullUrl);
   }
@@ -342,7 +342,7 @@ get apiUrl(): string {
     this.isLoading = true;
     const fullUrl = url.startsWith('http')
       ? url
-      : `http://localhost:8080/${url}`;
+      : `https://mut-environmental-health-wil-backend.onrender.com /${url}`;
 
     this.http
       .get(fullUrl, {
@@ -396,7 +396,7 @@ get apiUrl(): string {
 
     const fullUrl = url.startsWith('http')
       ? url
-      : `http://localhost:8080/${url}`;
+      : `https://mut-environmental-health-wil-backend.onrender.com /${url}`;
     window.open(fullUrl, '_blank', 'noopener,noreferrer');
   }
 

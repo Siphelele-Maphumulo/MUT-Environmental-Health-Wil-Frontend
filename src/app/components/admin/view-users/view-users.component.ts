@@ -68,7 +68,7 @@ export class ViewUsersComponent implements AfterViewInit {
     this.isLoading = true;
     this.http
       .get<{ success: boolean; data: StudentApiResponse[] }>(
-        'http://localhost:8080/api/students'
+        'https://mut-environmental-health-wil-backend.onrender.com /api/students'
       )
       .subscribe({
         next: (res) => {
@@ -105,7 +105,7 @@ export class ViewUsersComponent implements AfterViewInit {
     // Replace with actual suspend API
     this.http
       .post(
-        `http://localhost:8080/api/suspend-student/${student.student_number}`,
+        `https://mut-environmental-health-wil-backend.onrender.com /api/suspend-student/${student.student_number}`,
         {}
       )
       .subscribe({

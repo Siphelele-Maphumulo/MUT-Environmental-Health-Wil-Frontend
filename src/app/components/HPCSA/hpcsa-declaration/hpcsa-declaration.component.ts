@@ -211,7 +211,7 @@ export class HpcsaDeclarationComponent implements OnInit {
     try {
       const declarations = await lastValueFrom(
         this.http.get<Declaration[]>(
-          'http://localhost:8080/api/declaration-letters'
+          'https://mut-environmental-health-wil-backend.onrender.com /api/declaration-letters'
         )
       );
       this.declarations = declarations;
@@ -238,7 +238,7 @@ export class HpcsaDeclarationComponent implements OnInit {
       // Updated endpoint to match backend
       await lastValueFrom(
         this.http.delete(
-          `http://localhost:8080/api/del-declaration-letters/${id}`
+          `https://mut-environmental-health-wil-backend.onrender.com /api/del-declaration-letters/${id}`
         )
       );
 

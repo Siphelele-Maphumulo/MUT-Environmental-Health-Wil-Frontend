@@ -119,7 +119,7 @@ export class StudentLogbookViewerComponent implements OnInit {
     try {
       const students = await lastValueFrom(
         this.http.get<Student[]>(
-          'http://localhost:8080/api/students-with-log-sheets'
+          'https://mut-environmental-health-wil-backend.onrender.com /api/students-with-log-sheets'
         )
       );
 
@@ -225,7 +225,7 @@ async fetchHpcsaStatus(studentNumber: string): Promise<string | null> {
   try {
     const response = await lastValueFrom(
       this.http.get<{ status: string; check_status: string | null }>(
-        `http://localhost:8080/api/hpcsa-status/${studentNumber}`
+        `https://mut-environmental-health-wil-backend.onrender.com /api/hpcsa-status/${studentNumber}`
       )
     );
 
@@ -255,7 +255,7 @@ async fetchHpcsaStatus(studentNumber: string): Promise<string | null> {
     try {
       const response: LogSheet[] = await lastValueFrom(
         this.http.get<LogSheet[]>(
-          `http://localhost:8080/api/logbook?student_number=${studentNumber}`
+          `https://mut-environmental-health-wil-backend.onrender.com /api/logbook?student_number=${studentNumber}`
         )
       );
 

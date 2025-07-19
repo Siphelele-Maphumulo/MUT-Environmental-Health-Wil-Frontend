@@ -54,7 +54,7 @@ export class ApplicationsComponent implements OnInit {
     throw new Error('Method not implemented.');
   }
   // API URL for fetching applications
-  private apiUrl = 'http://localhost:8080/api/get-applications';
+  private apiUrl = 'https://mut-environmental-health-wil-backend.onrender.com /api/get-applications';
 
   // Data and state variables
   applications: Application[] = [];
@@ -325,7 +325,7 @@ export class ApplicationsComponent implements OnInit {
 
     const fullUrl = filename.startsWith('http')
       ? filename
-      : `http://localhost:8080/${filename}`;
+      : `https://mut-environmental-health-wil-backend.onrender.com /${filename}`;
 
     return this.sanitizer.bypassSecurityTrustResourceUrl(fullUrl);
   }
@@ -339,7 +339,7 @@ export class ApplicationsComponent implements OnInit {
     this.isLoading = true;
     const fullUrl = url.startsWith('http')
       ? url
-      : `http://localhost:8080/${url}`;
+      : `https://mut-environmental-health-wil-backend.onrender.com /${url}`;
 
     this.http
       .get(fullUrl, {
@@ -393,7 +393,7 @@ export class ApplicationsComponent implements OnInit {
 
     const fullUrl = url.startsWith('http')
       ? url
-      : `http://localhost:8080/${url}`;
+      : `https://mut-environmental-health-wil-backend.onrender.com /${url}`;
     window.open(fullUrl, '_blank', 'noopener,noreferrer');
   }
 
@@ -615,7 +615,7 @@ export class ApplicationsComponent implements OnInit {
 
     this.isLoading = true;
     this.http
-      .delete(`http://localhost:8080/api/delete-application/${app.id}`)
+      .delete(`https://mut-environmental-health-wil-backend.onrender.com /api/delete-application/${app.id}`)
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
         next: () => {

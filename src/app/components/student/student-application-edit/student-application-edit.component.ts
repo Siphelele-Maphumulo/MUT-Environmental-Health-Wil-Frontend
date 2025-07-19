@@ -97,7 +97,7 @@ initForm(): void {
 
 
   fetchStudentData(email: string): void {
-    this.http.get<any>(`http://localhost:8080/api/application-by-email?email=${email}`).subscribe({
+    this.http.get<any>(`https://mut-environmental-health-wil-backend.onrender.com /api/application-by-email?email=${email}`).subscribe({
       next: (student) => {
         if (!student) {
           this.snackBar.open('No student data found', 'Close', { duration: 3000 });
@@ -216,7 +216,7 @@ onSubmit(): void {
   });
 
   // Send HTTP PUT request
-  this.http.put('http://localhost:8080/api/applications/update', formData).subscribe({
+  this.http.put('https://mut-environmental-health-wil-backend.onrender.com /api/applications/update', formData).subscribe({
     next: (response: any) => {
       this.isSubmitting = false;
       this.snackBar.open(response.message || 'Application updated successfully!', 'Close', {

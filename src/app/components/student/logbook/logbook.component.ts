@@ -251,7 +251,7 @@ export class LogbookComponent implements OnInit {
     try {
       const response = await lastValueFrom(
         this.http.get<LogSheet[]>(
-          `http://localhost:8080/api/logbook?student_number=${studentNumber}`
+          `https://mut-environmental-health-wil-backend.onrender.com /api/logbook?student_number=${studentNumber}`
         )
       );
       this.viewlogSheets = response.map((log) => ({

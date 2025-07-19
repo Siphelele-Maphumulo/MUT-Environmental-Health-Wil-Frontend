@@ -104,7 +104,7 @@ export class StaffManagementComponent implements OnInit, AfterViewInit {
     try {
       const resp = await lastValueFrom(
         this.http.get<{ success: boolean; data: StaffResponse[] }>(
-          'http://localhost:8080/api/staff'
+          'https://mut-environmental-health-wil-backend.onrender.com /api/staff'
         )
       );
       this.dataSource.data = resp.success ? resp.data : [];
@@ -119,7 +119,7 @@ export class StaffManagementComponent implements OnInit, AfterViewInit {
   deleteStaff(task: StaffResponse) {
     if (!confirm(`Delete staff: ${task.title}?`)) return;
 
-    this.http.delete(`http://localhost:8080/api/staff/${task.id}`).subscribe({
+    this.http.delete(`https://mut-environmental-health-wil-backend.onrender.com /api/staff/${task.id}`).subscribe({
       next: () => {
         this.dataSource.data = this.dataSource.data.filter(
           (s) => s.id !== task.id

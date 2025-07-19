@@ -7,7 +7,8 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AnalyticsService {
-  private apiUrl = 'http://localhost:8080/api/analytics';
+  //private apiUrl = 'https://mut-environmental-health-wil-backend.onrender.com/api/analytics';
+  private apiUrl = 'https://mut-environmental-health-wil-backend.onrender.com/api/analytics'; // Use this for production
 
   constructor(private http: HttpClient) { }
 
@@ -18,7 +19,7 @@ getDashboardData(timeRange: string, startDate: Date, endDate: Date): Observable<
     .set('start', startDate.toISOString())
     .set('end', endDate.toISOString());
 
-  return this.http.get('http://localhost:8080/dashboard', { params });
+  return this.http.get('https://mut-environmental-health-wil-backend.onrender.com/dashboard', { params });
 ;
 }
 

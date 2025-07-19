@@ -137,7 +137,7 @@ export class LogbookDialogComponent implements OnInit {
     try {
       const response = await lastValueFrom(
         this.http.get<{ exists: boolean; logsheets: LogSheet[] }>(
-          `http://localhost:8080/api/get-logsheet/${studentNumber}`
+          `https://mut-environmental-health-wil-backend.onrender.com /api/get-logsheet/${studentNumber}`
         )
       );
 
@@ -216,7 +216,7 @@ export class LogbookDialogComponent implements OnInit {
   }
 
   getSignatureUrl(signatureUrl: string | null): string {
-    return signatureUrl ? `http://localhost:8080/uploads/${signatureUrl}` : '';
+    return signatureUrl ? `https://mut-environmental-health-wil-backend.onrender.com /uploads/${signatureUrl}` : '';
   }
 
   private buildFormData(data: any): FormData {
@@ -406,7 +406,7 @@ export class LogbookDialogComponent implements OnInit {
     try {
       const res = await lastValueFrom(
         this.http.get<StudentInfo>(
-          `http://localhost:8080/api/student/${this.studentNumber}`
+          `https://mut-environmental-health-wil-backend.onrender.com /api/student/${this.studentNumber}`
         )
       );
       this.studentName = res.fullName;
@@ -441,7 +441,7 @@ async onCheckboxChange(event: MatCheckboxChange): Promise<void> {
       // ✅ API call also uses this.studentNumber
       await lastValueFrom(
         this.http.post(
-          `http://localhost:8080/api/update-hpcsa-report/${studentNumber}`,
+          `https://mut-environmental-health-wil-backend.onrender.com /api/update-hpcsa-report/${studentNumber}`,
           {}
         )
       );
@@ -470,7 +470,7 @@ async onCheckboxChange(event: MatCheckboxChange): Promise<void> {
   ): Promise<void> {
     const response = await lastValueFrom(
       this.http.patch(
-        `http://localhost:8080/api/logsheets/${logsheetId}/verify`,
+        `https://mut-environmental-health-wil-backend.onrender.com /api/logsheets/${logsheetId}/verify`,
         { verified }
       )
     );

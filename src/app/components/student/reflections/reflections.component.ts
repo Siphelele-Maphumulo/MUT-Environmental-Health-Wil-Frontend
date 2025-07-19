@@ -70,7 +70,7 @@ export class ReflectionsComponent implements OnInit {
   }
 
   loadStudentDetails(studentNumber: string): void {
-    const url = `http://localhost:8080/api/student/${studentNumber}`;
+    const url = `https://mut-environmental-health-wil-backend.onrender.com /api/student/${studentNumber}`;
 
     this.http.get<any>(url).subscribe({
       next: (res) => {
@@ -89,7 +89,7 @@ export class ReflectionsComponent implements OnInit {
   }
 
   loadExistingReflection(studentNumber: string): void {
-    const url = `http://localhost:8080/api/reflection/${studentNumber}`;
+    const url = `https://mut-environmental-health-wil-backend.onrender.com /api/reflection/${studentNumber}`;
 
     this.http.get<any>(url).subscribe({
       next: (res) => {
@@ -119,7 +119,7 @@ export class ReflectionsComponent implements OnInit {
 
   const formValue = this.reflectionForm.getRawValue(); // ✅ Includes disabled fields
 
-  this.http.post('http://localhost:8080/api/submit-reflection', formValue)
+  this.http.post('https://mut-environmental-health-wil-backend.onrender.com /api/submit-reflection', formValue)
     .subscribe({
       next: (response: any) => {
         this.showSuccess(response.message || 'Reflection submitted successfully!');

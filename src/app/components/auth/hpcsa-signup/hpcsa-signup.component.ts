@@ -42,7 +42,7 @@ export class HpcsaSignupComponent implements OnInit {
   loading = false;
   selectedFile: File | null = null;
 
-  private apiUrl = 'http://localhost:8080/api';
+  private apiUrl = 'https://mut-environmental-health-wil-backend.onrender.com /api';
 
   constructor(
     private fb: FormBuilder,

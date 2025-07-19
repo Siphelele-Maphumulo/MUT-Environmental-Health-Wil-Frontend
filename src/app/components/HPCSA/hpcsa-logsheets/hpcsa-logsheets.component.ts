@@ -250,7 +250,7 @@ export class HpcsaLogsheetsComponent implements OnInit {
     this.isLoading = true;
     try {
       const response = await lastValueFrom(
-        this.http.get<LogSheet[]>('http://localhost:8080/api/daily-logsheets')
+        this.http.get<LogSheet[]>('https://mut-environmental-health-wil-backend.onrender.com /api/daily-logsheets')
       );
       this.viewlogSheets = response.map((log) => ({
         ...log,

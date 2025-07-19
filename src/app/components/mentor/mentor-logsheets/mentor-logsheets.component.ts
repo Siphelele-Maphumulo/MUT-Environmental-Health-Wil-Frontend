@@ -255,7 +255,7 @@ export class MentorLogsheetsComponent implements OnInit {
     this.isLoading = true;
     try {
       const response = await lastValueFrom(
-        this.http.get<LogSheet[]>('http://localhost:8080/api/daily-logsheets')
+        this.http.get<LogSheet[]>('https://mut-environmental-health-wil-backend.onrender.com /api/daily-logsheets')
       );
       this.viewlogSheets = response.map((log) => ({
         ...log,
@@ -397,7 +397,7 @@ openSignDialog(log: any): void {
 
   dialogRef.afterClosed().subscribe((result: string) => {
     if (result === 'checked' || result === 'unChecked') {
-this.http.post('http://localhost:8080/api/update-mentor-check', {
+this.http.post('https://mut-environmental-health-wil-backend.onrender.com /api/update-mentor-check', {
   logsheetId: log.id,
   mentor_check: result
       }).subscribe({
