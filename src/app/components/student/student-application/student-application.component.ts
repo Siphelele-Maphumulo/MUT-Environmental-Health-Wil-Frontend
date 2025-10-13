@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {
+  AbstractControl,
   FormBuilder,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -106,6 +109,7 @@ export class StudentApplicationComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
+    this.setupFormListeners();
   }
 
   private initForm(): void {
@@ -148,8 +152,8 @@ export class StudentApplicationComponent implements OnInit {
         [Validators.required, Validators.pattern(/^\d{10,13}$/)],
       ],
       homeTown: ['', [Validators.required, Validators.pattern(/^[A-Za-z ]+$/)]],
-
-      // Section B: Preferred Area of WIL Placement (updated field)
+      
+      // Section B: Preferred Area of WIL Placement
       municipalityName: ['', Validators.required],
       townSituated: ['', Validators.required],
       contactPerson: ['', Validators.required],
@@ -172,12 +176,139 @@ export class StudentApplicationComponent implements OnInit {
       signatureImage: [null, Validators.required],
       idDocument: [null, Validators.required],
       cvDocument: [null, Validators.required],
+    }, { validators: this.phoneNumberValidator });
+  }
+
+  private setupFormListeners(): void {
+    // Listen for phone number changes to check for duplicates
+    this.studentApplicationForm.get('cellPhoneNumber')?.valueChanges.subscribe(() => {
+      this.checkPhoneNumberDuplicates();
     });
+
+    this.studentApplicationForm.get('contactCellPhone')?.valueChanges.subscribe(() => {
+      this.checkPhoneNumberDuplicates();
+    });
+  }
+
+  // Custom validator to check for duplicate phone numbers
+  private phoneNumberValidator: ValidatorFn = (formGroup: AbstractControl): ValidationErrors | null => {
+    const cellPhoneNumber = formGroup.get('cellPhoneNumber')?.value;
+    const contactCellPhone = formGroup.get('contactCellPhone')?.value;
+
+    if (cellPhoneNumber && contactCellPhone && cellPhoneNumber === contactCellPhone) {
+      return { duplicatePhoneNumbers: true };
+    }
+    return null;
+  };
+
+    // Check if email is from a student domain
+  private isValidStudentEmail(email: string): boolean {
+    const studentDomains = [
+      'live.mut.ac.za',
+      'mut.ac.za',
+      'student.mut.ac.za',
+      'my.mut.ac.za'
+    ];
+    
+    return studentDomains.some(domain => email.toLowerCase().includes(`@${domain}`));
+  }
+
+  // Generate initials from first names and surname
+  generateInitials(): void {
+    const firstNames = this.studentApplicationForm.get('firstNames')?.value?.trim();
+    const surname = this.studentApplicationForm.get('surname')?.value?.trim();
+
+    if (firstNames && surname) {
+      // Get first letter of each first name and the surname
+      const firstNameInitials = firstNames
+        .split(' ')
+        .map((name: string) => name.charAt(0).toUpperCase())
+        .join('');
+
+      const surnameInitial = surname.charAt(0).toUpperCase();
+      
+      // Combine initials (max 6 characters)
+      let initials = (firstNameInitials + surnameInitial).substring(0, 6);
+      
+      this.studentApplicationForm.patchValue({
+        initials: initials
+      });
+    }
+  }
+
+  // Extract student number from email address
+  extractStudentNumberFromEmail(): void {
+    const email = this.studentApplicationForm.get('emailAddress')?.value?.trim();
+    
+    if (email && email.includes('@')) {
+      const studentNumber = email.split('@')[0];
+      
+      // Validate if it's an 8-digit number
+      if (/^\d{8}$/.test(studentNumber)) {
+        this.studentApplicationForm.patchValue({
+          studentNumber: studentNumber
+        });
+      } else {
+        // If not a valid student number format, clear the field
+        this.studentApplicationForm.patchValue({
+          studentNumber: ''
+        });
+        
+        // Show warning if email looks like a student email but number is invalid
+        if (email.includes('@live.mut.ac.za') || email.includes('@mut.ac.za')) {
+          this.snackBar.open('Please use a valid student email with 8-digit student number', 'Close', {
+            duration: 5000,
+            panelClass: ['error-snackbar'],
+            verticalPosition: 'top',
+          });
+        }
+      }
+    }
+  }
+
+  // Check for duplicate phone numbers and show warning
+  private checkPhoneNumberDuplicates(): void {
+    const cellPhoneNumber = this.studentApplicationForm.get('cellPhoneNumber')?.value;
+    const contactCellPhone = this.studentApplicationForm.get('contactCellPhone')?.value;
+
+    if (cellPhoneNumber && contactCellPhone && cellPhoneNumber === contactCellPhone) {
+      this.snackBar.open('Cell Phone Number and Contact Cell Phone cannot be the same', 'Close', {
+        duration: 5000,
+        panelClass: ['error-snackbar'],
+        verticalPosition: 'top',
+      });
+    }
   }
 
   onSubmit(): void {
     // Mark all fields as touched to trigger validation messages
     this.studentApplicationForm.markAllAsTouched();
+
+    // Check for duplicate phone numbers before submission
+    if (this.studentApplicationForm.hasError('duplicatePhoneNumbers')) {
+      this.snackBar.open('Cell Phone Number and Contact Cell Phone cannot be the same', 'Close', {
+        duration: 5000,
+        panelClass: ['error-snackbar'],
+        verticalPosition: 'top',
+      });
+      return;
+    }
+
+    // Additional validation for student number and email consistency
+    const email = this.studentApplicationForm.get('emailAddress')?.value;
+    const studentNumber = this.studentApplicationForm.get('studentNumber')?.value;
+    
+    if (email && studentNumber && this.isValidStudentEmail(email)) {
+      const expectedStudentNumber = email.split('@')[0];
+      if (expectedStudentNumber !== studentNumber) {
+        this.snackBar.open('Student number does not match the number in your email address', 'Close', {
+          duration: 5000,
+          panelClass: ['error-snackbar'],
+          verticalPosition: 'top',
+        });
+        return;
+      }
+    }
 
     if (this.studentApplicationForm.invalid) {
       this.handleFormErrors();

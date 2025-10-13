@@ -20,19 +20,28 @@
   <img src="./header-logo.png" alt="MUT Logo" style="height: 50px" />
 
   <!-- Centered Title -->
-  <div
+<div
+  style="
+    position: absolute;
+    left: 0;
+    right: 0;
+    text-align: center;
+  "
+  class="hamburger"
+>
+  <span 
+    (click)="toggleMenu()" 
     style="
-      position: absolute;
-      left: 0;
-      right: 0;
-      text-align: center;
-      pointer-events: none;
+      font-size: 22px; 
+      font-weight: bold; 
+      color: white; 
+      cursor: pointer;
     "
   >
-    <span style="font-size: 22px; font-weight: bold; color: white">
-      Work Integrated Learning System
-    </span>
-  </div>
+    Work Integrated Learning System
+  </span>
+</div>
+
 
   <!-- Desktop Nav Links -->
   <div

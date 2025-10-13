@@ -70,14 +70,12 @@
   }
 
   .logo {
-    height: 30px;
+    height: 10px;
     width: auto;
-    margin-right: 8px;
+    margin-right: 4px;
   }
 
-  .header-title {
-    display: none; /* Completely hides the element */
-  }
+
 
   .nav-links {
     display: none !important;
@@ -96,9 +94,6 @@
     display: flex !important;
   }
 
-  .hamburger {
-    display: block !important;
-  }
 
   .mat-icon-button {
     display: block;
@@ -114,7 +109,7 @@
 .dropdown-btn {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 1px;
   cursor: pointer;
 }
 
