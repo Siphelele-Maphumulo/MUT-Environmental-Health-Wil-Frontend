@@ -59,8 +59,8 @@
         <div class="dropdown-content">
           <a mat-button routerLink="/login">Student</a>
           <a mat-button routerLink="/staff-login">Staff</a>
-          <a mat-button routerLink="/mentor-login">Mentor</a>
-          <a mat-button routerLink="/hpcsa-login">HPCSA</a>
+          <!-- <a mat-button routerLink="/mentor-login">Mentor</a>
+          <a mat-button routerLink="/hpcsa-login">HPCSA</a> -->
           <a mat-button routerLink="/guest">Guest</a>
         </div>
       </div>
@@ -147,8 +147,8 @@
     <div *ngIf="showLoginMenu" style="display: flex; flex-direction: column; width: 100%;">
       <a mat-button routerLink="/login" (click)="toggleMenu()" style="color: white; padding-left: 30px">Student</a>
       <a mat-button routerLink="/staff-login" (click)="toggleMenu()" style="color: white; padding-left: 30px">Staff</a>
-      <a mat-button routerLink="/mentor-login" (click)="toggleMenu()" style="color: white; padding-left: 30px">Mentor</a>
-      <a mat-button routerLink="/hpcsa-login" (click)="toggleMenu()" style="color: white; padding-left: 30px">HPCSA</a>
+      <!-- <a mat-button routerLink="/mentor-login" (click)="toggleMenu()" style="color: white; padding-left: 30px">Mentor</a>
+      <a mat-button routerLink="/hpcsa-login" (click)="toggleMenu()" style="color: white; padding-left: 30px">HPCSA</a> -->
       <a mat-button routerLink="/guest" (click)="toggleMenu()" style="color: white; padding-left: 30px">Guest</a>
     </div>
 
@@ -159,7 +159,7 @@
     <div *ngIf="showSignupMenu" style="display: flex; flex-direction: column; width: 100%;">
       <a mat-button routerLink="/signup" (click)="toggleMenu()" style="color: white; padding-left: 30px">Student</a>
       <a mat-button routerLink="/staff-signup" (click)="toggleMenu()" style="color: white; padding-left: 30px">Staff</a>
-      <a mat-button routerLink="/mentor-signup" (click)="toggleMenu()" style="color: white; padding-left: 30px">Mentor</a>
+      <!-- <a mat-button routerLink="/mentor-signup" (click)="toggleMenu()" style="color: white; padding-left: 30px">Mentor</a> -->
     </div>
 
     <a
