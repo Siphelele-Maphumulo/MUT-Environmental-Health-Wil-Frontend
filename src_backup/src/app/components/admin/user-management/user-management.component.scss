@@ -1,0 +1,79 @@
+.user-management-card {
+  padding: 24px;
+  margin: 16px;
+
+  h2 {
+    margin-bottom: 24px;
+    color: #3f51b5;
+  }
+
+  .filter-actions {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+
+    .search-field {
+      flex: 1;
+      min-width: 250px;
+    }
+
+    button {
+      height: 56px; // Match the height of the form fields
+    }
+  }
+
+  .student-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .student-name {
+      font-weight: 500;
+    }
+  }
+
+  .status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+
+    &.active {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    &.inactive {
+      background-color: #ffebee;
+      color: #c62828;
+    }
+  }
+
+  .loading-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 40px;
+  }
+
+  .no-data {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 40px;
+    color: #757575;
+  }
+}
+
+h2 {
+  border-top: 2px double #000000;
+  border-bottom: 2px solid #000000;
+  font-size: 20px;
+  padding-left: 3%;
+  font-weight: bold;
+  text-align: center;
+  margin: 20px 0; /* Adds vertical spacing */
+}

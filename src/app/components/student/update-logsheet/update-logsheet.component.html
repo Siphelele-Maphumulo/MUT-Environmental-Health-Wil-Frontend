@@ -1,0 +1,172 @@
+<!-- Header -->
+<br /><br />
+<div
+  class="container-fluid d-flex align-items-center justify-content-center min-vh-100"
+>
+  <div class="login-form-container shadow p-3 rounded">
+    <div id="header"></div>
+    <div class="container mt-5">
+      <h2 class="text-center">Update Today's Log Sheet</h2>
+      <p class="text-center instruction">
+        Instruction: Details below are automatically filled using your today's
+        previous logsheet that you have already signed and they will later be
+        verified by the instructor.
+      </p>
+
+      <!-- Log Sheet Form -->
+      <div *ngIf="!isLoading && logSheetForm">
+        <form [formGroup]="logSheetForm" (ngSubmit)="onSubmit()">
+          <!-- Date field - MOVED INSIDE THE FORM -->
+          <div class="form-row">
+            <!-- Date -->
+            <div class="form-group half-width">
+              <label for="logDate">Date:</label>
+              <input
+                type="date"
+                class="form-control"
+                id="logDate"
+                formControlName="logDate"
+                [value]="today"
+                readonly
+              />
+            </div>
+
+            <!-- Student Number -->
+            <div class="form-group half-width">
+              <label for="studentNumber">Student Number:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="studentNumber"
+                formControlName="studentNumber"
+                placeholder="Student number"
+                [attr.disabled]="
+                  logSheetForm.get('studentNumber')?.disabled ? true : null
+                "
+                readonly
+              />
+            </div>
+          </div>
+
+          <h3 class="text-center">WIL Activities Conducted</h3>
+          <p class="text-center instruction">
+            Please select up to 6 activities and indicate how many hours spent.
+          </p>
+
+          <!-- Activities Section -->
+          <div id="activities-container">
+            <div
+              *ngFor="let activity of activities; let i = index"
+              class="activity-item"
+            >
+              <label>
+                <input
+                  [formControlName]="'activity' + (i + 1)"
+                  type="checkbox"
+                  [value]="activity.name"
+                  (change)="limitSelection($event, i + 1)"
+                />
+                {{ activity.name }}
+              </label>
+              <input
+                [formControlName]="'hours' + (i + 1)"
+                type="number"
+                class="form-control hours-input"
+                placeholder="Hours"
+                min="0"
+                [max]="6"
+                style="width: 80px; height: 40px; font-size: 15px"
+              />
+            </div>
+          </div>
+
+          <!-- Description and Reflection Section -->
+          <div class="container form-container">
+            <div class="form-section">
+              <div class="form-group">
+                <label for="description"
+                  >Description of WIL Activities Conducted:</label
+                >
+                <textarea
+                  formControlName="description"
+                  class="form-control"
+                  id="description"
+                  rows="4"
+                  style="font-size: 14px; height: 100px"
+                ></textarea>
+              </div>
+
+              <h3 class="text-center instruction">
+                Reflect on the most significant events
+              </h3>
+              <div class="form-group">
+                <label for="situationDescription"
+                  >Describe the situation: What happened?</label
+                >
+                <textarea
+                  formControlName="situationDescription"
+                  class="form-control"
+                  id="situationDescription"
+                  rows="4"
+                  style="font-size: 14px; height: 100px"
+                ></textarea>
+              </div>
+              <div class="form-group">
+                <label for="situationEvaluation"
+                  >Evaluate the situation: Why was this event
+                  significant?</label
+                >
+                <textarea
+                  formControlName="situationEvaluation"
+                  class="form-control"
+                  id="situationEvaluation"
+                  rows="4"
+                  style="font-size: 14px; height: 100px"
+                ></textarea>
+              </div>
+              <div class="form-group">
+                <label for="situationInterpretation"
+                  >Interpret the situation: What did you learn?</label
+                >
+                <textarea
+                  formControlName="situationInterpretation"
+                  class="form-control"
+                  id="situationInterpretation"
+                  rows="4"
+                  style="font-size: 14px; height: 100px"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Signatures Section -->
+          <h3 class="text-center" style="padding-bottom: 40px">Signature</h3>
+          <div class="row">
+            <div class="col-md-4 form-group" style="padding-left: 50px">
+              <label for="student_signature">Student Signature:</label>
+              <p class="note">
+                * Your previously saved signature will be used.
+              </p>
+
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button
+            type="submit"
+            class="btn btn-secondary submit-button"
+            style="
+              background-color: #6c757d;
+              border-color: #6c757d;
+              width: 100%;
+              max-width: 300px;
+              margin-top: 20px;
+            "
+          >
+            Submit
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

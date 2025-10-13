@@ -1,0 +1,142 @@
+<div class="container-fluid" style="margin-bottom: 5px">
+  <!-- Page Header -->
+  <div class="page-header">
+    <h1>Student Dashboard</h1>
+  </div>
+
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-3 sidebar">
+      <!-- <a routerLink="/mentor/mentor-dashboard"><i class="fa fa-home"></i> Home</a> -->
+      <a routerLink="/student-application-edit"
+        ><i class="fa fa-file"></i> My Application</a
+      >
+      <!-- student-dashboard.component.html -->
+      <a (click)="navigateToLogsheet()" style="cursor: pointer">
+        <i class="fa fa-clipboard"></i> Logsheet
+      </a>
+      <a routerLink="/logbook"><i class="fa fa-clock-o"></i> Logbook</a>
+      <a routerLink="/profile"><i class="fa fa-book"></i> Profile</a>
+      <a (click)="navigateToreflections()"
+        ><i class="fa fa-file-text"></i>Student's Reflection</a
+      >
+      <a (click)="logout()"
+        ><i class="fa fa-sign-out" style="color: red"></i> Logout</a
+      >
+      <div class="user-info-container">
+        <div class="user-info">
+          <i class="fa fa-user-circle" aria-hidden="true"></i>
+          <span class="user-email" *ngIf="userEmail"
+            >Logged: {{ userEmail }}</span
+          >
+          <span class="login-alert" *ngIf="!userEmail"
+            >User email not found. Please log in again.</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Main content -->
+    <div class="col-md-9">
+      <div class="row">
+        <!-- Card 1: My Details -->
+        <div class="col-md-4 mb-4">
+          <div class="card shadow">
+            <div class="card-header">My Applications</div>
+            <div class="card-body text-center">
+              <i class="fa fa-file fa-3x" aria-hidden="true"></i>
+            </div>
+            <div class="card-footer">
+              <a href="student-applications" data-toggle="modal" data-target="#modalApplication"
+                >View Details
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <!-- Card 2: Tasks -->
+        <div class="col-md-4 mb-4">
+          <div class="card shadow">
+            <div class="card-header">Logsheet</div>
+            <div class="card-body text-center">
+              <i class="fa fa-clipboard fa-3x" aria-hidden="true"></i>
+            </div>
+            <div class="card-footer">
+              <a
+                href="/update-logsheet"
+                data-toggle="modal"
+                data-target="#modalLogsheet"
+                >Update Details
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <!-- Card 3: Time Sheet -->
+        <div class="col-md-4 mb-4">
+          <div class="card shadow">
+            <div class="card-header">Log Book</div>
+            <div class="card-body text-center">
+              <i class="fa fa-clock-o fa-3x" aria-hidden="true"></i>
+            </div>
+            <div class="card-footer">
+              <a href="/logbook" data-toggle="modal" data-target="#modalLogbook"
+                >View Details
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <!-- Card 4: Attendance -->
+        <div class="col-md-4 mb-4">
+          <div class="card shadow">
+            <div class="card-header">Declaration Letter</div>
+            <div class="card-body text-center">
+              <i class="fa fa-file-text fa-3x" aria-hidden="true"></i>
+            </div>
+            <div class="card-footer">
+              <a href="/letter" data-toggle="modal" data-target="#modalProfile"
+                >View Details
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- Card 5: Leave -->
+        <div class="col-md-4 mb-4">
+          <div class="card shadow">
+            <div class="card-header">Guest Events</div>
+            <div class="card-body text-center">
+              <i class="fa fa-microphone fa-3x" aria-hidden="true"></i>
+            </div>
+            <div class="card-footer">
+              <a
+                href="/guest-events"
+                data-toggle="modal"
+                data-target="#modalGuestLectures"
+                >View Details
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <!-- Card 7: HPCSA -->
+        <div class="col-md-4 mb-4">
+          <div class="card shadow">
+            <div class="card-header">HPCSA</div>
+            <div class="card-body text-center">
+              <i class="fa fa-book fa-3x" aria-hidden="true"></i>
+            </div>
+            <div class="card-footer">
+              <a href="/HPCSA" data-toggle="modal" data-target="#modalProfile"
+                >View Details
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <!-- Conditionally display footer based on the current route -->
+<app-footer *ngIf="showFooter"></app-footer>
+

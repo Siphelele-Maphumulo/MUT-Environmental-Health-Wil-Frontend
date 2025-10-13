@@ -1,0 +1,82 @@
+/* Sign Up Component Styles */
+.signup-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    width: 400px;
+    margin: 90px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    background-color: #fff;
+    }
+    
+    /* Center the text and adjust spacing */
+    // ::ng-deep .mat-card-title {
+    .mat-card-title {
+    text-align: center;
+    font-size: 24px;
+    color: #580202; /* MUT Logo Red/Burgundy Color */
+    margin-bottom: 10px;
+    }
+    
+    .mat-card-subtitle {
+    text-align: center;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 20px;
+    }
+    
+    mat-card-subtitle {
+        font-size: 0.9rem;
+        color: gray;
+      }
+    
+    .full-width {
+    width: 100%;
+    }
+    
+    .actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    }
+    
+    /* MUT Colors for Buttons and Inputs */
+    mat-form-field {
+    width: 100%;
+    color: #580202; /* MUT Red/Burgundy for input label */
+    }
+    
+    // ::ng-deep .mat-raised-button {
+    .mat-raised-button {
+    background-color: #580202 !important;
+    color: white;
+    }
+    
+    .mat-raised-button:hover {
+    background-color: #450101 !important; /* Darker version on hover */
+    }
+    
+    /* Link Styles */
+    .sign-in-link {
+    color: #1976d2;
+    text-decoration: underline;
+    cursor: pointer;
+    }
+    
+    .sign-in-link:hover {
+    text-decoration: none;
+    }
+    
+    .additional-actions {
+    text-align: center;
+    margin-top: 20px;
+    }
+    
+    mat-card-header {
+        text-align: center;
+        margin-bottom: 10px;
+      }

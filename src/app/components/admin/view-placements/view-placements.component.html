@@ -1,0 +1,194 @@
+<div class="main-content">
+  <h2 class="page-heading">Student Placements</h2>
+
+  <!-- Filter Section -->
+  <div
+    class="filter-row"
+    style="gap: 16px; flex-wrap: wrap; align-items: center"
+  >
+    <!-- Student Number -->
+    <mat-form-field appearance="fill">
+      <mat-label>Student Number</mat-label>
+      <input
+        matInput
+        [(ngModel)]="studentNumberFilter"
+        (input)="applyFilters()"
+        placeholder="Search by student number"
+      />
+    </mat-form-field>
+
+    <!-- Student Name -->
+    <mat-form-field appearance="outline">
+      <mat-label>Student Name</mat-label>
+      <input
+        matInput
+        [(ngModel)]="studentNameFilter"
+        (input)="applyFilters()"
+        placeholder="Search by student name"
+      />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <!-- Municipality -->
+    <mat-form-field appearance="outline">
+      <mat-label>Municipality</mat-label>
+      <input
+        matInput
+        [(ngModel)]="municipalityFilter"
+        (input)="applyFilters()"
+        placeholder="Search by municipality"
+      />
+    </mat-form-field>
+
+    <!-- Hospital -->
+    <mat-form-field appearance="outline">
+      <mat-label>Hospital</mat-label>
+      <input
+        matInput
+        [(ngModel)]="hospitalFilter"
+        (input)="applyFilters()"
+        placeholder="Search by hospital"
+      />
+    </mat-form-field>
+
+    <!-- Clear Filters Button -->
+    <button mat-stroked-button color="warn" (click)="clearFilters()">
+      <mat-icon>clear_all</mat-icon> Clear Filters
+    </button>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="isLoading" class="loading-spinner">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Loading Placements...</p>
+  </div>
+
+  <!-- Placements Table -->
+  <div *ngIf="!isLoading" class="table-container">
+    <table
+      mat-table
+      [dataSource]="filteredPlacements"
+      class="mat-elevation-z8 full-width-table"
+    >
+      <ng-container matColumnDef="student_number">
+        <th mat-header-cell *matHeaderCellDef>Student Number</th>
+        <td mat-cell *matCellDef="let element">{{ element.student_number }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="student_name">
+        <th mat-header-cell *matHeaderCellDef>Student Name</th>
+        <td mat-cell *matCellDef="let element">{{ element.student_name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="supervisor">
+        <th mat-header-cell *matHeaderCellDef>Supervisor</th>
+        <td mat-cell *matCellDef="let element">{{ element.supervisor }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="municipality">
+        <th mat-header-cell *matHeaderCellDef>Municipality</th>
+        <td mat-cell *matCellDef="let element">{{ element.municipality }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>Email</th>
+        <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="cell_number">
+        <th mat-header-cell *matHeaderCellDef>Cell Number</th>
+        <td mat-cell *matCellDef="let element">{{ element.cell_number }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="hospital">
+        <th mat-header-cell *matHeaderCellDef>Hospital</th>
+        <td mat-cell *matCellDef="let element">{{ element.hospital }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="abattoir">
+        <th mat-header-cell *matHeaderCellDef>Abattoir</th>
+        <td mat-cell *matCellDef="let element">{{ element.abattoir }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="created_at">
+        <th mat-header-cell *matHeaderCellDef>Created At</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.created_at | date }}
+        </td>
+      </ng-container>
+
+<ng-container matColumnDef="actions">
+  <th mat-header-cell *matHeaderCellDef>Actions</th>
+  <td mat-cell *matCellDef="let element" class="action-buttons">
+    <!-- View Button - Try both id and _id -->
+    <button
+      mat-icon-button
+      color="primary"
+      (click)="viewPlacement(element.id || element._id)"
+      aria-label="View placement details"
+      title="View Placement"
+      *ngIf="element.id || element._id"
+    >
+      <mat-icon>visibility</mat-icon>
+    </button>
+
+    <!-- Delete Button - Try both id and _id -->
+    <button 
+      mat-icon-button 
+      color="warn" 
+      (click)="deletePlacement(element.id || element._id)" 
+      *ngIf="element.id || element._id"
+      aria-label="Delete placement"
+      title="Delete Placement">
+      <mat-icon>delete</mat-icon>
+    </button>
+
+    <!-- Show message if no ID -->
+    <span *ngIf="!element.id && !element._id" class="text-muted small">
+      No actions available
+    </span>
+  </td>
+</ng-container>
+
+      <!-- Table Rows -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && !filteredPlacements.length" class="no-data">
+    <p>No placements found.</p>
+  </div>
+</div>
+
+<!-- Styles (optional in component's CSS) -->
+<style>
+  .page-heading {
+    margin-top: -30px;
+    font-size: 30pt;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .filter-section {
+    margin: 20px 0;
+  }
+
+  .filter-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .table-container {
+    margin-top: 20px;
+  }
+
+  .loading-spinner,
+  .no-data {
+    text-align: center;
+    margin-top: 40px;
+  }
+</style>

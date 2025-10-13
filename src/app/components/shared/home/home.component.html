@@ -1,0 +1,40 @@
+<mat-toolbar color="primary"> Department of Environmental Health </mat-toolbar>
+
+<div class="content-container">
+  <h1 style="font-size: 20pt; font-weight: bold; text-align: center">
+    Welcome to Mangosuthu University of Technology
+  </h1>
+  <div class="image-container">
+    <mat-card>
+      <img
+        mat-card-image
+        src="./MUT-DoEH-Logo-Stacked.png"
+        alt="Environmental Health Overview"
+        class="environmental-health-image"
+      />
+    </mat-card>
+  </div>
+
+  <div class="welcome-message">
+    <p>Department of Environmental Health digital logbook.</p>
+  </div>
+
+  <div class="button-container">
+    <button
+      mat-raised-button
+      routerLink="/staff-login"
+      class="auth-button staff-button"
+    >
+      <mat-icon>supervisor_account</mat-icon>
+      Staff Login
+    </button>
+    <button
+      mat-raised-button
+      routerLink="/login"
+      class="auth-button student-button"
+    >
+      <mat-icon>school</mat-icon>
+      Student Login
+    </button>
+  </div>
+</div>

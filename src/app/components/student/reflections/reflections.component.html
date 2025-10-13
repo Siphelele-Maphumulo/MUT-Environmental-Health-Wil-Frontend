@@ -1,0 +1,89 @@
+<form [formGroup]="reflectionForm" (ngSubmit)="submitReflection()">
+  <br /><br />
+  <mat-card class="reflection-card">
+    <br />
+    <h2 class="text-center mb-4">STUDENT'S REFLECTION</h2>
+    <p class="text-center instruction">
+      Please indicate your experience and suggestions regarding WIL.
+    </p>
+
+    <div style="display: flex; gap: 16px">
+      <mat-form-field appearance="outline" class="reflection-field" style="flex: 2">
+        <mat-label>Student Name</mat-label>
+        <input matInput formControlName="studentName" />
+        <mat-error *ngIf="hasError('studentName')">Student Name is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="reflection-field" style="flex: 1">
+        <mat-label>Student Number</mat-label>
+        <input matInput formControlName="studentNumber" />
+        <mat-error *ngIf="hasError('studentNumber')">Student Number is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="reflection-field" style="flex: 1">
+        <mat-label>Level of Study</mat-label>
+        <mat-select formControlName="levelOfStudy">
+          <mat-option value="1">1st Year</mat-option>
+          <mat-option value="2">2nd Year</mat-option>
+          <mat-option value="3">3rd Year</mat-option>
+          <mat-option value="4">Undergraduate</mat-option>
+          <mat-option value="5">Postgraduate</mat-option>
+          <mat-option value="6">Doctorate</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="form-group">
+      <mat-form-field appearance="outline" class="reflection-field">
+        <mat-label>
+          How did this experience make you feel (positively and/or negatively)
+          before starting the work experience and upon completion?
+        </mat-label>
+        <textarea matInput formControlName="feeling"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="reflection-field">
+        <mat-label>In what ways did you succeed or do well?</mat-label>
+        <textarea matInput formControlName="success"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="reflection-field">
+        <mat-label>In what ways were you challenged?</mat-label>
+        <textarea matInput formControlName="challenges"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="reflection-field">
+        <mat-label>
+          How has your perspective/thoughts changed in light of your experience?
+        </mat-label>
+        <textarea matInput formControlName="perspectiveChange"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="reflection-field">
+        <mat-label>
+          What is your suggestion with regards to the management of WIL, where
+          can it be improved?
+        </mat-label>
+        <textarea matInput formControlName="suggestions"></textarea>
+      </mat-form-field>
+    </div>
+
+    <button
+      mat-raised-button
+      class="save-button"
+      type="submit"
+      [disabled]="reflectionForm.invalid"
+    >
+      Submit
+    </button>
+
+    <button
+      mat-button
+      type="button"
+      (click)="clear()"
+      style="color: rgb(250, 143, 143)"
+    >
+      Clear
+    </button>
+  </mat-card>
+</form>

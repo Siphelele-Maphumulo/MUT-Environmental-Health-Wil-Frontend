@@ -1,0 +1,245 @@
+<!-- Header -->
+<br />
+<br />
+
+<div
+  class="container-fluid d-flex align-items-center justify-content-center min-vh-100"
+>
+  <div class="letter-container shadow p-4 rounded">
+    <!-- Loading Indicator -->
+    <div *ngIf="isLoading" class="text-center">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading your information...</span>
+      </div>
+      <p class="mt-2">Loading your supervisor information...</p>
+    </div>
+
+    <div *ngIf="!isLoading">
+      <!-- Title Section -->
+      <h2 class="text-center mb-4">WORK INTEGRATED LEARNING DECLARATION</h2>
+
+      <!-- Sub-Headers -->
+      <h3 class="text-center">WORK INTEGRATED LEARNING</h3>
+      <h3 class="text-center">REPORT BY EMPLOYER</h3>
+      <h3 class="text-center">DECLARATION BY EMPLOYER / SUPERVISOR</h3>
+
+      <!-- Current Supervisor Info -->
+      <div *ngIf="currentSupervisor" class="alert alert-info mb-3">
+        <strong>Logged in as:</strong> {{ currentSupervisor.name }} ({{ currentSupervisor.email }})<br>
+        <strong>Signature Status:</strong> 
+        <span [ngClass]="supervisorSignatureExists ? 'text-success' : 'text-danger'">
+          {{ supervisorSignatureExists ? '✓ Available' : '✗ Not Found' }}
+        </span>
+      </div>
+
+      <!-- Form Start -->
+      <form [formGroup]="declarationForm" (ngSubmit)="onSubmit()" class="mt-4">
+        <!-- Date Field -->
+        <div class="form-group">
+          <label for="declarationDate">Date:</label>
+          <input
+            type="date"
+            id="declarationDate"
+            class="form-control"
+            formControlName="declarationDate"
+            [value]="today"
+            readonly
+            style="width: 32%; font-size: small"
+          />
+        </div>
+
+        <!-- Employer Declaration Text -->
+        <p class="declaration-text">
+          I,
+          <input
+            type="text"
+            class="form-control declaration-input"
+            formControlName="supervisorName"
+            placeholder="Supervisor Name"
+            readonly
+            style="background-color: #f8f9fa;"
+          />
+          employed by
+          <input
+            type="text"
+            class="form-control declaration-input"
+            formControlName="employerName"
+            placeholder="Employer Name"
+          />
+        </p>
+
+        <p class="declaration-text">
+          in the capacity of
+          <input
+            type="text"
+            class="form-control declaration-input"
+            formControlName="position"
+            placeholder="Position"
+          />
+          HI NO:
+          <input
+            type="text"
+            class="form-control declaration-input"
+            formControlName="hiNumber"
+            placeholder="HI Number"
+            style="width: 150px; display: inline-block"
+          />
+        </p>
+
+        <p class="declaration-text">
+          hereby certifies that (student number)
+          <input
+            type="text"
+            class="form-control declaration-input"
+            formControlName="studentNumber"
+            placeholder="Enter 8-digit Student Number"
+            maxlength="8"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            [class.is-invalid]="declarationForm.get('studentNumber')?.invalid && declarationForm.get('studentNumber')?.touched"
+          />
+          <div class="invalid-feedback" *ngIf="declarationForm.get('studentNumber')?.errors?.['required'] && declarationForm.get('studentNumber')?.touched">
+            Student number is required
+          </div>
+          <div class="invalid-feedback" *ngIf="declarationForm.get('studentNumber')?.errors?.['minlength'] || declarationForm.get('studentNumber')?.errors?.['maxlength']">
+            Student number must be exactly 8 digits
+          </div>
+          <div class="invalid-feedback" *ngIf="declarationForm.get('studentNumber')?.errors?.['pattern']">
+            Only numbers are allowed
+          </div>
+          <!-- <button 
+            type="button" 
+            class="lookup-btn"
+            (click)="onLookupStudent()"
+            [disabled]="!declarationForm.get('studentNumber')?.valid">
+            Lookup Student
+          </button> -->
+          did his/her work integrated learning
+          <br /><br />activities from
+          <input
+            type="date"
+            class="form-control declaration-input"
+            formControlName="startDate"
+            style="width: 150px; display: inline-block"
+          />
+          to
+          <input
+            type="date"
+            class="form-control declaration-input"
+            formControlName="endDate"
+            style="width: 150px; display: inline-block"
+          />
+          as requested and required by the University.
+        
+
+        <p class="declaration-text mt-3">
+          I further certify the following about the student:
+        </p>
+        <p class="declaration-text">
+          (Please tick the one you consider relevant)
+        </p>
+
+        <!-- Evaluation Items -->
+        <div class="evaluation-section">
+          <div class="evaluation-item" *ngFor="let item of evaluationList">
+            <span class="question">{{ item.label }}</span>
+            <div class="radio-group">
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  [value]="'Good'"
+                  [formControlName]="item.name"
+                  [id]="item.name + '-good'"
+                />
+                <label class="form-check-label" [for]="item.name + '-good'">
+                  Good
+                </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  [value]="'Bad'"
+                  [formControlName]="item.name"
+                  [id]="item.name + '-bad'"
+                />
+                <label class="form-check-label" [for]="item.name + '-bad'">
+                  Bad
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- General Comments -->
+        <div class="form-group mt-4">
+          <label for="generalComments">General Comments:</label>
+          <textarea
+            formControlName="generalComments"
+            id="generalComments"
+            rows="4"
+            class="form-control"
+            style="height: 100px"
+          ></textarea>
+        </div>
+
+        <!-- Updated Signature Section -->
+        <div class="row signature-section mt-5 pt-3 border-top">
+          <div class="col-md-6 form-group">
+            <label for="supervisorName">Supervisor Name:</label>
+            <input
+              type="text"
+              id="supervisorName"
+              class="form-control"
+              formControlName="supervisorName"
+              readonly
+              style="background-color: #f8f9fa;"
+            >
+            <small class="form-text text-muted">
+              Your name and signature are automatically retrieved from your account
+            </small>
+            
+            <!-- Signature Status Indicator -->
+            <div *ngIf="supervisorSignatureExists" class="alert alert-success mt-2">
+              ✅ Your signature is available and will be attached automatically
+            </div>
+            <div *ngIf="!supervisorSignatureExists" class="alert alert-danger mt-2">
+              ❌ Your signature was not found. Please contact administrator to upload your signature.
+            </div>
+          </div>
+
+          <div class="form-group mt-3">
+            <label for="signatureDate">Date:</label>
+            <input
+              type="date"
+              id="signatureDate"
+              class="form-control"
+              formControlName="signatureDate"
+              [value]="today"
+              style="width: 150px"
+            />
+          </div>
+        </div>
+
+        <div class="col-md-6 form-group">
+          <label>Official Stamp:</label>
+          <div class="stamp-box">
+            <span class="stamp-text">OFFICIAL STAMP</span>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center mt-4">
+          <button
+            type="submit"
+            class="btn btn-secondary submit-button"
+            [disabled]="declarationForm.invalid || !supervisorSignatureExists"
+          >
+            Submit Declaration
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,112 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center both image and login section */
+  height: calc(100vh - 80px); /* Full viewport height minus the header height */
+  padding-top: 20px; /* Add some space to avoid the image overlapping with the navbar */
+  max-width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.image-section {
+  flex: 1; /* Make image-section take up 1 part of the space */
+  display: flex;
+  justify-content: center; /* Center the image horizontally */
+  align-items: center; /* Center the image vertically */
+}
+
+.big-image {
+  max-width: 70%; /* Ensure the image scales correctly */
+  height: auto; /* Maintain aspect ratio */
+  object-fit: contain; /* Ensure the image doesn't overflow */
+  margin: 0; /* Remove any margin that may be affecting alignment */
+}
+
+.login-section {
+  flex: 1; /* Make login-section take up the other part of the space */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  background-color: #fff;
+  padding: 20px;
+}
+
+.mat-card-header {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.mat-card-title {
+  font-size: 24px;
+  color: #580202;
+}
+
+.mat-card-subtitle {
+  font-size: 0.9rem;
+  color: gray;
+}
+
+.mat-raised-button {
+  background-color: #580202 !important;
+  color: white;
+}
+
+.mat-raised-button:hover {
+  background-color: #450101 !important;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column; /* Stack the image and login sections vertically on small screens */
+    padding-top: 40px; /* Add padding to the top */
+  }
+
+  .image-section {
+    max-width: 100%; /* Ensure image section doesn't overflow */
+    margin-bottom: 20px; /* Space between image and login section */
+  }
+
+  .login-card {
+    max-width: 100%; /* Make the login card take up most of the screen on small devices */
+    padding: 15px;
+    margin: 0 auto; /* Center the login card horizontally */
+    display: flex;
+    flex-direction: column; /* Stack the elements vertically */
+    justify-content: center; /* Center the content vertically */
+    align-items: center; /* Center the content horizontally */
+  }
+
+  .mat-card-title {
+    font-size: 20px; /* Adjust title size for smaller screens */
+    text-align: center; /* Center align the title */
+    color: #580202; /* MUT Logo Red/Burgundy Color */
+  }
+
+  .mat-card-subtitle {
+    font-size: 12px; /* Adjust subtitle size */
+    text-align: center; /* Center align the subtitle */
+    color: gray;
+  }
+
+  .mat-raised-button {
+    width: 100%; /* Make button full width on small screens */
+    padding: 15px;
+    margin-top: 20px; /* Add some space above the button */
+    text-align: center; /* Center align the button */
+    background-color: #580202 !important; /* MUT Red/Burgundy */
+    color: white;
+  }
+
+  .mat-raised-button:hover {
+    background-color: #450101 !important; /* Darker version on hover */
+  }
+}

@@ -1,0 +1,240 @@
+<div class="main-content">
+  <h2
+    style="
+      margin-top: -90px;
+      font-size: 30pt;
+      font-weight: 600;
+      text-align: center;
+    "
+  >
+    Declaration Letters
+  </h2>
+
+  <div *ngIf="isLoading" class="loading-spinner">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Loading Letters...</p>
+  </div>
+
+  <!-- Filter Section -->
+  <div class="filter-section">
+    <div class="filter-row">
+      <!-- Search Input -->
+      <!-- Add this with your other filter controls -->
+      <mat-form-field appearance="fill">
+        <mat-label>Student Name</mat-label>
+        <input
+          matInput
+          type="text"
+          name="studentName"
+          [(ngModel)]="studentNameFilter"
+          placeholder="Search by student name"
+        />
+      </mat-form-field>
+
+      <!-- Date Range Filters -->
+      <mat-form-field appearance="outline">
+        <mat-label>From Date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="startDatePicker"
+          [formControl]="startDateControl"
+          placeholder="Start date"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="startDatePicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #startDatePicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>To Date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="endDatePicker"
+          [formControl]="endDateControl"
+          placeholder="End date"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="endDatePicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #endDatePicker></mat-datepicker>
+      </mat-form-field>
+
+      <!-- Supervisor Filter -->
+      <mat-form-field appearance="outline">
+        <mat-label>Supervisor</mat-label>
+        <input
+          matInput
+          placeholder="Filter by supervisor"
+          [formControl]="supervisorControl"
+        />
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+
+      <!-- HI Number Filter -->
+      <mat-form-field appearance="outline">
+        <mat-label>HI Number</mat-label>
+        <input
+          matInput
+          placeholder="Filter by HI number"
+          [formControl]="hiNumberControl"
+        />
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+
+      <!-- Clear Filters Button -->
+      <button
+        mat-stroked-button
+        color="warn"
+        (click)="clearFilters()"
+        class="clear-btn"
+      >
+        Clear
+      </button>
+    </div>
+  </div>
+
+  <!-- Declarations Table -->
+  <div *ngIf="!isLoading" class="table-container mat-elevation-z2">
+    <div class="scroll-wrapper">
+      <table
+        mat-table
+        [dataSource]="filteredDeclarations"
+        class="declaration-table"
+      >
+        <!-- Student Number Column -->
+        <ng-container matColumnDef="student_number">
+          <th mat-header-cell *matHeaderCellDef>Student Number</th>
+          <td mat-cell *matCellDef="let declaration">
+            {{ declaration.student_number }}
+          </td>
+        </ng-container>
+
+        <!-- Supervisor Column -->
+        <ng-container matColumnDef="supervisor">
+          <th mat-header-cell *matHeaderCellDef>Supervisor</th>
+          <td mat-cell *matCellDef="let declaration">
+            {{ declaration.supervisor_name }} ({{ declaration.hi_number }})
+          </td>
+        </ng-container>
+
+        <!-- Employer Column -->
+        <ng-container matColumnDef="employer">
+          <th mat-header-cell *matHeaderCellDef>Employer</th>
+          <td mat-cell *matCellDef="let declaration">
+            {{ declaration.employer_name }}
+          </td>
+        </ng-container>
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="position">
+          <th mat-header-cell *matHeaderCellDef>Position</th>
+          <td mat-cell *matCellDef="let declaration">
+            {{ declaration.position }}
+          </td>
+        </ng-container>
+
+        <!-- Date Range Column -->
+        <ng-container matColumnDef="dateRange">
+          <th mat-header-cell *matHeaderCellDef>Placement Period</th>
+          <td mat-cell *matCellDef="let declaration">
+            {{ declaration.start_date | date : "mediumDate" }} -
+            {{ declaration.end_date | date : "mediumDate" }}
+          </td>
+        </ng-container>
+
+        <!-- Evaluations Column -->
+        <ng-container matColumnDef="evaluations">
+          <th mat-header-cell *matHeaderCellDef>Evaluations</th>
+          <td mat-cell *matCellDef="let declaration">
+            <div class="evaluation-container">
+              <div
+                *ngFor="let eval of getEvaluations(declaration)"
+                class="evaluation-item"
+              >
+                <span class="evaluation-label">{{ eval.label }}:</span>
+                <span
+                  class="evaluation-badge"
+                  [class.good]="eval.value === 'Good'"
+                  [class.bad]="eval.value === 'Bad'"
+                >
+                  {{ eval.value }}
+                </span>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Comments Column -->
+        <ng-container matColumnDef="comments">
+          <th mat-header-cell *matHeaderCellDef>Comments</th>
+          <td mat-cell *matCellDef="let declaration" class="comments-cell">
+            {{ declaration.general_comments || "No comments provided" }}
+          </td>
+        </ng-container>
+
+        <!-- Signature Column -->
+        <ng-container matColumnDef="signature">
+          <th mat-header-cell *matHeaderCellDef>Signature</th>
+          <td mat-cell *matCellDef="let declaration">
+            <img
+              *ngIf="declaration.supervisor_signature"
+              [src]="getSignatureUrl(declaration.supervisor_signature)"
+              alt="Supervisor signature"
+              class="signature-image"
+            />
+            <span *ngIf="!declaration.supervisor_signature" class="no-signature"
+              >Not Signed</span
+            >
+          </td>
+        </ng-container>
+
+        <!-- Submitted Date Column -->
+        <ng-container matColumnDef="submittedDate">
+          <th mat-header-cell *matHeaderCellDef>Submitted</th>
+          <td mat-cell *matCellDef="let declaration">
+            {{ declaration.created_at | date : "medium" }}
+          </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let declaration" class="actions-cell">
+            <button
+              mat-icon-button
+              color="primary"
+              (click)="viewDeclaration(declaration.id)"
+              matTooltip="View details"
+              aria-label="View declaration"
+            >
+              <mat-icon>visibility</mat-icon>
+            </button>
+
+          </td>
+        </ng-container>
+
+        <!-- Table Rows -->
+        <tr
+          mat-header-row
+          *matHeaderRowDef="displayedColumns; sticky: true"
+        ></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+
+    <!-- Empty State -->
+    <div
+      *ngIf="filteredDeclarations.length === 0 && !isLoading"
+      class="empty-state"
+    >
+      <mat-icon>description</mat-icon>
+      <p>No declaration letters found</p>
+      <p *ngIf="declarations.length > 0" class="hint-text">
+        Try adjusting your filters
+      </p>
+    </div>
+  </div>
+</div>

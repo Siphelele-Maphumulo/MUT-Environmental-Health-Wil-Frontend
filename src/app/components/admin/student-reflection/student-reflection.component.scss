@@ -1,0 +1,159 @@
+/* Reset and base styles */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f5f7fa;
+   overflow-x: hidden;
+}
+
+/* Full-page container */
+.main-content {
+  min-height: 100vh;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Card styling - now full height */
+.reflection-card {
+  flex: 1;
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+}
+
+/* Header styles */
+h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 1rem 0;
+  text-align: center;
+  padding: 1rem 0;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.instruction {
+  color: #7f8c8d;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+/* Form layout */
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 0 1rem;
+}
+
+/* Form fields */
+.reflection-field {
+  width: 100%;
+  margin-bottom: 1rem;
+  
+  textarea.mat-input-element {
+    min-height: 120px;
+    resize: vertical;
+  }
+}
+
+/* Top row of fields */
+.top-fields {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  
+  .reflection-field {
+    flex: 1;
+    min-width: 0; /* prevents flex items from overflowing */
+  }
+  
+  .reflection-field:first-child {
+    flex: 2;
+  }
+}
+
+/* Button container */
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-top: 1px solid #e0e0e0;
+  margin-top: auto;
+}
+
+/* Material overrides */
+.mat-form-field-appearance-outline .mat-form-field-wrapper {
+  margin-bottom: 0.5em;
+}
+
+.mat-form-field-outline {
+  background-color: white;
+  border-radius: 4px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .top-fields {
+    flex-direction: column;
+    gap: 1rem;
+    
+    .reflection-field {
+      flex: 1 1 100%;
+    }
+  }
+  
+  .reflection-card {
+    padding: 1rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+    padding: 0.5rem 0;
+  }
+}
+
+/* Full height textareas */
+.full-height-textarea {
+  flex: 1;
+  
+  textarea {
+    height: calc(100% - 24px); /* account for label height */
+    min-height: 150px;
+  }
+}
+
+/* Close Button Styling */
+/* Floating Close Button Styling */
+.close-btn {
+  position: fixed; /* Changed from absolute */
+  top: 30px;
+  right:150px;
+  background: rgba(243, 64, 64, 0.582);
+  backdrop-filter: blur(10px);
+  border-radius: 50%;
+  z-index: 9999;
+  padding: 10px;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transition: background 0.3s ease;
+
+  &:hover {
+    background: rgba(197, 43, 43, 0.966);
+  }
+
+  mat-icon {
+    font-size: 24px;
+  }
+}

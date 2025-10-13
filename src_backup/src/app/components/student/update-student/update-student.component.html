@@ -1,0 +1,593 @@
+<!-- Header -->
+<div
+  class="container-fluid d-flex align-items-center justify-content-center min-vh-100"
+>
+  <div class="login-form-container shadow p-3 rounded">
+    <div id="header"></div>
+    <div class="container mt-5">
+      <h1 class="text-center mb-4"></h1>
+      <form
+        action="http://localhost/wil/php/studentapplication.php"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        <!-- Province Selection -->
+        <div class="section">
+          <h1 style="text-align: center">
+            APPLICATION FORM FOR WORK INTEGRATED LEARNING PLACEMENT
+          </h1>
+          <h3 style="text-align: center">
+            Select Your Province where you reside
+          </h3>
+          <div class="grid-container">
+            <div class="grid-item">
+              <input type="radio" name="province" value="eastern-cape" />
+              Eastern Cape
+            </div>
+            <div class="grid-item">
+              <input type="radio" name="province" value="free-state" /> Free
+              State
+            </div>
+            <div class="grid-item">
+              <input type="radio" name="province" value="gauteng" /> Gauteng
+            </div>
+            <div class="grid-item">
+              <input type="radio" name="province" value="kwazulu-natal" />
+              Kwazulu Natal
+            </div>
+            <div class="grid-item">
+              <input type="radio" name="province" value="limpopo" /> Limpopo
+            </div>
+            <div class="grid-item">
+              <input type="radio" name="province" value="mpumalanga" />
+              Mpumalanga
+            </div>
+            <div class="grid-item">
+              <input type="radio" name="province" value="northern-cape" />
+              Northern Cape
+            </div>
+            <div class="grid-item">
+              <input type="radio" name="province" value="north-west" /> North
+              West
+            </div>
+            <div class="grid-item">
+              <input type="radio" name="province" value="western-cape" />
+              Western Cape
+            </div>
+          </div>
+        </div>
+
+        <!-- Section A: Personal Information -->
+        <div class="section">
+          <h2
+            class="section-title"
+            style="background-color: #4a171e; color: #f0f0f0"
+          >
+            Section A: Personal Information
+          </h2>
+          <form #personalInfoForm="ngForm" (ngSubmit)="onSubmit()">
+            <table class="personal-info-table">
+              <tr>
+                <td>Title (Mr, Mrs, Ms)</td>
+                <td style="background-color: #ffffff">
+                  <input
+                    type="text"
+                    name="title"
+                    [(ngModel)]="title"
+                    required
+                    pattern="^(Mr|Mrs|Ms)$"
+                    #titleInput="ngModel"
+                    title="Please enter a valid title: Mr, Mrs, or Ms"
+                  />
+                  <div
+                    *ngIf="titleInput.invalid && titleInput.touched"
+                    class="text-danger"
+                  >
+                    <small *ngIf="titleInput.errors?.['required']"
+                      >Title is required.</small
+                    >
+                    <small *ngIf="titleInput.errors?.['pattern']"
+                      >Please enter a valid title: Mr, Mrs, or Ms.</small
+                    >
+                  </div>
+                </td>
+                <td>Initials</td>
+                <td style="background-color: #ffffff">
+                  <input
+                    type="text"
+                    name="initials"
+                    [(ngModel)]="initials"
+                    required
+                    maxlength="6"
+                    pattern="^[A-Z]+$"
+                    #initialsInput="ngModel"
+                    title="Initials must be uppercase letters and no more than 6 characters"
+                  />
+                  <div
+                    *ngIf="initialsInput.invalid && initialsInput.touched"
+                    class="text-danger"
+                  >
+                    <small *ngIf="initialsInput.errors?.['required']"
+                      >Initials are required.</small
+                    >
+                    <small *ngIf="initialsInput.errors?.['pattern']"
+                      >Initials must be uppercase letters and no more than 6
+                      characters.</small
+                    >
+                  </div>
+                </td>
+                <td>Surname</td>
+                <td style="background-color: #ffffff">
+                  <input
+                    type="text"
+                    name="surname"
+                    [(ngModel)]="surname"
+                    required
+                    pattern="^[A-Za-z]+$"
+                    #surnameInput="ngModel"
+                    title="Surname must only contain letters"
+                  />
+                  <div
+                    *ngIf="surnameInput.invalid && surnameInput.touched"
+                    class="text-danger"
+                  >
+                    <small *ngIf="surnameInput.errors?.['required']"
+                      >Surname is required.</small
+                    >
+                    <small *ngIf="surnameInput.errors?.['pattern']"
+                      >Surname must only contain letters.</small
+                    >
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>First Names (in full)</td>
+                <td
+                  colspan="6"
+                  style="background-color: #ffffff; text-align: center"
+                >
+                  <input
+                    type="text"
+                    id="first_names"
+                    name="first_names"
+                    [(ngModel)]="firstNames"
+                    required
+                    pattern="^[A-Za-z ]+$"
+                    #firstNamesInput="ngModel"
+                    title="First Names must only contain letters and spaces"
+                    style="width: 100%; box-sizing: border-box"
+                  />
+                  <div
+                    *ngIf="firstNamesInput.invalid && firstNamesInput.touched"
+                    class="text-danger"
+                  >
+                    <small *ngIf="firstNamesInput.errors?.['required']"
+                      >First names are required.</small
+                    >
+                    <small *ngIf="firstNamesInput.errors?.['pattern']"
+                      >First Names must only contain letters and spaces.</small
+                    >
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Student Number</td>
+                <td style="background-color: #ffffff">
+                  <input
+                    type="text"
+                    name="student_no"
+                    [(ngModel)]="studentNumber"
+                    required
+                    pattern="^[0-9]{8}$"
+                    #studentNumberInput="ngModel"
+                    title="Student number must be exactly 8 digits"
+                  />
+                  <div
+                    *ngIf="
+                      studentNumberInput.invalid && studentNumberInput.touched
+                    "
+                    class="text-danger"
+                  >
+                    <small *ngIf="studentNumberInput.errors?.['required']"
+                      >Student number is required.</small
+                    >
+                    <small *ngIf="studentNumberInput.errors?.['pattern']"
+                      >Student number must be exactly 8 digits.</small
+                    >
+                  </div>
+                </td>
+                <td>Level of Study</td>
+                <td style="background-color: #ffffff">
+                  <input
+                    type="number"
+                    name="level_of_study"
+                    [(ngModel)]="levelOfStudy"
+                    required
+                    min="1"
+                    max="4"
+                    #levelOfStudyInput="ngModel"
+                    title="Level of study must be between 1 and 4"
+                  />
+                  <div
+                    *ngIf="
+                      levelOfStudyInput.invalid && levelOfStudyInput.touched
+                    "
+                    class="text-danger"
+                  >
+                    <small *ngIf="levelOfStudyInput.errors?.['required']"
+                      >Level of study is required.</small
+                    >
+                    <small
+                      *ngIf="levelOfStudyInput.errors?.['min'] || levelOfStudyInput.errors?.['max']"
+                      >Level of study must be between 1 and 4.</small
+                    >
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Race</td>
+                <td style="background-color: #ffffff">
+                  <select
+                    name="race"
+                    [(ngModel)]="race"
+                    required
+                    #raceInput="ngModel"
+                  >
+                    <option value="">Select Race</option>
+                    <option value="African">African</option>
+                    <option value="White">White</option>
+                    <option value="Indian">Indian</option>
+                    <option value="Coloured">Coloured</option>
+                    <option value="Other">Other</option>
+                  </select>
+                  <div
+                    *ngIf="raceInput.invalid && raceInput.touched"
+                    class="text-danger"
+                  >
+                    <small *ngIf="raceInput.errors?.['required']"
+                      >Race is required.</small
+                    >
+                  </div>
+                </td>
+                <td>Gender</td>
+                <td style="background-color: #ffffff">
+                  <select
+                    name="gender"
+                    [(ngModel)]="gender"
+                    required
+                    #genderInput="ngModel"
+                  >
+                    <option value="" disabled selected>
+                      Select your gender
+                    </option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </select>
+                  <div
+                    *ngIf="genderInput.invalid && genderInput.touched"
+                    class="text-danger"
+                  >
+                    Gender is required.
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Email Address</td>
+                <td style="background-color: #ffffff">
+                  <input
+                    type="email"
+                    name="email"
+                    [(ngModel)]="emailAddress"
+                    required
+                    #emailInput="ngModel"
+                    (ngModelChange)="validateEmailAddress()"
+                    title="Please enter a valid email address"
+                  />
+                  <div *ngIf="emailError" class="text-danger">
+                    {{ emailError }}
+                  </div>
+                </td>
+                <td>Physical Address</td>
+                <td style="background-color: #ffffff">
+                  <input
+                    type="text"
+                    name="physical_address"
+                    [(ngModel)]="physicalAddress"
+                    required
+                    pattern="^[A-Za-z0-9 ,.-]+$"
+                    #physicalAddressInput="ngModel"
+                    title="Physical address must contain only letters, numbers, and common address symbols"
+                  />
+                  <div
+                    *ngIf="
+                      physicalAddressInput.invalid &&
+                      physicalAddressInput.touched
+                    "
+                    class="text-danger"
+                  >
+                    <small *ngIf="physicalAddressInput.errors?.['required']"
+                      >Physical address is required.</small
+                    >
+                    <small *ngIf="physicalAddressInput.errors?.['pattern']"
+                      >Physical address must contain only letters, numbers, and
+                      common address symbols.</small
+                    >
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Cell Phone Number</td>
+                <td style="background-color: #ffffff">
+                  <input
+                    type="text"
+                    name="cell_phone_number"
+                    [(ngModel)]="cellPhoneNumber"
+                    required
+                    pattern="^[0-9]{10,13}$"
+                    #cellPhoneNumberInput="ngModel"
+                    title="Cell phone number must be between 10 and 13 digits"
+                  />
+                  <div
+                    *ngIf="
+                      cellPhoneNumberInput.invalid &&
+                      cellPhoneNumberInput.touched
+                    "
+                    class="text-danger"
+                  >
+                    <small *ngIf="cellPhoneNumberInput.errors?.['required']"
+                      >Cell phone number is required.</small
+                    >
+                    <small *ngIf="cellPhoneNumberInput.errors?.['pattern']"
+                      >Cell phone number must be between 10 and 13
+                      digits.</small
+                    >
+                  </div>
+                </td>
+                <td>Home Town</td>
+                <td style="background-color: #ffffff">
+                  <input
+                    type="text"
+                    name="home_town"
+                    [(ngModel)]="homeTown"
+                    required
+                    pattern="^[A-Za-z ]+$"
+                    #homeTownInput="ngModel"
+                    title="Home town must only contain letters and spaces"
+                  />
+                  <div
+                    *ngIf="homeTownInput.invalid && homeTownInput.touched"
+                    class="text-danger"
+                  >
+                    <small *ngIf="homeTownInput.errors?.['required']"
+                      >Home town is required.</small
+                    >
+                    <small *ngIf="homeTownInput.errors?.['pattern']"
+                      >Home town must only contain letters and spaces.</small
+                    >
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </form>
+        </div>
+
+        <!-- Section B: Preferred Area of WIL Placement -->
+        <div class="section">
+          <h2 class="section-title" style="background-color: #d8a02e">
+            Section B: Preferred Area of WIL Placement
+          </h2>
+          <div
+            class="centered"
+            style="
+              background-color: #d8a02e;
+              font-weight: bolder;
+              font-size: larger;
+            "
+          >
+            Choice A: Municipal Health Services
+          </div>
+          <table class="personal-info-table">
+            <tr>
+              <td>Name of Institution</td>
+              <td style="background-color: #ffffff">
+                <input
+                  type="text"
+                  name="municipality_name"
+                  [(ngModel)]="municipalityName"
+                  required
+                  (ngModelChange)="validatemunicipalityName()"
+                  #municipalityNameInput="ngModel"
+                />
+                <div *ngIf="municipalityNameError" class="text-danger">
+                  {{ municipalityNameError }}
+                </div>
+              </td>
+              <td>Town Situated</td>
+              <td style="background-color: #ffffff">
+                <input
+                  type="text"
+                  name="town_situated"
+                  [(ngModel)]="townSituated"
+                  required
+                  (ngModelChange)="validateTownSituated()"
+                  #townSituatedInput="ngModel"
+                />
+                <div *ngIf="townSituatedError" class="text-danger">
+                  {{ townSituatedError }}
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Contact Person</td>
+              <td style="background-color: #ffffff">
+                <input
+                  type="text"
+                  name="contact_person"
+                  [(ngModel)]="contactPerson"
+                  required
+                  (ngModelChange)="validateContactPerson()"
+                  #contactPersonInput="ngModel"
+                />
+                <div *ngIf="contactPersonError" class="text-danger">
+                  {{ contactPersonError }}
+                </div>
+              </td>
+              <td>Email Address</td>
+              <td style="background-color: #ffffff">
+                <input
+                  type="email"
+                  name="contact_email"
+                  [(ngModel)]="contactEmail"
+                  required
+                  (ngModelChange)="validateContactEmail()"
+                />
+                <div *ngIf="contactEmailError" class="text-danger">
+                  {{ contactEmailError }}
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Telephone Number</td>
+              <td style="background-color: #ffffff">
+                <input
+                  type="text"
+                  name="telephone_number"
+                  [(ngModel)]="telephoneNumber"
+                  required
+                  (ngModelChange)="validateTelephoneNumber()"
+                  #telephoneNumberInput="ngModel"
+                />
+                <div *ngIf="telephoneNumberError" class="text-danger">
+                  {{ telephoneNumberError }}
+                </div>
+              </td>
+              <td>Cell Phone</td>
+              <td style="background-color: #ffffff">
+                <input
+                  type="text"
+                  name="cell_phone"
+                  [(ngModel)]="contactCellPhone"
+                  required
+                  (ngModelChange)="validateContactCellPhone()"
+                  #contactCellPhoneInput="ngModel"
+                />
+                <div *ngIf="contactCellPhoneError" class="text-danger">
+                  {{ contactCellPhoneError }}
+                </div>
+              </td>
+            </tr>
+          </table>
+          <div class="centered">
+            <strong
+              >Note: Applicants are not responsible for their own travel and
+              accommodation during WIL placement.</strong
+            >
+          </div>
+        </div>
+
+        <!-- Section C: Declaration -->
+        <div class="section">
+          <h2 class="section-title maroon-bg">Section C: Declaration</h2>
+          <table
+            class="declaration-table"
+            style="background-color: #ffffff; width: 100%"
+          >
+            <tr>
+              <td style="width: 90%; font-weight: bold">
+                I DECLARE THE FOLLOWING
+              </td>
+              <td style="width: 10%; text-align: right">Tick</td>
+            </tr>
+            <tr>
+              <td style="background-color: #ffffff; width: 90%">
+                The information in the application is true and correct
+              </td>
+              <td
+                style="background-color: #ffffff; width: 10%; text-align: right"
+              >
+                <input type="checkbox" name="declaration_info_1" />
+              </td>
+            </tr>
+            <tr>
+              <td style="background-color: #ffffff; width: 90%">
+                Preferred area of WIL has been communicated with my Parents or
+                Guardians
+              </td>
+              <td
+                style="background-color: #ffffff; width: 10%; text-align: right"
+              >
+                <input type="checkbox" name="declaration_info_2" />
+              </td>
+            </tr>
+            <tr>
+              <td style="background-color: #ffffff; width: 90%">
+                I know no reason that could prevent me from attending WIL
+                sessions or from successfully completing the specified period
+              </td>
+              <td
+                style="background-color: #ffffff; width: 10%; text-align: right"
+              >
+                <input type="checkbox" name="declaration_info_3" />
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- Rules for Application -->
+        <div class="section">
+          <h2 class="bold centered">Rules for Application</h2>
+          <ul class="bullet-points">
+            <li>Incomplete forms will not be accepted</li>
+            <li>Forms must be submitted before the closing date</li>
+            <li>Provide certified ID and CV</li>
+            <li>Attend all compulsory WIL sessions</li>
+          </ul>
+        </div>
+
+        <!-- Signature Section -->
+        <div class="section">
+          <h2 class="section-title maroon-bg">
+            Signature and Document Uploads
+          </h2>
+          <div class="upload-container">
+            <div>
+              Upload Signature (Image):
+              <input
+                type="file"
+                name="signature_image"
+                id="signature_image"
+                required
+              />
+            </div>
+            <div>
+              Upload ID:
+              <input type="file" name="id_document" id="id_document" required />
+            </div>
+            <div>
+              Upload CV:
+              <input type="file" name="cv_document" id="cv_document" required />
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="section centered button-container">
+          <input
+            type="submit"
+            value="Update Application"
+            class="button update-button"
+          />
+
+          <!-- Back Button -->
+          <button
+            type="button"
+            onclick="history.back();"
+            class="button cancel-button"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,31 @@
+<div class="pdf-container">
+  <div *ngIf="isLoading" class="loading">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Loading PDF document...</p>
+  </div>
+  
+  <div *ngIf="error" class="error-message">
+    <mat-icon color="warn" class="error-icon">error_outline</mat-icon>
+    <h3>Error Loading Document</h3>
+    <p>{{ error }}</p>
+    <div class="actions">
+      <button mat-raised-button color="primary" (click)="downloadPdf()" [disabled]="!pdfObjectUrl">
+        <mat-icon>download</mat-icon> Download PDF
+      </button>
+      <button mat-button (click)="dialogRef.close()">Close</button>
+    </div>
+  </div>
+  
+  <object *ngIf="pdfObjectUrl && !error" 
+         [data]="pdfObjectUrl" 
+         type="application/pdf" 
+         width="100%" 
+         height="100%">
+    <div class="fallback-message">
+      <p>Unable to display PDF in the browser.</p>
+      <a mat-button color="primary" [href]="pdfObjectUrl" target="_blank">
+        <mat-icon>open_in_new</mat-icon> Open in new tab
+      </a>
+    </div>
+  </object>
+</div>

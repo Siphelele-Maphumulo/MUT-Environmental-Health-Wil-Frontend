@@ -1,0 +1,148 @@
+<mat-card class="upcoming-events-card" style="padding-bottom: 13%">
+  <h2>Upcoming Events</h2>
+
+  <!-- Filters Section -->
+  <div class="filters" style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center">
+    <mat-form-field appearance="outline" class="filter-input">
+      <mat-label>Filter by Title</mat-label>
+      <input matInput [formControl]="titleControl" placeholder="Enter title" />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="filter-input">
+      <mat-label>Filter by Guest Name</mat-label>
+      <input matInput [formControl]="guestNameControl" placeholder="Enter guest name" />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="filter-input">
+      <mat-label>Filter by Event Type</mat-label>
+      <mat-select [formControl]="eventTypeControl">
+        <mat-option value="all">All</mat-option>
+        <mat-option value="Guest Lecture">Guest Lecture</mat-option>
+        <mat-option value="Field Trip">Field Trip</mat-option>
+        <mat-option value="Workshop">Workshop</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="filter-input">
+      <mat-label>Filter by Event Date</mat-label>
+      <input matInput [matDatepicker]="picker" [formControl]="eventDateControl" placeholder="Choose a date" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <button mat-raised-button (click)="clearFilters()" class="clear-btn" style="align-self: center; height: 40px">
+      Clear Filters
+    </button>
+  </div>
+
+  <!-- Open Attendance Register Button -->
+<div class="attendance-button-wrapper">
+  <button mat-raised-button (click)="openAttendanceRegister()" class="open-register-btn">
+    <mat-icon>list_alt</mat-icon>
+    <span>Open Attendance Register</span>
+  </button>
+</div>
+
+
+  <!-- Table Section -->
+  <table mat-table [dataSource]="filteredLectures" class="mat-elevation-z8">
+
+    <!-- Title -->
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef>Title</th>
+      <td mat-cell *matCellDef="let lecture">{{ lecture.title }}</td>
+    </ng-container>
+
+    <!-- Guest Name -->
+    <ng-container matColumnDef="guest_name">
+      <th mat-header-cell *matHeaderCellDef>Guest Name</th>
+      <td mat-cell *matCellDef="let lecture">{{ lecture.guest_name }}</td>
+    </ng-container>
+
+    <!-- Event Type -->
+    <ng-container matColumnDef="event_type">
+      <th mat-header-cell *matHeaderCellDef>Event Type</th>
+      <td mat-cell *matCellDef="let lecture">{{ lecture.event_type }}</td>
+    </ng-container>
+
+    <!-- Event Date -->
+    <ng-container matColumnDef="event_date">
+      <th mat-header-cell *matHeaderCellDef>Event Date</th>
+      <td mat-cell *matCellDef="let lecture">{{ lecture.event_date | date }}</td>
+    </ng-container>
+
+<!-- Register Status -->
+<ng-container matColumnDef="register_status">
+  <th mat-header-cell *matHeaderCellDef>Register Status</th>
+  <td mat-cell *matCellDef="let lecture">
+    <span [ngClass]="{
+      'status-active': lecture.register_status === 'Active',
+      'status-inactive': lecture.register_status === 'Inactive',
+      'status-pending': lecture.register_status === 'Pending',
+      'status-cancelled': lecture.register_status === 'Cancelled'
+    }">
+      {{ lecture?.register_status || 'N/A' }}
+    </span>
+  </td>
+</ng-container>
+
+<!-- Actions -->
+<ng-container matColumnDef="actions">
+  <th mat-header-cell *matHeaderCellDef>Actions</th>
+  <td mat-cell *matCellDef="let lecture">
+    <!-- Download Button -->
+    <button
+      mat-icon-button
+      color="primary"
+      (click)="downloadDocument(lecture.id, lecture.document_path)"
+      [disabled]="loadingStates[lecture.id]"
+      matTooltip="Download Document"
+    >
+      <mat-spinner *ngIf="loadingStates[lecture.id]" diameter="20"></mat-spinner>
+      <mat-icon *ngIf="!loadingStates[lecture.id]" style="color: blue">download</mat-icon>
+    </button>
+
+
+    <!-- Delete Button (Add this) -->
+    <button
+      mat-icon-button
+      color="warn"
+      (click)="deleteEvent(lecture)"
+      [disabled]="loadingStates[lecture.id]"
+      matTooltip="Delete Event"
+      style="margin-left: 8px;"
+    >
+      <mat-spinner *ngIf="loadingStates[lecture.id]" diameter="20"></mat-spinner>
+      <mat-icon *ngIf="!loadingStates[lecture.id]">delete</mat-icon>
+    </button>
+
+    <!-- Toggle Status Button -->
+    <button
+      *ngIf="isFromAdmin || isAdminUser"
+      mat-button
+      [ngClass]="{
+        'toggle-status-btn': true,
+        'active': lecture.register_status === 'Active',
+        'inactive': lecture.register_status !== 'Active'
+      }"
+      (click)="toggleRegisterStatus(lecture)"
+      [disabled]="loadingStates[lecture.id]"
+      matTooltip="Toggle Register Status"
+      style="margin-left: 8px;"
+    >
+      {{ lecture.register_status === 'Active' ? 'Deactivate' : 'Activate' }}
+    </button>
+  </td>
+</ng-container>
+
+
+    <!-- Table Rows -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</mat-card>
+
+
+

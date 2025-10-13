@@ -1,0 +1,67 @@
+/* Center and style the dialog title */
+
+h1[mat-dialog-title] {
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: center;
+  color: #3f51b5; /* Primary color */
+  margin-bottom: 10px;
+}
+
+/* Add padding and style to the dialog content */
+mat-dialog-content {
+  padding: 50px;
+  font-size: 1rem;
+  color: #333;
+}
+
+/* Style the input field */
+mat-form-field {
+  margin-top: 10px;
+  padding-top: 20%;
+  margin: 10px;
+}
+
+/* Add button styling */
+mat-dialog-actions {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px 10px;
+  gap: 20px;
+}
+
+button[mat-button] {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+button[mat-button]:first-child {
+  color: #f44336; /* Red for cancel */
+}
+
+button[mat-button]:last-child {
+  background-color: #3f51b5; /* Primary button color */
+  color: white;
+  padding: 6px 16px;
+  border-radius: 4px;
+}
+
+button[mat-button]:last-child:hover {
+  background-color: #303f9f; /* Darker shade for hover */
+}
+
+/* Add responsiveness */
+@media (max-width: 576px) {
+  h1[mat-dialog-title] {
+    font-size: 1.2rem;
+  }
+
+  mat-dialog-content {
+    font-size: 0.9rem;
+  }
+
+  button[mat-button] {
+    font-size: 0.9rem;
+  }
+}

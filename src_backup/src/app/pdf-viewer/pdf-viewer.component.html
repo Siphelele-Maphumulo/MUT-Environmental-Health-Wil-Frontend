@@ -1,0 +1,10 @@
+<!-- Example in 'actions' column -->
+<td mat-cell *matCellDef="let element">
+  <button
+    mat-button
+    color="primary"
+    (click)="viewPdfInModal(element.cv_document)"
+  >
+    View PDF
+  </button>
+</td>

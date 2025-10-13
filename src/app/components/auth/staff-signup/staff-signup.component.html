@@ -1,0 +1,188 @@
+<div
+  class="container d-flex align-items-center justify-content-center min-vh-100"
+>
+  <!-- Image Section -->
+  <div class="image-section">
+    <img
+      src="./MUT-DoEH-Logo-Stacked.png"
+      alt="WIL System Image"
+      style="width: 50%; margin-top: -50px"
+    />
+  </div>
+
+  <!-- Signup Card Section -->
+  <mat-card class="signup-card" style="padding-left: 1%; padding-top: 5%">
+    <mat-card-header>
+      <mat-card-title>Staff Sign Up</mat-card-title>
+      <mat-card-subtitle>Create your account to get started</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+        <!-- Email Field -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Email</mat-label>
+          <mat-icon matPrefix>email</mat-icon>
+          <input
+            matInput
+            formControlName="email"
+            type="email"
+            placeholder="Enter your email"
+          />
+          <mat-error *ngIf="signupForm.get('email')?.hasError('required')">
+            Email is required
+          </mat-error>
+          <mat-error *ngIf="signupForm.get('email')?.hasError('email')">
+            Please enter a valid email address
+          </mat-error>
+          <mat-error *ngIf="signupForm.get('email')?.hasError('pattern')">
+            Email must end with &#64;mut.ac.za
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Title Field -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Title</mat-label>
+          <mat-select formControlName="title">
+            <mat-option *ngFor="let title of title" [value]="title.value">
+              {{ title.viewValue }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="signupForm.get('title')?.hasError('required')">
+            Title is required
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Password Field -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Password</mat-label>
+          <mat-icon matPrefix>lock</mat-icon>
+          <input
+            matInput
+            formControlName="password"
+            [type]="hide ? 'password' : 'text'"
+            placeholder="Enter your password"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="hide = !hide"
+            type="button"
+          >
+            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+          </button>
+          <mat-error *ngIf="signupForm.get('password')?.hasError('required')">
+            Password is required
+          </mat-error>
+          <mat-error *ngIf="signupForm.get('password')?.hasError('minlength')">
+            Password must be at least 7 characters
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Confirm Password Field -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Confirm Password</mat-label>
+          <mat-icon matPrefix>lock</mat-icon>
+          <input
+            matInput
+            formControlName="confirmPassword"
+            [type]="hideConfirm ? 'password' : 'text'"
+            placeholder="Confirm your password"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="hideConfirm = !hideConfirm"
+            type="button"
+          >
+            <mat-icon>{{
+              hideConfirm ? "visibility_off" : "visibility"
+            }}</mat-icon>
+          </button>
+          <mat-error *ngIf="signupForm.get('confirmPassword')?.hasError('required')">
+            Please confirm your password
+          </mat-error>
+          <mat-error *ngIf="signupForm.hasError('mismatch')">
+            Passwords do not match
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Signature Upload Field -->
+        <div class="signature-upload-section full-width">
+          <mat-label class="signature-label">Signature Image *</mat-label>
+          <input
+            type="file"
+            formControlName="signature"
+            (change)="onSignatureSelected($event)"
+            accept="image/png, image/jpeg, image/jpg"
+            #signatureInput
+            style="display: none"
+          />
+          
+          <!-- Upload Button -->
+          <button
+            mat-stroked-button
+            color="primary"
+            type="button"
+            (click)="signatureInput.click()"
+            class="upload-button full-width"
+          >
+            <mat-icon>cloud_upload</mat-icon>
+            Choose Signature Image
+          </button>
+
+          <!-- Signature Preview -->
+          <div *ngIf="signaturePreview" class="signature-preview">
+            <div class="preview-container">
+              <img [src]="signaturePreview" alt="Signature Preview" class="preview-image">
+              <button
+                mat-icon-button
+                color="warn"
+                type="button"
+                (click)="removeSignature()"
+                class="remove-button"
+                matTooltip="Remove signature"
+              >
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+            <p class="preview-text">Signature Preview - Click remove to change</p>
+          </div>
+
+          <!-- Validation Messages -->
+          <div *ngIf="signupForm.get('signature')?.invalid && signupForm.get('signature')?.touched" class="error-message">
+            <mat-icon style="font-size: 16px; vertical-align: middle;">error</mat-icon>
+            Signature image is required
+          </div>
+        </div>
+
+        <!-- Signature Requirements Hint -->
+        <mat-hint class="signature-hint">
+          <mat-icon style="font-size: 16px; vertical-align: middle;">info</mat-icon>
+          Upload a clear image of your signature (PNG or JPG, max 2MB). 
+          This will be used to sign official documents.
+        </mat-hint>
+
+        <!-- Submit Button -->
+        <div class="actions">
+          <button 
+            mat-raised-button 
+            color="primary" 
+            type="submit"
+            class="submit-button"
+            [disabled]="signupForm.invalid"
+          >
+            Sign Up
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions class="additional-actions">
+      <p style="padding-left: 14%">
+        Already have an account?
+        <a (click)="login()" class="sign-in-link">Login here</a>
+      </p>
+    </mat-card-actions>
+  </mat-card>
+</div>

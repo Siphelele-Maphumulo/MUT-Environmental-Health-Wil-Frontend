@@ -1,0 +1,165 @@
+<div class="modal-fullscreen-backdrop">
+  <div class="modal-fullscreen-content">
+    <button mat-icon-button class="close-button" (click)="closeModal()" aria-label="Close">
+      <mat-icon>close</mat-icon>
+    </button>
+
+    <mat-card class="upcoming-events-card">
+      <h2>ALL EVENT ATTENDANCE REGISTERS</h2>
+
+      <!-- Loading Spinner -->
+      <div *ngIf="loading" class="spinner-container">
+        <mat-spinner diameter="50"></mat-spinner>
+      </div>
+
+      <!-- Event Selection -->
+      <div class="event-selection" *ngIf="!loading && events.length > 0 && !selectedEvent">
+        <mat-card
+          *ngFor="let event of events"
+          (click)="loadEventDetails(event.event_id)"
+          class="event-card"
+        >
+          <mat-card-header>
+            <mat-card-title>{{ event.event_title }}</mat-card-title>
+            <mat-card-subtitle *ngIf="event.guest_name">
+              Guest: {{ event.guest_name }}
+            </mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p>{{ event.event_type }} • {{ formatDate(event.event_date) }}</p>
+            <p>Registered: {{ event.total_registrations }}</p>
+            <p>Attended: {{ event.attended_count }}</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <!-- Back to Events Button -->
+      <div *ngIf="selectedEvent" class="back-button-container">
+        <button mat-button (click)="selectedEvent = null; dataSource.data = []">
+          <mat-icon>arrow_back</mat-icon> Back to Events
+        </button>
+      </div>
+
+      <!-- Attendance Details -->
+      <div *ngIf="selectedEvent" class="attendance-details">
+        <div class="attendance-header">
+          <h2>{{ selectedEvent.event_title }} Attendance</h2>
+          
+          <!-- Export Buttons -->
+          <div class="export-buttons" *ngIf="dataSource.data.length > 0">
+            <button mat-raised-button color="primary" (click)="exportToExcel()">
+              <mat-icon>description</mat-icon> Export to Excel
+            </button>
+            <button mat-raised-button color="accent" (click)="exportToCsv()">
+              <mat-icon>table_chart</mat-icon> Export to CSV
+            </button>
+            <button mat-raised-button color="warn" (click)="printAttendance()">
+              <mat-icon>print</mat-icon> Print
+            </button>
+          </div>
+        </div>
+
+        <div class="event-info">
+          <span class="event-type">{{ selectedEvent.event_type }}</span>
+          <span class="event-date">{{ formatDate(selectedEvent.event_date) }}</span>
+          <span class="guest-name" *ngIf="selectedEvent.guest_name">
+            <mat-icon>person</mat-icon> {{ selectedEvent.guest_name }}
+          </span>
+          <span class="attendance-count">
+            <mat-icon>people</mat-icon> 
+            {{ getTotalRegistered() }} registered
+            ({{ getAttendedCount() }} attended)
+          </span>
+        </div>
+
+        <div class="table-container" *ngIf="dataSource.data.length > 0">
+          <table mat-table [dataSource]="dataSource" class="mat-elevation-z1">
+            <!-- No. Column -->
+            <ng-container matColumnDef="no">
+              <th mat-header-cell *matHeaderCellDef>No.</th>
+              <td mat-cell *matCellDef="let element">{{ element.no }}</td>
+            </ng-container>
+            
+            <!-- Initials Column -->
+            <ng-container matColumnDef="initials">
+              <th mat-header-cell *matHeaderCellDef>Initials</th>
+              <td mat-cell *matCellDef="let el">{{ el.initials || 'N/A' }}</td>
+            </ng-container>
+            
+            <!-- Student Number Column -->
+            <ng-container matColumnDef="student_number">
+              <th mat-header-cell *matHeaderCellDef>Student No.</th>
+              <td mat-cell *matCellDef="let el">{{ el.student_number || 'N/A' }}</td>
+            </ng-container>
+            
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Name</th>
+              <td mat-cell *matCellDef="let el">
+                {{ (el.student_title ? el.student_title + ' ' : '') + (el.first_names || '') }}
+              </td>
+            </ng-container>
+            
+            <!-- Surname Column -->
+            <ng-container matColumnDef="surname">
+              <th mat-header-cell *matHeaderCellDef>Surname</th>
+              <td mat-cell *matCellDef="let el">{{ el.surname || 'N/A' }}</td>
+            </ng-container>
+            
+            <!-- Signed At Column -->
+            <ng-container matColumnDef="signature">
+              <th mat-header-cell *matHeaderCellDef>Signed At</th>
+              <td mat-cell *matCellDef="let el">
+                {{ el.signed_at ? formatDateTime(el.signed_at) : 'Not signed' }}
+              </td>
+            </ng-container>
+            
+            <!-- Update the attended column in your table -->
+            <ng-container matColumnDef="attended">
+              <th mat-header-cell *matHeaderCellDef>Attended</th>
+              <td mat-cell *matCellDef="let record">
+                <mat-checkbox
+                  [checked]="record.attended"
+                  (change)="markAttendance(record, $event.checked)"
+                  color="primary"
+                  [disabled]="loading"
+                >
+                  {{ record.attended ? 'Yes' : 'No' }}
+                </mat-checkbox>
+              </td>
+            </ng-container>
+          <!-- Add this to your template where you want to show the stats -->
+          <div class="attendance-stats">
+            <div class="stat-item">
+              <span class="stat-label">Total Registered:</span>
+              <span class="stat-value">{{ attendanceStats.totalRegistered }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Attended:</span>
+              <span class="stat-value">{{ attendanceStats.totalAttended }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Attendance Rate:</span>
+              <span class="stat-value">{{ attendanceStats.attendanceRate }}%</span>
+            </div>
+          </div>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+
+        <div *ngIf="dataSource.data.length === 0 && !loading" class="no-records">
+          <p>No attendance records found for this event.</p>
+        </div>
+      </div>
+
+      <!-- No Events Message -->
+      <div *ngIf="!loading && events.length === 0 && !selectedEvent" class="no-events">
+        <p>No attendance registers found.</p>
+      </div>
+
+      <!-- Invisible bottom anchor -->
+      <div #bottomAnchor></div>
+    </mat-card>
+  </div>
+</div>

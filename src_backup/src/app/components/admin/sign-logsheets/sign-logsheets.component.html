@@ -1,0 +1,52 @@
+<div class="container">
+  <h1>Update Logsheets</h1>
+
+  <div *ngIf="isLoading" class="loading">Loading logsheets...</div>
+
+  <form [formGroup]="logsheetsForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
+    <div formArrayName="logsheets">
+      <div
+        *ngFor="let logsheet of logsheetsArray.controls; let i = index"
+        [formGroupName]="i"
+        class="logsheet-card"
+      >
+        <h3>Logsheet #{{ i + 1 }}</h3>
+
+        <label for="logDate">Log Date:</label>
+        <input type="date" formControlName="logDate" />
+
+        <label for="studentNumber">Student Number:</label>
+        <input type="text" formControlName="studentNumber" />
+
+        <label for="description">Description:</label>
+        <textarea formControlName="description"></textarea>
+
+        <label for="situationDescription">Situation Description:</label>
+        <textarea formControlName="situationDescription"></textarea>
+
+        <label for="situationEvaluation">Situation Evaluation:</label>
+        <textarea formControlName="situationEvaluation"></textarea>
+
+        <label for="situationInterpretation">Situation Interpretation:</label>
+        <textarea formControlName="situationInterpretation"></textarea>
+
+        <label for="dateStamp">Date Stamp:</label>
+        <input type="date" formControlName="dateStamp" />
+
+        <label for="ehp_hi_number">EHP HI Number:</label>
+        <input type="text" formControlName="ehp_hi_number" />
+
+        <label for="supervisor_signature">Supervisor Signature:</label>
+        <input
+          type="text"
+          formControlName="supervisor_signature"
+          [disabled]="true"
+        />
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="logsheetForm.invalid">
+      Update Logsheets
+    </button>
+  </form>
+</div>

@@ -1,0 +1,187 @@
+<div class="container mt-5">
+  <h2>Student Logbook Summary</h2>
+  <div class="filter-container">
+    <!-- Text Filters -->
+    <mat-form-field appearance="outline">
+      <mat-label>First Name</mat-label>
+      <input matInput [(ngModel)]="firstNameFilter" (input)="applyFilters()" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Surname</mat-label>
+      <input matInput [(ngModel)]="surnameFilter" (input)="applyFilters()" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Student Number</mat-label>
+      <input
+        matInput
+        [(ngModel)]="studentNumberFilter"
+        (input)="applyFilters()"
+      />
+    </mat-form-field>
+
+    <!-- Dropdown Filters -->
+    <mat-form-field appearance="outline">
+      <mat-label>Year of Study</mat-label>
+      <mat-select [(ngModel)]="yearFilter" (selectionChange)="applyFilters()">
+        <mat-option value="">All Years</mat-option>
+        <mat-option value="1">1st Year</mat-option>
+        <mat-option value="4">2nd Year</mat-option>
+        <mat-option value="3">3rd Year</mat-option>
+        <mat-option value="4">4th Year</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>HPCSA Status</mat-label>
+      <mat-select
+        [(ngModel)]="hpcsaStatusFilter"
+        (selectionChange)="applyFilters()"
+      >
+        <mat-option value="">All Statuses</mat-option>
+        <mat-option value="Yes">Verified</mat-option>
+        <mat-option value="No">Not Verified</mat-option>
+        <mat-option value="Pending">Pending</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Range Filters -->
+    <!-- <div class="range-filter">
+      <mat-form-field appearance="outline">
+        <mat-label>Min Hours</mat-label>
+        <input
+          matInput
+          type="number"
+          [(ngModel)]="minHours"
+          (change)="applyFilters()"
+        />
+      </mat-form-field>
+      <span>to</span>
+      <mat-form-field appearance="outline">
+        <mat-label>Max Hours</mat-label>
+        <input
+          matInput
+          type="number"
+          [(ngModel)]="maxHours"
+          (change)="applyFilters()"
+        />
+      </mat-form-field>
+    </div>
+
+    <div class="range-filter">
+      <mat-form-field appearance="outline">
+        <mat-label>Min Days Worked</mat-label>
+        <input
+          matInput
+          type="number"
+          [(ngModel)]="minDays"
+          (change)="applyFilters()"
+        />
+      </mat-form-field>
+      <span>to</span>
+      <mat-form-field appearance="outline">
+        <mat-label>Max Days Worked</mat-label>
+        <input
+          matInput
+          type="number"
+          [(ngModel)]="maxDays"
+          (change)="applyFilters()"
+        />
+      </mat-form-field>
+    </div>
+
+    <div class="range-filter">
+      <mat-form-field appearance="outline">
+        <mat-label>Min Days Left</mat-label>
+        <input
+          matInput
+          type="number"
+          [(ngModel)]="minDaysLeft"
+          (change)="applyFilters()"
+        />
+      </mat-form-field>
+      <span>to</span>
+      <mat-form-field appearance="outline">
+        <mat-label>Max Days Left</mat-label>
+        <input
+          matInput
+          type="number"
+          [(ngModel)]="maxDaysLeft"
+          (change)="applyFilters()"
+        />
+      </mat-form-field>
+    </div> -->
+
+    <button
+      mat-raised-button
+      style="
+        background-color: red;
+        color: white;
+        font-size: 16px;
+        border-radius: 5px;
+        width: 150px;
+        height: 40px;
+        margin-left: 10px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+      "
+      (click)="resetFilters()"
+    >
+      Reset Filters
+    </button>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-bordered align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>FIRST NAME</th>
+          <th>SURNAME</th>
+          <th>STUDENT NUMBER</th>
+          <th>YEAR OF STUDY</th>
+          <th>HOURS WORKED</th>
+          <th>DAYS WORKED</th>
+          <th>DAYS LEFT</th>
+          <th>PROGRESS</th>
+          <th style="font-size: small">HPCSA VERIFIED</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let student of filteredStudents"
+          [style.background-color]="student.progressColor"
+          [style.color]="'white'"
+          (click)="viewLogBookFile(student.student_number)"
+          style="cursor: pointer"
+        >
+          <td>{{ student.first_names }}</td>
+          <td>{{ student.surname }}</td>
+          <td>{{ student.student_number }}</td>
+          <td>{{ student.level_of_study | yearFormat }}</td>
+          <td>{{ student.totalHoursWorked || 0 }} hrs</td>
+          <td>{{ student.totalDaysWorked || 0 }}</td>
+          <td>{{ student.totalDaysLeft || 0 }}</td>
+          <td>
+            <div class="progress" style="height: 20px">
+              <div
+                class="progress-bar bg-{{ student.progressColor }}"
+                role="progressbar"
+                [style.width.%]="student.completionPercentage"
+              >
+                {{ student.completionPercentage }}%
+              </div>
+            </div>
+          </td>
+          <td style="justify-content: center; text-align: center">
+            <span
+              class="badge"
+              [style.backgroundColor]="student.hpcsaStatusColor"
+            >
+              {{ student.hpcsaStatus }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

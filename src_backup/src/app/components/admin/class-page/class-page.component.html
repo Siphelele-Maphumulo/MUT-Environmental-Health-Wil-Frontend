@@ -1,0 +1,93 @@
+<mat-toolbar color="primary" class="header-toolbar">
+  <img src="assets/mut_logo.png" alt="MUT Logo" class="logo" />
+  <span class="toolbar-title">Environmental Health - My Classes</span>
+</mat-toolbar>
+
+<mat-card class="class-management-card">
+  <h2>My Classes</h2>
+
+  <!-- Tabs for Class Status -->
+  <mat-tab-group class="tabs">
+    <mat-tab label="In-Progress (2)"></mat-tab>
+    <mat-tab label="Completed (3)"></mat-tab>
+    <mat-tab label="Draft (0)"></mat-tab>
+  </mat-tab-group>
+
+  <!-- Filter Bar -->
+  <div class="filter-bar">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Search Class</mat-label>
+      <input matInput type="text" (input)="applyFilter($event)" placeholder="Enter class name" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="type-field">
+      <mat-label>Type</mat-label>
+      <mat-select (selectionChange)="applyTypeFilter($event.value)">
+        <mat-option value="">All</mat-option>
+        <mat-option value="Self-paced">Self-paced</mat-option>
+        <mat-option value="Instructor-led">Instructor-led</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- Class Table -->
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <!-- Class Column -->
+    <ng-container matColumnDef="class">
+      <th mat-header-cell *matHeaderCellDef> Class </th>
+      <td mat-cell *matCellDef="let element"> {{ element.className }} </td>
+    </ng-container>
+
+    <!-- Level Column -->
+    <ng-container matColumnDef="level">
+      <th mat-header-cell *matHeaderCellDef> Level </th>
+      <td mat-cell *matCellDef="let element"> {{ element.level }} </td>
+    </ng-container>
+
+    <!-- Date Column -->
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef> Date </th>
+      <td mat-cell *matCellDef="let element"> {{ element.date }} </td>
+    </ng-container>
+
+    <!-- Type Column -->
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef> Type </th>
+      <td mat-cell *matCellDef="let element"> {{ element.type }} </td>
+    </ng-container>
+
+    <!-- Instructor Column -->
+    <ng-container matColumnDef="instructor">
+      <th mat-header-cell *matHeaderCellDef> Instructor </th>
+      <td mat-cell *matCellDef="let element"> {{ element.instructor }} </td>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-button color="primary">Invite Learners</button>
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="suspendClass(element)">Suspend Class</button>
+          <button mat-menu-item (click)="deleteClass(element)">Delete Class</button>
+        </mat-menu>
+      </td>
+    </ng-container>
+
+    <!-- Table Header and Row Definitions -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <!-- Pagination -->
+  <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
+</mat-card>
+
+<mat-toolbar color="accent" class="footer-toolbar">
+  <span>Guide</span>
+  <span class="spacer"></span>
+  <span>Contact</span>
+</mat-toolbar>

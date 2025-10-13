@@ -1,0 +1,87 @@
+/** 
+Primary Color: Maroon/Burgundy (#4A171E)
+Secondary Color: Golden Yellow (#D8A02E)
+Accent Color: Teal/Blue-Green (#15716B)
+Support Colors: Dark Brown (#7B4E36), Dark Blue (#0C314D)
+*/
+
+.header-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px; // top/bottom right/left padding
+  background-color: #4a171e; // Deep burgundy color
+  color: #fff;
+  height: 80px; // To match the look in the uploaded image
+  position: fixed; // Fix the header to the top of the page
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000; // Ensure the header has a higher z-index to appear above all other elements
+}
+
+/* Logo styling */
+.logo {
+  height: 80px; // Adjusted to match the provided image size
+  width: auto;
+}
+
+/* Centered title styling */
+.header-title {
+  font-size: 24px;
+  // font-weight: bold;
+  color: #fff;
+  text-align: center;
+}
+
+.spacer {
+  flex: 0.5 1 auto; /* Reduces the space taken by the spacer */
+}
+
+/* Styling for navigation links */
+.nav-links {
+  display: flex;
+  align-items: center;
+}
+
+.nav-item {
+  color: #ffffff !important; /* Ensure golden yellow color applies correctly */
+  margin-right: 5px; /* Adjust spacing between links */
+  text-transform: uppercase;
+  font-size: 16px;
+  text-decoration: none; /* Remove default link underline, if present */
+}
+
+.nav-item:hover {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Hamburger menu icon for smaller screens */
+.mat-icon-button {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    display: none; // Hide links by default
+    flex-direction: column;
+    background-color: #4a171e;
+    position: absolute;
+    top: 80px; // Below the header
+    right: 0;
+    width: 100%;
+    text-align: center;
+    padding: 12px 0;
+    z-index: 999; // Ensure the dropdown is below the header but above the content
+  }
+
+  .nav-links.show {
+    display: flex; // Show the links when the menu is opened
+  }
+
+  .mat-icon-button {
+    display: block;
+    color: #d8a02e;
+  }
+}

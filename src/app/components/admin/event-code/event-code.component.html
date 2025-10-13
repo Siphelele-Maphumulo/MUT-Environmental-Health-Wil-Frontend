@@ -1,0 +1,61 @@
+<br /><br />
+<br />
+<mat-card class="create-event-code-card">
+  <h2>Create Event Code</h2>
+
+  <form [formGroup]="eventCodeForm" (ngSubmit)="onSubmit()">
+    <!-- Guest Name Input -->
+    <mat-form-field appearance="outline" class="input-field">
+      <mat-label>Guest Name</mat-label>
+      <input
+        matInput
+        type="text"
+        formControlName="guest_name"
+        placeholder="Enter guest name"
+        required
+      />
+      <mat-error *ngIf="eventCodeForm.get('guest_name')?.invalid"
+        >Guest name is required</mat-error
+      >
+    </mat-form-field>
+
+    <!-- Guest Email Input -->
+    <mat-form-field appearance="outline" class="input-field">
+      <mat-label>Guest Email</mat-label>
+      <input
+        matInput
+        type="email"
+        formControlName="guest_email"
+        placeholder="Enter guest email"
+        required
+      />
+      <mat-error *ngIf="eventCodeForm.get('guest_email')?.invalid"
+        >Valid email is required</mat-error
+      >
+    </mat-form-field>
+
+    <!-- Submit Button -->
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="eventCodeForm.invalid"
+      class="submit-button"
+    >
+      Create Event Code
+    </button>
+  </form>
+
+  <!-- Generated Event Code Display -->
+  <div *ngIf="generatedCode" class="generated-code-section">
+    <p><strong>Generated Event Code:</strong> {{ generatedCode }}</p>
+    <button
+      mat-raised-button
+      color="accent"
+      (click)="copyToClipboard()"
+      class="copy-button"
+    >
+      Copy Code
+    </button>
+  </div>
+</mat-card>

@@ -1,0 +1,117 @@
+/* Ensure the body takes up the full height of the viewport */
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+/* Make the body a flex container */
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Allow the content container to grow and push the footer to the bottom */
+.content-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 30px;
+  flex-grow: 1; /* This ensures the content fills the available space */
+}
+
+.welcome-message {
+  text-align: center;
+  margin: 10px 0;
+}
+
+.welcome-message h1 {
+  font-size: 2em;
+  font-weight: bold;
+  margin-bottom: 20pt;
+}
+
+.welcome-message p {
+  font-size: 1.2em;
+}
+
+.image-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.environmental-health-image {
+  width: auto;
+  max-height: 280px;
+  object-fit: contain;
+}
+
+.button-container {
+  display: flex;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.auth-button {
+  min-width: 200px;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 1.1em;
+  color: white !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  background: rgba(100, 100, 100, 0.7) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.staff-button:hover {
+  background: #d8a02e !important;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(216, 160, 46, 0.4);
+}
+
+.student-button:hover {
+  background: #6eaf28 !important;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(110, 175, 40, 0.4);
+}
+
+mat-icon {
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.footer {
+  background-color: #3f51b5;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  font-size: 0.9em;
+}
+
+@media (max-width: 768px) {
+  .content-container {
+    margin: 20px;
+  }
+
+  .button-container {
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+  }
+
+  .auth-button {
+    width: 100%;
+  }
+
+  .environmental-health-image {
+    max-height: 200px;
+  }
+}

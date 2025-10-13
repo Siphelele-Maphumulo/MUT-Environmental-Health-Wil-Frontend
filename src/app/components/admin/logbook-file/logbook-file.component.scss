@@ -1,0 +1,167 @@
+/* Main Container */
+.logbook-container {
+  max-width: 960px;
+  margin: auto;
+  padding: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Header Styles */
+.header {
+  border-top: 2px double #000000;
+  border-bottom: 2px solid #000000;
+  font-size: 20px;
+  padding: 10px 3%;
+  font-weight: bold;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.heading {
+  @extend .header;
+}
+
+/* Summary Box */
+.summary-box {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+
+  .badge {
+    min-width: 80px;
+
+    &.bg-danger {
+      background-color: #dc3545 !important;
+    }
+
+    &.bg-warning {
+      background-color: #ffc107 !important;
+      color: #212529 !important;
+    }
+
+    &.bg-success {
+      background-color: #28a745 !important;
+    }
+
+    &.bg-info {
+      background-color: #17a2b8 !important;
+    }
+
+    &.bg-primary {
+      background-color: #007bff !important;
+    }
+  }
+}
+
+/* Section Titles */
+.section-title,
+.mb-3 {
+  font-weight: bold;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 8px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.mb-3 {
+  font-weight: bolder;
+}
+
+/* Table Styles */
+/* Table Styles */
+.table {
+  font-size: 0.95rem;
+  border-collapse: collapse;
+  width: 100%;
+
+  th,
+  td {
+    vertical-align: middle;
+    text-align: center;
+    padding: 8px 12px;
+  }
+
+  thead th {
+    background-color: #343a40;
+    color: white;
+    position: sticky;
+    top: 0;
+    border: 1px solid #454d55;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid #dee2e6;
+  }
+
+  /* Date Group Styles */
+  .date-group-0 td,
+  .date-group-0 .log-date {
+    background-color: #f8f9fa;
+  }
+
+  .date-group-1 td,
+  .date-group-1 .log-date {
+    background-color: #e9ecef;
+  }
+
+  /* Hover effect for rows */
+  &.table-hover tbody tr:hover td {
+    background-color: #dcdcdc !important; /* Greyish on hover */
+  }
+
+  /* Date Cell Specifics */
+  .log-date {
+    width: 120px;
+    text-align: center;
+    border-right: 1px solid #dee2e6;
+    font-weight: 500;
+  }
+}
+
+.total-footer {
+  border-top: 2px solid #ddd;
+  padding-top: 10px;
+}
+
+.date-group-0 {
+  background-color: #f8f9fa;
+  .log-date {
+    background-color: #f8f9fa;
+    font-weight: bold;
+  }
+}
+
+.date-group-1 {
+  background-color: #e9ecef;
+  .log-date {
+    background-color: #e9ecef;
+    font-weight: bold;
+  }
+}
+
+.align-middle {
+  vertical-align: middle !important;
+}
+
+.date-group {
+  &-0,
+  &-1 {
+    td {
+      border-bottom: 1px solid #dee2e6;
+    }
+  }
+}
+
+/* Ensure action buttons are properly spaced */
+button[mat-button] {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.error-text {
+  color: #f44336;
+  font-size: 0.8em;
+  margin-left: 4px;
+}

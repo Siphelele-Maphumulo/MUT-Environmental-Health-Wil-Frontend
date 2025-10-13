@@ -1,0 +1,124 @@
+/* Header and Footer Toolbar */
+/* Header and Footer Toolbar */
+.header-toolbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 16px;
+    background-color: #800000; /* Dark Red for the header and footer */
+    color: #FFD700; /* Yellow text color */
+  }
+  
+  .toolbar-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #FFD700; /* Yellow color for the title */
+  }
+  
+  .spacer {
+    flex: 1 1 auto;
+  }
+  
+  /* Custom styles for toolbar links */
+  .toolbar-link {
+    color: #FFD700 !important; /* Yellow color for the toolbar buttons */
+    font-weight: bold;
+  }
+  
+  .toolbar-link:hover {
+    color: #e6c200; /* Slightly darker yellow on hover */
+  }
+  
+  /* Other styles remain the same */
+  
+  /* Example for logo alignment and spacing */
+  .logo {
+    height: 40px;
+    margin-right: 10px;
+  }
+  
+  .container {
+    padding: 20px;
+    text-align: center;
+    background-color: #f4f4f4; /* Light background for contrast */
+    border-radius: 8px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  h1 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+  
+  /* Student Selector Dropdown */
+  .student-select {
+    width: 220px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    color: #333;
+    border-radius: 5px;
+  }
+  
+  /* Category Styles */
+  .category {
+    margin: 20px 0;
+    text-align: left;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .category h2 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .category p {
+    color: #666;
+    font-size: 14px;
+    margin: 5px 0;
+  }
+  
+  /* Rating Stars */
+  .rating {
+    display: flex;
+    justify-content: flex-start;
+  }
+  
+  .rating mat-icon {
+    font-size: 24px;
+    color: #FFD700; /* Gold color for stars */
+    cursor: pointer;
+  }
+  
+  /* Submit Button */
+  .submit-button {
+    margin-top: 20px;
+    background-color: #FFD700; /* Yellow button to match theme */
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .submit-button:hover {
+    background-color: #e6c200; /* Slightly darker yellow on hover */
+  }
+  
+  /* Footer Style */
+  .footer-toolbar {
+    justify-content: space-around;
+    padding: 10px;
+    background-color: #800000; /* Dark Red background */
+    color: #FFD700; /* Yellow text color */
+  }
+  
+  .footer-toolbar span,
+  .footer-toolbar button {
+    color: #FFD700; /* Yellow text for footer links */
+  }
+  
+  

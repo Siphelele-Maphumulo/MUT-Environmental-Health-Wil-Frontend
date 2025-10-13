@@ -1,0 +1,265 @@
+/* Main Container Styles */
+.declaration-container {
+  padding: 10px;
+  margin: 10px auto;
+  max-width: 1400px;
+  font-family: "Segoe UI", Roboto, sans-serif;
+  min-height: calc(100vh - 120px);
+  background-color: #ffffff; // Excel white
+}
+
+/* Header/Titles */
+.declaration-title {
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+  margin: 20px 0 30px;
+  color: #107c41; // Excel green
+  border-bottom: 2px solid #107c41;
+  padding-bottom: 10px;
+}
+
+.wrap-text {
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: break-word;
+  max-width: 300px;
+}
+
+.signature-image {
+  width: 120px;
+  height: 60px;
+  object-fit: contain;
+  border-radius: 4px;
+  background-color: transparent;
+  padding: 5px;
+}
+
+/* Fixed Filter and Table Header Section */
+.filter-section {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #ffffff;
+  padding: 12px 16px;
+  border-bottom: 1px solid #d0d0d0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+}
+
+.filter-row {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  align-items: center;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+
+/* Table Styles */
+.scroll-wrapper {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.declaration-table {
+  width: 100%;
+  min-width: 800px;
+  border-collapse: collapse;
+
+  th.mat-header-cell {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: #d9ead3; // soft Excel green
+    color: #0b6e3b;
+    font-weight: 600;
+    border: 1px solid #b6d7a8;
+  }
+
+  td.mat-cell,
+  th.mat-header-cell {
+    padding: 10px;
+    border: 1px solid #d9d9d9; // Excel grid line
+    font-size: 15px;
+    color: #212121;
+    background-color: #ffffff;
+  }
+
+  tr:hover td {
+    background-color: #f2f2f2;
+  }
+}
+
+/* Evaluation Badges */
+.evaluation-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.evaluation-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.evaluation-label {
+  font-size: 0.8rem;
+  color: #000000;
+}
+
+.evaluation-badge {
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background-color: #e6e6e6;
+  color: #212121;
+
+  &.good {
+    background-color: #6aa84f; // Excel green
+    color: #ffffff;
+  }
+
+  &.bad {
+    background-color: #cc0000;
+    color: #ffffff;
+  }
+}
+
+/* Comments Cell */
+.comments-cell {
+  white-space: normal;
+  max-width: 250px;
+  word-break: break-word;
+  color: #333333;
+}
+
+/* Action Buttons */
+.actions-cell {
+  white-space: nowrap;
+
+  button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+
+    mat-icon {
+      color: #107c41;
+      transition: color 0.2s;
+
+      &:hover {
+        color: #0b4f2e;
+      }
+    }
+  }
+}
+
+/* Clear Button */
+.clear-btn {
+  font-size: small;
+  color: #cc0000;
+  margin-left: auto;
+  border-radius: 20px;
+
+  mat-icon {
+    color: #666666;
+  }
+
+  &:hover {
+    background: #f0f0f0;
+  }
+}
+
+/* Form Fields */
+mat-form-field {
+  .mat-form-field-outline {
+    color: #a2a2a2;
+  }
+
+  .mat-input-element {
+    color: #424242;
+  }
+
+  .mat-form-field-label {
+    color: #757575;
+  }
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+
+  p {
+    margin-top: 16px;
+    color: #616161;
+  }
+
+  .mat-progress-spinner circle {
+    stroke: #6aa84f;
+  }
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: #757575;
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    color: #bdbdbd;
+  }
+
+  .hint-text {
+    font-size: 0.9rem;
+    color: #9e9e9e;
+  }
+}
+
+/* Responsive Design Tweaks */
+@media (max-width: 768px) {
+  .declaration-title {
+    font-size: 20px;
+  }
+
+  .filter-row {
+    flex-wrap: wrap;
+    gap: 8px;
+
+    mat-form-field {
+      flex: 1 1 calc(50% - 8px);
+      min-width: auto;
+    }
+  }
+
+  .clear-btn {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .declaration-table th {
+    top: 112px;
+  }
+}
+
+@media (max-width: 576px) {
+  .declaration-table th,
+  .declaration-table td {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
+  .evaluation-badge {
+    font-size: 0.7rem;
+  }
+}
