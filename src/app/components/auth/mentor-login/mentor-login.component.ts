@@ -69,12 +69,10 @@ export class MentorLoginComponent {
 
       this.authService.mentorLogin(credentials).subscribe({
         next: (response) => {
-          console.log('Backend response:', response); // Debugging: Log the response
+          console.log('🔐 Mentor Login Response:', response);
 
-          // ✅ Fix: Use response.email directly
-          if (response.email) {
-            sessionStorage.setItem('userEmail', response.email);
-          }
+          // Let AuthService store auth data; call debug helper to log stored state
+          this.authService.debugAuthState();
 
           // Show success message and navigate to the dashboard
           this.snackBar.open('Mentor Logged in successfully!', 'Close', {

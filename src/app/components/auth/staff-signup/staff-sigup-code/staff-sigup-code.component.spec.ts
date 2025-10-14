@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StaffSigupCodeComponent } from './staff-sigup-code.component';
+import { StaffSignupCodeComponent } from './staff-sigup-code.component';
 
-describe('StaffSigupCodeComponent', () => {
-  let component: StaffSigupCodeComponent;
-  let fixture: ComponentFixture<StaffSigupCodeComponent>;
+describe('StaffSignupCodeComponent', () => {
+  let component: StaffSignupCodeComponent;
+  let fixture: ComponentFixture<StaffSignupCodeComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StaffSigupCodeComponent]
+      imports: [StaffSignupCodeComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(StaffSigupCodeComponent);
+    fixture = TestBed.createComponent(StaffSignupCodeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -110,36 +110,84 @@
    ngOnInit(): void {
      this.loadStudents();
    }
-   async loadStudents(): Promise<void> {
-     try {
-       const students = await lastValueFrom(
-         this.http.get<Student[]>(
-           'http://localhost:8080/api/students-with-log-sheets'
-         )
-       );
- 
-       for (const student of students) {
-         const logSheets = await this.fetchLogSheets(student.student_number);
-         const totals = this.calculateTotals(logSheets);
-         const hpcsaStatus = await this.fetchHpcsaStatus(student.student_number);
- 
-         this.students.push({
-           ...student,
-           totalHoursWorked: totals.totalHoursWorked,
-           totalDaysWorked: totals.totalDaysWorked,
-           totalDaysLeft: totals.totalDaysLeft,
-           completionPercentage: totals.completionPercentage,
-           progressColor: this.getProgressColor(totals.completionPercentage),
-           hpcsaStatus: hpcsaStatus || 'Pending',
-           hpcsaStatusColor: this.getHpcsaStatusColor(hpcsaStatus),
-         });
-       }
- 
-       this.filteredStudents = [...this.students];
-     } catch (error) {
-       console.error('Error loading students:', error);
-     }
-   }
+
+async fetchStudentLevel(studentNumber: string): Promise<{ level_of_study: number } | null> {
+  try {
+    const response = await lastValueFrom(
+      this.http.get<{ 
+        success: boolean; 
+        level_of_study: number;
+        first_names: string;
+        surname: string;
+      }>(`http://localhost:8080/api/student-level/${studentNumber}`)
+    );
+    
+    if (response.success) {
+      console.log(`Found level ${response.level_of_study} for student ${studentNumber}`);
+      return {
+        level_of_study: response.level_of_study
+      };
+    }
+    return null;
+  } catch (error) {
+    console.error(`Error fetching level for ${studentNumber}:`, error);
+    return null;
+  }
+}
+async loadStudents(): Promise<void> {
+  try {
+    const students = await lastValueFrom(
+      this.http.get<Student[]>(
+        'http://localhost:8080/api/students-with-log-sheets'
+      )
+    );
+
+    for (const student of students) {
+      try {
+        // Fetch level of study from WIL applications
+        const levelInfo = await this.fetchStudentLevel(student.student_number);
+        
+        const logSheets = await this.fetchLogSheets(student.student_number);
+        const totals = this.calculateTotals(logSheets);
+        const hpcsaStatus = await this.fetchHpcsaStatus(student.student_number);
+
+        // Convert level_of_study to string
+        const levelOfStudy = levelInfo?.level_of_study || student.level_of_study;
+        const levelString = levelOfStudy ? levelOfStudy.toString() : 'N/A';
+
+        this.students.push({
+          ...student,
+          level_of_study: levelString, // Now it's always a string
+          totalHoursWorked: totals.totalHoursWorked,
+          totalDaysWorked: totals.totalDaysWorked,
+          totalDaysLeft: totals.totalDaysLeft,
+          completionPercentage: totals.completionPercentage,
+          progressColor: this.getProgressColor(totals.completionPercentage),
+          hpcsaStatus: hpcsaStatus || 'Pending',
+          hpcsaStatusColor: this.getHpcsaStatusColor(hpcsaStatus),
+        });
+      } catch (studentError) {
+        console.error(`Error processing student ${student.student_number}:`, studentError);
+        // Add student with fallback data
+        this.students.push({
+          ...student,
+          level_of_study: student.level_of_study ? student.level_of_study.toString() : 'N/A',
+          totalHoursWorked: 0,
+          totalDaysWorked: 0,
+          totalDaysLeft: 180,
+          completionPercentage: 0,
+          progressColor: 'red',
+          hpcsaStatus: 'Pending',
+          hpcsaStatusColor: 'orange',
+        });
+      }
+    }
+
+    this.filteredStudents = [...this.students];
+  } catch (error) {
+    console.error('Error loading students:', error);
+  }
+}
  
    applyFilters(): void {
      this.filteredStudents = this.students.filter((student) => {

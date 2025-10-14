@@ -7,6 +7,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { CommonModule, NgIf } from '@angular/common';
@@ -44,7 +45,7 @@ export class StudentApplicationEditComponent implements OnInit {
   signaturePreview = '';
   cvPreview = '';
   idPreview = '';
-  email: string | null = typeof window !== 'undefined' ? sessionStorage.getItem('userEmail') : null;
+  email: string | null = null;
   originalData: any = {};
 
   provinces = ['Gauteng', 'KwaZulu-Natal', 'Western Cape', 'Eastern Cape', 'Free State', 'Limpopo', 'Mpumalanga', 'North West', 'Northern Cape'];
@@ -55,11 +56,14 @@ export class StudentApplicationEditComponent implements OnInit {
     private fb: FormBuilder,
     private http: HttpClient,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
     this.initForm();
+    // Read current user email from AuthService (centralized storage access)
+    this.email = this.authService.getUserEmail();
     if (this.email) this.fetchStudentData(this.email);
   }
 
@@ -239,6 +243,59 @@ onSubmit(): void {
     }
   });
 }
+
+  // Generate initials from first names and surname
+  generateInitials(): void {
+    const firstNames = this.studentApplicationForm.get('firstNames')?.value?.trim();
+    const surname = this.studentApplicationForm.get('surname')?.value?.trim();
+
+    if (firstNames && surname) {
+      // Get first letter of each first name and the surname
+      const firstNameInitials = firstNames
+        .split(' ')
+        .map((name: string) => name.charAt(0).toUpperCase())
+        .join('');
+
+      const surnameInitial = surname.charAt(0).toUpperCase();
+      
+      // Combine initials (max 6 characters)
+      let initials = (firstNameInitials + surnameInitial).substring(0, 6);
+      
+      this.studentApplicationForm.patchValue({
+        initials: initials
+      });
+    }
+  }
+
+  // Extract student number from email address
+  extractStudentNumberFromEmail(): void {
+    const email = this.studentApplicationForm.get('emailAddress')?.value?.trim();
+    
+    if (email && email.includes('@')) {
+      const studentNumber = email.split('@')[0];
+      
+      // Validate if it's an 8-digit number
+      if (/^\d{8}$/.test(studentNumber)) {
+        this.studentApplicationForm.patchValue({
+          studentNumber: studentNumber
+        });
+      } else {
+        // If not a valid student number format, clear the field
+        this.studentApplicationForm.patchValue({
+          studentNumber: ''
+        });
+        
+        // Show warning if email looks like a student email but number is invalid
+        if (email.includes('@live.mut.ac.za') || email.includes('@mut.ac.za')) {
+          this.snackBar.open('Please use a valid student email with 8-digit student number', 'Close', {
+            duration: 5000,
+            panelClass: ['error-snackbar'],
+            verticalPosition: 'top',
+          });
+        }
+      }
+    }
+  }
 
 
   onFileChange(event: Event, controlName: string): void {

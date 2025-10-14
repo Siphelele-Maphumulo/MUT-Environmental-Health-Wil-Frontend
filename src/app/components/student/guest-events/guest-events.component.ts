@@ -88,7 +88,8 @@ export class GuestEventsComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.isBrowser) {
-      this.userEmail = sessionStorage.getItem('userEmail');
+      // Use AuthService as the single source of truth for user email
+      this.userEmail = this.authService.getUserEmail();
       console.log('User Email:', this.userEmail);
       this.studentNumber = this.extractStudentNumberFromEmail(this.userEmail);
     }

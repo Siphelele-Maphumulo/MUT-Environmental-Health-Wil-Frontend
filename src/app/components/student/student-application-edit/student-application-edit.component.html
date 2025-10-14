@@ -1,32 +1,21 @@
-<div
-  class="container-fluid d-flex align-items-center justify-content-center min-vh-100"
->
-  <div class="login-form-container shadow p-3 rounded">
+<div class="container-fluid d-flex align-items-center justify-content-center min-vh-100 p-2">
+  <div class="login-form-container shadow p-2 p-md-3 rounded w-100">
     <div id="header"></div>
-    <div class="container mt-5">
-      <h1 class="text-center mb-4">
+    <div class="container mt-3 mt-md-5">
+      <h1 class="text-center mb-3 mb-md-4 h4 h-md-3">
         APPLICATION FORM FOR WORK INTEGRATED LEARNING PLACEMENT
       </h1>
 
       <form [formGroup]="studentApplicationForm" (ngSubmit)="onSubmit()">
         <!-- Province Selection -->
         <div class="section">
-          <h3 style="text-align: center">
+          <h3 class="text-center h5 h-md-4">
             Select Your Province where you reside
           </h3>
-          <div
-            class="grid-container"
-            style="
-              display: grid;
-              grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-              gap: 10px;
-              text-align: left;
-            "
-          >
+          <div class="province-grid">
             <div
-              class="grid-item"
+              class="province-item"
               *ngFor="let province of provinces"
-              style="display: flex; align-items: center"
             >
               <input
                 type="radio"
@@ -34,9 +23,10 @@
                 [value]="province"
                 formControlName="province"
                 id="{{ province }}"
-                style="margin-right: 10px"
+                class="province-radio"
+                [class.is-invalid]="studentApplicationForm.get('province')?.invalid && studentApplicationForm.get('province')?.touched"
               />
-              <label [for]="province" style="margin: 0">{{ province }}</label>
+              <label [for]="province" class="province-label">{{ province }}</label>
             </div>
           </div>
           <div
@@ -44,7 +34,7 @@
               studentApplicationForm.get('province')?.invalid &&
               studentApplicationForm.get('province')?.touched
             "
-            class="text-danger"
+            class="text-danger mt-2"
           >
             <small>{{ getErrorMessage("province") }}</small>
           </div>
@@ -52,18 +42,22 @@
 
         <!-- Section A: Personal Information -->
         <div class="section">
-          <h2
-            class="section-title"
-            style="background-color: #4a171e; color: #f0f0f0"
-          >
+          <h2 class="section-title maroon-bg">
             Section A: Personal Information
           </h2>
 
-          <table class="personal-info-table">
-            <tr>
-              <td>Title</td>
-              <td style="background-color: #ffffff">
-                <select name="title" formControlName="title" required>
+          <div class="personal-info-responsive">
+            <!-- Row 1 -->
+            <div class="form-row-responsive">
+              <div class="form-group-responsive">
+                <label class="form-label">Title</label>
+                <select 
+                  name="title" 
+                  formControlName="title" 
+                  required
+                  class="form-control-responsive"
+                  [class.is-invalid]="studentApplicationForm.get('title')?.invalid && studentApplicationForm.get('title')?.touched"
+                >
                   <option value="" disabled selected>Select Title</option>
                   <option value="Mr">Mr</option>
                   <option value="Mrs">Mrs</option>
@@ -83,10 +77,10 @@
                 >
                   <small>{{ getErrorMessage("title") }}</small>
                 </div>
-              </td>
+              </div>
 
-              <td>Initials</td>
-              <td style="background-color: #ffffff">
+              <div class="form-group-responsive">
+                <label class="form-label">Initials</label>
                 <input
                   type="text"
                   name="initials"
@@ -94,6 +88,7 @@
                   required
                   maxlength="6"
                   pattern="^[A-Z]+$"
+                  class="form-control-responsive"
                 />
                 <div
                   *ngIf="
@@ -104,102 +99,83 @@
                 >
                   <small>{{ getErrorMessage("initials") }}</small>
                 </div>
-              </td>
+              </div>
 
-              <td>Surname</td>
-              <td style="background-color: #ffffff">
-                <input
-                  type="text"
-                  name="surname"
-                  formControlName="surname"
-                  required
-                  pattern="^[A-Za-z]+$"
-                />
-                <div
-                  *ngIf="
-                    studentApplicationForm.get('surname')?.invalid &&
-                    studentApplicationForm.get('surname')?.touched
-                  "
-                  class="text-danger"
-                >
-                  <small>{{ getErrorMessage("surname") }}</small>
-                </div>
-              </td>
-            </tr>
-
-            <tr>
-              <td><strong>First Names (in full) *</strong></td>
-              <td
-                colspan="6"
-                style="background-color: #ffffff; text-align: center"
+            <!-- Modify the Surname field -->
+            <div class="form-group-responsive">
+              <label class="form-label">Surname</label>
+              <input
+                type="text"
+                name="surname"
+                formControlName="surname"
+                required
+                pattern="^[A-Za-z]+$"
+                class="form-control-responsive"
+                (blur)="generateInitials()"
+              />
+              <div
+                *ngIf="
+                  studentApplicationForm.get('surname')?.invalid &&
+                  studentApplicationForm.get('surname')?.touched
+                "
+                class="text-danger"
               >
-                <input
-                  type="text"
-                  name="firstNames"
-                  formControlName="firstNames"
-                  required
-                  pattern="^[A-Za-z ]+$"
-                  style="width: 100%; box-sizing: border-box"
-                />
-                <div
-                  *ngIf="
-                    studentApplicationForm.get('firstNames')?.invalid &&
-                    studentApplicationForm.get('firstNames')?.touched
-                  "
-                  class="text-danger"
-                >
-                  <small>{{ getErrorMessage("firstNames") }}</small>
-                </div>
-              </td>
-            </tr>
+                <small>{{ getErrorMessage("surname") }}</small>
+              </div>
+            </div>
+            </div>
 
-            <tr>
-              <td>Student Number</td>
-              <td style="background-color: #ffffff">
-                <input
-                  type="text"
-                  name="studentNumber"
-                  formControlName="studentNumber"
-                  required
-                  pattern="^[0-9]{8}$"
-                />
-                <div
-                  *ngIf="
-                    studentApplicationForm.get('studentNumber')?.invalid &&
-                    studentApplicationForm.get('studentNumber')?.touched
-                  "
-                  class="text-danger"
-                >
-                  <small>{{ getErrorMessage("studentNumber") }}</small>
-                </div>
-              </td>
+            <!-- Modify the First Names field -->
+            <div class="form-group-responsive full-width">
+              <label class="form-label"><strong>First Names (in full) *</strong></label>
+              <input
+                type="text"
+                name="firstNames"
+                formControlName="firstNames"
+                required
+                pattern="^[A-Za-z ]+$"
+                class="form-control-responsive"
+                (blur)="generateInitials()"
+              />
+              <div
+                *ngIf="
+                  studentApplicationForm.get('firstNames')?.invalid &&
+                  studentApplicationForm.get('firstNames')?.touched
+                "
+                class="text-danger"
+              >
+                <small>{{ getErrorMessage("firstNames") }}</small>
+              </div>
+            </div>
 
-              <td>Level of Study</td>
-              <td style="background-color: #ffffff">
-                <input
-                  type="number"
-                  name="levelOfStudy"
-                  formControlName="levelOfStudy"
-                  required
-                  min="1"
-                  max="4"
-                />
-                <div
-                  *ngIf="
-                    studentApplicationForm.get('levelOfStudy')?.invalid &&
-                    studentApplicationForm.get('levelOfStudy')?.touched
-                  "
-                  class="text-danger"
-                >
-                  <small>{{ getErrorMessage("levelOfStudy") }}</small>
-                </div>
-              </td>
-            </tr>
+            <!-- Modify the Student Number field (make it readonly) -->
+            <div class="form-group-responsive">
+              <label class="form-label">Student Number</label>
+              <input
+                type="text"
+                name="studentNumber"
+                formControlName="studentNumber"
+                required
+                pattern="^[0-9]{8}$"
+                class="form-control-responsive"
+                readonly
+              />
+              <div
+                *ngIf="
+                  studentApplicationForm.get('studentNumber')?.invalid &&
+                  studentApplicationForm.get('studentNumber')?.touched
+                "
+                class="text-danger"
+              >
+                <small>{{ getErrorMessage("studentNumber") }}</small>
+              </div>
+            </div>
 
-            <tr>
-              <td>Race</td>
-              <td style="background-color: #ffffff">
-                <select name="race" formControlName="race" required>
+            <!-- Row 3 -->
+            <div class="form-row-responsive">
+              <div class="form-group-responsive">
+                <label class="form-label">Race</label>
+                <select name="race" formControlName="race" required class="form-control-responsive">
                   <option value="" disabled selected>Select Race</option>
                   <option value="African">African</option>
                   <option value="White">White</option>
@@ -216,11 +192,11 @@
                 >
                   <small>{{ getErrorMessage("race") }}</small>
                 </div>
-              </td>
+              </div>
 
-              <td>Gender</td>
-              <td style="background-color: #ffffff">
-                <select name="gender" formControlName="gender" required>
+              <div class="form-group-responsive">
+                <label class="form-label">Gender</label>
+                <select name="gender" formControlName="gender" required class="form-control-responsive">
                   <option value="" disabled selected>Select Gender</option>
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
@@ -234,42 +210,40 @@
                 >
                   <small>{{ getErrorMessage("gender") }}</small>
                 </div>
-              </td>
-            </tr>
+              </div>
+            </div>
 
-            <tr>
-              <td><strong>Email Address *</strong></td>
-              <td style="background-color: #ffffff">
+              <!-- Modify the Email Address field -->
+              <div class="form-group-responsive">
+                <label class="form-label"><strong>Email Address *</strong></label>
                 <input
                   type="email"
                   name="emailAddress"
                   formControlName="emailAddress"
                   required
+                  class="form-control-responsive"
+                  (blur)="extractStudentNumberFromEmail()"
                 />
                 <div
-                  *ngIf="studentApplicationForm.get('emailAddress')?.touched && studentApplicationForm.get('emailAddress')?.invalid"
+                  *ngIf="
+                    studentApplicationForm.get('emailAddress')?.invalid &&
+                    studentApplicationForm.get('emailAddress')?.touched
+                  "
                   class="text-danger"
                 >
-                  <small *ngIf="studentApplicationForm.get('emailAddress')?.errors?.['required']">
-                    Email is required.
-                  </small>
-                  <small *ngIf="studentApplicationForm.get('emailAddress')?.errors?.['email']">
-                    Invalid email format.
-                  </small>
-                  <small *ngIf="studentApplicationForm.get('emailAddress')?.errors?.['pattern']">
-                    Email must end with &#64;live.mut.ac.za
-                  </small>
+                  <small>{{ getErrorMessage("emailAddress") }}</small>
                 </div>
-              </td>
+              </div>
 
-              <td>Physical Address</td>
-              <td style="background-color: #ffffff">
+              <div class="form-group-responsive">
+                <label class="form-label">Physical Address</label>
                 <input
                   type="text"
                   name="physicalAddress"
                   formControlName="physicalAddress"
                   required
                   pattern="^[A-Za-z0-9 ,.-]+$"
+                  class="form-control-responsive"
                 />
                 <div
                   *ngIf="
@@ -280,18 +254,20 @@
                 >
                   <small>{{ getErrorMessage("physicalAddress") }}</small>
                 </div>
-              </td>
-            </tr>
+              </div>
+            </div>
 
-            <tr>
-              <td>Cell Phone Number</td>
-              <td style="background-color: #ffffff">
+            <!-- Row 5 -->
+            <div class="form-row-responsive">
+              <div class="form-group-responsive">
+                <label class="form-label">Cell Phone Number</label>
                 <input
                   type="text"
                   name="cellPhoneNumber"
                   formControlName="cellPhoneNumber"
                   required
                   pattern="^[0-9]{10,13}$"
+                  class="form-control-responsive"
                 />
                 <div
                   *ngIf="
@@ -302,15 +278,16 @@
                 >
                   <small>{{ getErrorMessage("cellPhoneNumber") }}</small>
                 </div>
-              </td>
+              </div>
 
-              <td>Home Town</td>
-              <td style="background-color: #ffffff">
+              <div class="form-group-responsive">
+                <label class="form-label">Home Town</label>
                 <input
                   type="text"
                   name="homeTown"
                   formControlName="homeTown"
                   pattern="^[A-Za-z ]+$"
+                  class="form-control-responsive"
                 />
                 <div
                   *ngIf="
@@ -321,38 +298,29 @@
                 >
                   <small>{{ getErrorMessage("homeTown") }}</small>
                 </div>
-              </td>
-            </tr>
-          </table>
-        </div>
+              </div>
+            </div>
+          </div>
+
 
         <!-- Section B: Preferred Area of WIL Placement -->
         <div class="section">
-          <h2
-            class="section-title"
-            style="background-color: #4a171e; color: #ffffff"
-          >
+          <h2 class="section-title maroon-bg">
             Section B: Preferred Area of WIL Placement
           </h2>
-          <div
-            class="centered"
-            style="
-              background-color: #d8a02e;
-              color: #ffffff;
-              font-weight: bolder;
-              font-size: larger;
-            "
-          >
+          <div class="choice-header">
             Choice A: Municipal Health Services
           </div>
-          <table class="personal-info-table">
-            <tr>
-              <td>Municipality</td>
-              <td style="background-color: #ffffff">
+          
+          <div class="personal-info-responsive">
+            <!-- Row 1 -->
+            <div class="form-row-responsive">
+              <div class="form-group-responsive">
+                <label class="form-label">Municipality</label>
                 <select
                   name="municipalityName"
                   formControlName="municipalityName"
-                  class="form-control"
+                  class="form-control-responsive"
                 >
                   <option value="">Select Municipality</option>
                   <option
@@ -371,14 +339,14 @@
                 >
                   <small>{{ getErrorMessage("municipalityName") }}</small>
                 </div>
-              </td>
+              </div>
 
-              <td>Town Situated</td>
-              <td style="background-color: #ffffff">
+              <div class="form-group-responsive">
+                <label class="form-label">Town Situated</label>
                 <select
                   name="townSituated"
                   formControlName="townSituated"
-                  class="form-control"
+                  class="form-control-responsive"
                   required
                 >
                   <option value="">Select Town</option>
@@ -395,16 +363,18 @@
                 >
                   <small>{{ getErrorMessage("townSituated") }}</small>
                 </div>
-              </td>
-            </tr>
+              </div>
+            </div>
 
-            <tr>
-              <td>Contact Person</td>
-              <td style="background-color: #ffffff">
+            <!-- Row 2 -->
+            <div class="form-row-responsive">
+              <div class="form-group-responsive">
+                <label class="form-label">Contact Person</label>
                 <input
                   type="text"
                   name="contactPerson"
                   formControlName="contactPerson"
+                  class="form-control-responsive"
                 />
                 <div
                   *ngIf="
@@ -415,15 +385,16 @@
                 >
                   <small>{{ getErrorMessage("contactPerson") }}</small>
                 </div>
-              </td>
+              </div>
 
-              <td>Email Address</td>
-              <td style="background-color: #ffffff">
+              <div class="form-group-responsive">
+                <label class="form-label">Email Address</label>
                 <input
                   type="text"
                   name="contactEmail"
                   formControlName="contactEmail"
                   pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                  class="form-control-responsive"
                 />
                 <div
                   *ngIf="
@@ -434,17 +405,19 @@
                 >
                   <small>{{ getErrorMessage("contactEmail") }}</small>
                 </div>
-              </td>
-            </tr>
+              </div>
+            </div>
 
-            <tr>
-              <td>Telephone Number</td>
-              <td style="background-color: #ffffff">
+            <!-- Row 3 -->
+            <div class="form-row-responsive">
+              <div class="form-group-responsive">
+                <label class="form-label">Telephone Number</label>
                 <input
                   type="text"
                   name="telephoneNumber"
                   formControlName="telephoneNumber"
                   pattern="^[0-9]{10,13}$"
+                  class="form-control-responsive"
                 />
                 <div
                   *ngIf="
@@ -455,15 +428,16 @@
                 >
                   <small>{{ getErrorMessage("telephoneNumber") }}</small>
                 </div>
-              </td>
+              </div>
 
-              <td>Cell Phone</td>
-              <td style="background-color: #ffffff">
+              <div class="form-group-responsive">
+                <label class="form-label">Cell Phone</label>
                 <input
                   type="text"
                   name="contactCellPhone"
                   formControlName="contactCellPhone"
                   pattern="^[0-9]{10,13}$"
+                  class="form-control-responsive"
                 />
                 <div
                   *ngIf="
@@ -474,103 +448,102 @@
                 >
                   <small>{{ getErrorMessage("contactCellPhone") }}</small>
                 </div>
-              </td>
-            </tr>
-          </table>
-          <div class="centered">
-            <strong
-              >Note: Applicants are not responsible for their own travel and
-              accommodation during WIL placement.</strong
-            >
+              </div>
+            </div>
+          </div>
+          <!-- Add validation message for duplicate phone numbers -->
+          <!-- Add validation message for duplicate phone numbers -->
+          <div
+            *ngIf="studentApplicationForm.hasError('duplicatePhoneNumbers')"
+            class="text-danger mt-2"
+          >
+            <small>Cell Phone Number and Contact Cell Phone cannot be the same</small>
+          </div>
+          
+          <div class="centered mt-3">
+            <strong class="note-text">
+              Note: Applicants are not responsible for their own travel and
+              accommodation during WIL placement.
+            </strong>
           </div>
         </div>
 
- <!-- Section C: Declaration -->
-<div class="section">
-  <h2 class="section-title maroon-bg">Section C: Declaration</h2>
-  <table
-    class="declaration-table"
-    style="background-color: #ffffff; width: 100%"
-  >
-    <tr>
-      <td style="width: 90%; font-weight: bold">
-        I DECLARE THE FOLLOWING
-      </td>
-      <td style="width: 10%; text-align: right">Tick</td>
-    </tr>
-    <tr>
-      <td style="background-color: #ffffff; width: 90%">
-        The information in the application is true and correct
-      </td>
-      <td
-        style="background-color: #ffffff; width: 10%; text-align: right"
-      >
-        <input
-          type="checkbox"
-          name="declarationInfo1"
-          formControlName="declarationInfo1"
-          [checked]="true"
-        />
-      </td>
-    </tr>
-    <tr>
-      <td style="background-color: #ffffff; width: 90%">
-        Preferred area of WIL has been communicated with my Parents or
-        Guardians
-      </td>
-      <td
-        style="background-color: #ffffff; width: 10%; text-align: right"
-      >
-        <input
-          type="checkbox"
-          name="declarationInfo2"
-          formControlName="declarationInfo2"
-          [checked]="true"
-        />
-      </td>
-    </tr>
-    <tr>
-      <td style="background-color: #ffffff; width: 90%">
-        I know no reason that could prevent me from attending WIL
-        sessions or from successfully completing the specified period
-      </td>
-      <td
-        style="background-color: #ffffff; width: 10%; text-align: right"
-      >
-        <input
-          type="checkbox"
-          name="declarationInfo3"
-          formControlName="declarationInfo3"
-          [checked]="true"
-        />
-      </td>
-    </tr>
-  </table>
-  <div
-    *ngFor="
-      let control of [
-        'declarationInfo1',
-        'declarationInfo2',
-        'declarationInfo3'
-      ]
-    "
-  >
-    <div
-      *ngIf="
-        studentApplicationForm.get(control)?.invalid &&
-        studentApplicationForm.get(control)?.touched
-      "
-      class="text-danger"
-    >
-      <small>{{ getErrorMessage(control) }}</small>
-    </div>
-  </div>
-</div>
-
+        <!-- Section C: Declaration -->
+        <div class="section">
+          <h2 class="section-title maroon-bg">Section C: Declaration</h2>
+          <div class="declaration-responsive">
+            <div class="declaration-header">
+              <span class="declaration-text">I DECLARE THE FOLLOWING</span>
+              <span class="declaration-tick">Tick</span>
+            </div>
+            
+            <div class="declaration-item">
+              <span class="declaration-text">
+                The information in the application is true and correct
+              </span>
+              <span class="declaration-tick">
+                <input
+                  type="checkbox"
+                  name="declarationInfo1"
+                  formControlName="declarationInfo1"
+                  class="declaration-checkbox"
+                />
+              </span>
+            </div>
+            
+            <div class="declaration-item">
+              <span class="declaration-text">
+                Preferred area of WIL has been communicated with my Parents or Guardians
+              </span>
+              <span class="declaration-tick">
+                <input
+                  type="checkbox"
+                  name="declarationInfo2"
+                  formControlName="declarationInfo2"
+                  class="declaration-checkbox"
+                />
+              </span>
+            </div>
+            
+            <div class="declaration-item">
+              <span class="declaration-text">
+                I know no reason that could prevent me from attending WIL sessions or from successfully completing the specified period
+              </span>
+              <span class="declaration-tick">
+                <input
+                  type="checkbox"
+                  name="declarationInfo3"
+                  formControlName="declarationInfo3"
+                  class="declaration-checkbox"
+                />
+              </span>
+            </div>
+          </div>
+          
+          <div
+            *ngFor="
+              let control of [
+                'declarationInfo1',
+                'declarationInfo2',
+                'declarationInfo3'
+              ]
+            "
+          >
+            <div
+              *ngIf="
+                studentApplicationForm.get(control)?.invalid &&
+                studentApplicationForm.get(control)?.touched
+              "
+              class="text-danger mt-2"
+            >
+              <small>{{ getErrorMessage(control) }}</small>
+            </div>
+          </div>
+        </div>
 
         <!-- Rules for Application -->
         <div class="section">
-          <h2 class="bold centered">Rules for Application</h2>
+          <h2 class="bold centered h5">Rules for Application</h2>
           <ul class="bullet-points">
             <li>Incomplete forms will not be accepted</li>
             <li>Forms must be submitted before the closing date</li>
@@ -579,106 +552,110 @@
           </ul>
         </div>
 
-<!-- Signature and Document Uploads -->
-<div class="section">
-  <h2 class="section-title maroon-bg" style="text-align: center">
-    Signature and Document Uploads
-  </h2>
+        <!-- Signature Section -->
+        <div class="section">
+          <h2 class="section-title maroon-bg text-center">
+            Signature and Document Uploads
+          </h2>
+          <div class="upload-container">
+            <!-- Signature Upload -->
+            <div class="file-upload-group">
+              <label for="signatureImage" class="file-label"
+                >Upload Signature (Image) *</label
+              >
+              <input
+                type="file"
+                name="signatureImage"
+                id="signatureImage"
+                formControlName="signatureImage"
+                accept="image/*"
+                (change)="onFileChange($event, 'signatureImage')"
+                aria-label="Upload Signature Image"
+                required
+              />
+              <div
+                *ngIf="
+                  studentApplicationForm.get('signatureImage')?.invalid &&
+                  studentApplicationForm.get('signatureImage')?.touched
+                "
+                class="text-danger"
+              >
+                <small>{{ getErrorMessage("signatureImage") }}</small>
+              </div>
+            </div>
 
-  <div class="upload-container">
-    <!-- Signature Upload -->
-    <div class="file-upload-group">
-      <label for="signatureImage" class="file-label">Upload Signature (Image) *</label>
-        <input
-          type="file"
-          name="signatureImage"
-          id="signatureImage"
-          formControlName="signatureImage"
-          accept="image/*"
-          (change)="onFileChange($event, 'signatureImage')"
-        />
-      <div
-        *ngIf="studentApplicationForm.get('signatureImage')?.invalid && studentApplicationForm.get('signatureImage')?.touched"
-        class="text-danger"
-      >
-        <small>{{ getErrorMessage("signatureImage") }}</small>
-      </div>
-      <div *ngIf="signaturePreview" class="preview-section mt-2">
-        <p><strong>Preview:</strong></p>
-        <img [src]="signaturePreview" alt="Signature Preview" style="max-width: 200px; border: 1px solid #ccc;" />
-      </div>
-    </div>
+            <!-- ID Document Upload -->
+            <div class="file-upload-group">
+              <label for="idDocument" class="file-label"
+                >Upload ID Document *</label
+              >
+              <input
+                type="file"
+                name="idDocument"
+                id="idDocument"
+                formControlName="idDocument"
+                accept=".pdf,.jpg,.jpeg,.png"
+                (change)="onFileChange($event, 'idDocument')"
+                aria-label="Upload ID Document"
+                required
+              />
+              <div
+                *ngIf="
+                  studentApplicationForm.get('idDocument')?.invalid &&
+                  studentApplicationForm.get('idDocument')?.touched
+                "
+                class="text-danger"
+              >
+                <small>{{ getErrorMessage("idDocument") }}</small>
+              </div>
+            </div>
 
-    <!-- ID Document Upload -->
-    <div class="file-upload-group">
-      <label for="idDocument" class="file-label">Upload ID Document *</label>
-      <input
-        type="file"
-        name="idDocument"
-        id="idDocument"
-        formControlName="idDocument"
-        accept=".pdf,.jpg,.jpeg,.png"
-        (change)="onFileChange($event, 'idDocument')"
-      />
-      <div
-        *ngIf="studentApplicationForm.get('idDocument')?.invalid && studentApplicationForm.get('idDocument')?.touched"
-        class="text-danger"
-      >
-        <small>{{ getErrorMessage("idDocument") }}</small>
-      </div>
-      <div *ngIf="idPreview" class="preview-section mt-2">
-        <p><strong>Preview:</strong></p>
-        <ng-container *ngIf="idPreview.endsWith('.pdf'); else imageId">
-          <a [href]="idPreview" target="_blank">View Uploaded ID Document (PDF)</a>
-        </ng-container>
-        <ng-template #imageId>
-          <img [src]="idPreview" alt="ID Document Preview" style="max-width: 200px; border: 1px solid #ccc;" />
-        </ng-template>
-      </div>
-    </div>
-
-    <!-- CV Upload -->
-    <div class="file-upload-group">
-      <label for="cvDocument" class="file-label">Upload CV (PDF) *</label>
-      <input
-        type="file"
-        name="cvDocument"
-        id="cvDocument"
-        formControlName="cvDocument"
-        accept=".pdf"
-        (change)="onFileChange($event, 'cvDocument')"
-      />
-      <div
-        *ngIf="studentApplicationForm.get('cvDocument')?.invalid && studentApplicationForm.get('cvDocument')?.touched"
-        class="text-danger"
-      >
-        <small>{{ getErrorMessage("cvDocument") }}</small>
-      </div>
-      <div *ngIf="cvPreview" class="preview-section mt-2">
-        <p><strong>Preview:</strong></p>
-        <a [href]="cvPreview" target="_blank">View Uploaded CV (PDF)</a>
-      </div>
-    </div>
-  </div>
-</div>
+            <!-- CV Upload -->
+            <div class="file-upload-group">
+              <label for="cvDocument" class="file-label"
+                >Upload CV (PDF) *</label
+              >
+              <input
+                type="file"
+                name="cvDocument"
+                id="cvDocument"
+                formControlName="cvDocument"
+                accept=".pdf"
+                (change)="onFileChange($event, 'cvDocument')"
+                aria-label="Upload CV Document"
+                required
+              />
+              <div
+                *ngIf="
+                  studentApplicationForm.get('cvDocument')?.invalid &&
+                  studentApplicationForm.get('cvDocument')?.touched
+                "
+                class="text-danger"
+              >
+                <small>{{ getErrorMessage("cvDocument") }}</small>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <!-- Submit Button -->
-        <div class="section centered button-container">
+        <div class="section centered button-container-responsive">
           <button
             mat-raised-button
             color="primary"
             type="submit"
             [disabled]="studentApplicationForm.invalid || isSubmitting"
             aria-label="Submit Application"
+            class="submit-btn"
           >
-            <span *ngIf="!isSubmitting">Update Application</span>
+            <span *ngIf="!isSubmitting">Submit Application</span>
             <span
               *ngIf="isSubmitting"
               class="spinner-border spinner-border-sm"
               role="status"
               aria-hidden="true"
             ></span>
-            <span *ngIf="isSubmitting"> Update...</span>
+            <span *ngIf="isSubmitting"> Submitting...</span>
           </button>
           <button
             mat-raised-button
@@ -686,6 +663,7 @@
             type="button"
             (click)="goBack()"
             aria-label="Cancel Application"
+            class="cancel-btn"
           >
             Cancel
           </button>

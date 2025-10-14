@@ -1,7 +1,7 @@
 <div class="main-content">
   <h2
     style="
-      margin-top: -60px;
+      margin-top: -90px;
       font-size: 30pt;
       font-weight: 600;
       text-align: center;
@@ -175,21 +175,21 @@
           </td>
         </ng-container>
 
-        <!-- Signature Column -->
-        <ng-container matColumnDef="signature">
-          <th mat-header-cell *matHeaderCellDef>Signature</th>
-          <td mat-cell *matCellDef="let declaration">
-            <img
-              *ngIf="declaration.supervisor_signature"
-              [src]="getSignatureUrl(declaration.supervisor_signature)"
-              alt="Supervisor signature"
-              class="signature-image"
-            />
-            <span *ngIf="!declaration.supervisor_signature" class="no-signature"
-              >Not Signed</span
-            >
-          </td>
-        </ng-container>
+<!-- In your view-declaration-letters.component.html -->
+<ng-container matColumnDef="supervisor_signature">
+  <th mat-header-cell *matHeaderCellDef>Supervisor Signature</th>
+  <td mat-cell *matCellDef="let declaration">
+    <ng-container *ngIf="declaration.supervisor_signature; else notSigned">
+      <img
+        [src]="getSafeUrl(declaration.supervisor_signature)"
+        alt="Supervisor Signature"
+        class="signature-image"
+        (error)="onSignatureError($event, declaration.supervisor_signature)"
+      />
+    </ng-container>
+    <ng-template #notSigned>Not Signed</ng-template>
+  </td>
+</ng-container>
 
         <!-- Submitted Date Column -->
         <ng-container matColumnDef="submittedDate">

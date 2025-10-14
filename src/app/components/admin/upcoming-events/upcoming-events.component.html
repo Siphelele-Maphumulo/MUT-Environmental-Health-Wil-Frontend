@@ -104,20 +104,6 @@
       <mat-icon *ngIf="!loadingStates[lecture.id]" style="color: blue">download</mat-icon>
     </button>
 
-
-    <!-- Delete Button (Add this) -->
-    <button
-      mat-icon-button
-      color="warn"
-      (click)="deleteEvent(lecture)"
-      [disabled]="loadingStates[lecture.id]"
-      matTooltip="Delete Event"
-      style="margin-left: 8px;"
-    >
-      <mat-spinner *ngIf="loadingStates[lecture.id]" diameter="20"></mat-spinner>
-      <mat-icon *ngIf="!loadingStates[lecture.id]">delete</mat-icon>
-    </button>
-
     <!-- Toggle Status Button -->
     <button
       *ngIf="isFromAdmin || isAdminUser"

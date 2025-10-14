@@ -53,6 +53,8 @@ export class MentorSignupComponent {
   signupForm!: FormGroup;
   hide = true;
   hideConfirm = true;
+  selectedSignature: File | null = null;
+  signaturePreview: string | null = null;
 
   title: Title[] = [
     { value: 'Mr', viewValue: 'Mr' },
@@ -86,6 +88,50 @@ export class MentorSignupComponent {
     this.signupForm.get('password')?.valueChanges.subscribe(() => {
       this.signupForm.get('confirmPassword')?.updateValueAndValidity();
     });
+  }
+
+  onSignatureSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+
+      // Validate file type
+      const validTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+      if (!validTypes.includes(file.type)) {
+        this.snackBar.open('Please select a PNG or JPG image file', 'Close', {
+          duration: 5000,
+          panelClass: ['error-snackbar'],
+        });
+        return;
+      }
+
+      // Validate file size (max 2MB)
+      if (file.size > 2 * 1024 * 1024) {
+        this.snackBar.open('Signature image must be less than 2MB', 'Close', {
+          duration: 5000,
+          panelClass: ['error-snackbar'],
+        });
+        return;
+      }
+
+      this.selectedSignature = file;
+
+      // Create preview
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.signaturePreview = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+
+      this.signupForm.patchValue({ signature: file });
+      this.signupForm.get('signature')?.updateValueAndValidity();
+    }
+  }
+
+  removeSignature(): void {
+    this.selectedSignature = null;
+    this.signaturePreview = null;
+    this.signupForm.patchValue({ signature: null });
   }
 
   emailDomainValidator(): ValidatorFn {
@@ -160,31 +206,44 @@ export class MentorSignupComponent {
       });
 
       dialogRef.afterClosed().subscribe((code) => {
-        if (code || code.trim() !== '') {
+        if (code && code.trim() !== '') {
           this.authService.validateStaffCode(code).subscribe(
             (isValid) => {
               if (isValid) {
-                this.signupForm.addControl('code', this.fb.control(code)); // Add code to form
+                // Build FormData similar to staff signup so backend can accept files if required
+                const formData = new FormData();
+                formData.append('email', this.signupForm.get('email')?.value);
+                formData.append('title', this.signupForm.get('title')?.value);
+                formData.append('password', this.signupForm.get('password')?.value);
+                formData.append('code', code);
 
-                this.authService.mentorSignup(this.signupForm.value).subscribe({
+                if (this.selectedSignature) {
+                  formData.append('signature', this.selectedSignature);
+                }
+
+                // Send the signup as multipart FormData directly (backend expects multipart for signature upload)
+                this.authService.mentorSignupFormData(formData).subscribe({
                   next: () => {
-                    this.snackBar.open('Mentor successful!', 'Close', {
+                    this.snackBar.open('Mentor registration successful!', 'Close', {
                       duration: 3000,
                     });
                     this.router.navigate(['/mentor-login']);
                   },
-                  error: (error) => {
-                    console.error('Signup error:', error);
-                    this.snackBar.open(
-                      'Signup failed. Please try again.',
-                      'Close',
-                      { duration: 5000 }
-                    );
+                  error: (err) => {
+                    console.error('Signup error (mentor FormData):', err);
+                    let errorMessage = 'Registration failed. Please try again.';
+                    if (err.error?.message) {
+                      errorMessage = err.error.message;
+                    }
+                    this.snackBar.open(errorMessage, 'Close', {
+                      duration: 5000,
+                      panelClass: ['error-snackbar'],
+                    });
                   },
                 });
               } else {
                 this.snackBar.open(
-                  'You have Entered an incorrect code!. Please contact Secretary or Wil Coordinator.',
+                  'Invalid signup code. Please contact Secretary or WIL Coordinator.',
                   'Close',
                   { duration: 5000 }
                 );

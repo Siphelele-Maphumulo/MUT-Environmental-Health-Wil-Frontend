@@ -375,7 +375,7 @@ export class ApplicationsComponent implements OnInit, OnDestroy {
       }
     }
   
-    console.log(`Generated URL for ${filename} (student: ${studentNumber}):`, fullUrl);
+    // console.log(`Generated URL for ${filename} (student: ${studentNumber}):`, fullUrl);
     return this.sanitizer.bypassSecurityTrustResourceUrl(fullUrl);
   }
 
@@ -408,7 +408,7 @@ export class ApplicationsComponent implements OnInit, OnDestroy {
       }
     }
   
-    console.log(`Downloading ${docType} document from:`, fullUrl);
+    // console.log(`Downloading ${docType} document from:`, fullUrl);
     
     this.http
       .get(fullUrl, {
@@ -643,7 +643,7 @@ export class ApplicationsComponent implements OnInit, OnDestroy {
     lastName: string
   ): void {
     // Implement your code storage logic here
-    console.log(`Stored code ${code} for ${firstName} ${lastName} (${email})`);
+    // console.log(`Stored code ${code} for ${firstName} ${lastName} (${email})`);
     // Example: this.codeService.storeCode(appId, code, email);
   }
 

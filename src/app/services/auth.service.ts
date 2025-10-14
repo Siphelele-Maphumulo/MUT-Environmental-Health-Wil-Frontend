@@ -206,17 +206,24 @@ export class AuthService {
   // ========== AUTHENTICATION METHODS ==========
 
   // Store authentication data consistently
-  private storeAuthData(token: string, email: string, role: string, studentNumber?: string): void {
-    this.setItem(this.tokenKey, token);
+  // token may be undefined/null when backend uses server-side sessions
+  private storeAuthData(token: string | null | undefined, email: string, role: string, studentNumber?: string): void {
+    if (token) {
+      this.setItem(this.tokenKey, token);
+    } else {
+      // Ensure no stale token remains
+      this.removeItem(this.tokenKey);
+    }
+
     this.setItem(this.userEmailKey, email);
     this.setItem(this.userRoleKey, role);
-    
+
     if (studentNumber) {
       this.setItem(this.studentNumberKey, studentNumber);
     }
-    
+
     console.log('📦 Stored auth data:');
-    console.log('- Token:', token);
+    console.log('- Token present:', !!token);
     console.log('- Email:', email);
     console.log('- Role:', role);
     console.log('- Student Number:', studentNumber || 'N/A');
@@ -231,12 +238,14 @@ export class AuthService {
   isAuthenticated(): boolean {
     const token = this.getToken();
     const userEmail = this.getUserEmail();
-    
+
     console.log('🔐 Auth Service - Checking authentication:');
     console.log('- Token exists:', !!token);
     console.log('- User email exists:', !!userEmail);
-    
-    return !!(token && userEmail);
+
+    // Consider authenticated if either a token exists (JWT flow)
+    // OR if a server-side session has stored the user email (session-based flow)
+    return !!(token || userEmail);
   }
 
   // Get current user email
@@ -275,12 +284,12 @@ export class AuthService {
       .pipe(
         tap((response: any) => {
           console.log('🔐 Student Login Response:', response);
-          
-          if (response.success && response.token) {
+          // Support multiple token locations
+          const token = response?.token || response?.accessToken || response?.data?.token || response?.user?.token;
+          if (response.success && token) {
             const studentNumber = response.user?.student_number || response.student_number || this.extractStudentNumberFromEmail(response.user?.email || response.email);
-            
             this.storeAuthData(
-              response.token,
+              token,
               response.user?.email || response.email,
               response.user?.userRole || response.userRole,
               studentNumber
@@ -300,10 +309,10 @@ export class AuthService {
       .pipe(
         tap((response: any) => {
           console.log('🔐 Staff Login Response:', response);
-          
-          if (response.success && response.token) {
+          const token = response?.token || response?.accessToken || response?.data?.token || response?.user?.token;
+          if (response.success && token) {
             this.storeAuthData(
-              response.token,
+              token,
               response.user?.email || response.email,
               response.user?.userRole || response.userRole
             );
@@ -317,18 +326,21 @@ export class AuthService {
   mentorLogin(credentials: { email: string; password: string }): Observable<any> {
     return this.http
       .post(`${this.apiUrl}/mentorLogin`, credentials, { 
-        headers: new HttpHeaders({ 'Content-Type': 'application/json' }) 
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+        withCredentials: true // ensure server-side session cookie is set
       })
       .pipe(
         tap((response: any) => {
           console.log('🔐 Mentor Login Response:', response);
-          
-          if (response.success && response.token) {
-            this.storeAuthData(
-              response.token,
-              response.user?.email || response.email,
-              response.user?.userRole || response.userRole
-            );
+          const token = response?.token || response?.accessToken || response?.data?.token || response?.user?.token;
+
+          // Extract email and role from response if present
+          const email = response.user?.email || response.email || null;
+          const role = response.user?.userRole || response.userRole || 'mentor';
+
+          // If backend doesn't return token (session-only), still store the email/role
+          if (email) {
+            this.storeAuthData(token || null, email, role);
           }
         }),
         catchError(this.handleError)
@@ -373,10 +385,18 @@ export class AuthService {
   // Mentor signup
   mentorSignup(userData: User): Observable<any> {
     return this.http
-      .post(`${this.apiUrl}/mentor_Signup`, userData, { 
+      .post(`${this.apiUrl}/mentor_signup`, userData, { 
         headers: new HttpHeaders({ 'Content-Type': 'application/json' }) 
       })
       .pipe(catchError(this.handleError));
+  }
+
+  // Mentor signup using FormData (multipart/form-data) for backends expecting file uploads
+  mentorSignupFormData(formData: FormData): Observable<any> {
+    // Do NOT set Content-Type header; browser will set multipart boundary
+    return this.http.post(`${this.apiUrl}/mentor_signup`, formData, { withCredentials: true }).pipe(
+      catchError(this.handleError)
+    );
   }
 
   // HPCSA signup
@@ -703,16 +723,37 @@ signLogsheet(logsheetId: number, data: { ehp_hi_number: string } | FormData): Ob
     );
   }
 
-  createEventCode(eventCodeData: any): Observable<any> {
-    return this.http
-      .post(`${this.apiUrl}/create-event-code`, eventCodeData)
-      .pipe(
-        catchError((error) => {
-          console.error('API error:', error);
-          return throwError(() => new Error('Event code creation failed'));
-        })
-      );
-  }
+// In your auth.service.ts
+createEventCode(guestData: any): Observable<any> {
+  const url = `${this.apiUrl}/create-event-code`;
+  
+  console.log('📝 Creating event code:', guestData);
+  
+  return this.http.post<any>(url, guestData).pipe(
+    tap(response => {
+      console.log('✅ Event code creation response:', response);
+    }),
+    catchError(error => {
+      console.error('❌ Event code creation error:', error);
+      
+      let userMessage = 'Event code creation failed';
+      
+      if (error.error && error.error.message) {
+        userMessage = error.error.message;
+      } else if (error.status === 0) {
+        userMessage = 'Network error: Cannot connect to server';
+      } else if (error.status === 400) {
+        userMessage = 'Invalid data provided. Please check guest name and email.';
+      } else if (error.status === 500) {
+        userMessage = 'Server error. Please try again.';
+      } else {
+        userMessage = error.message || 'Unknown error occurred';
+      }
+      
+      return throwError(() => new Error(userMessage));
+    })
+  );
+}
 
 validateEventCode(code: string): Observable<any> {
   if (!code || code.trim() === '') {
@@ -765,6 +806,18 @@ validateEventCode(code: string): Observable<any> {
       catchError((error) => {
         console.error('API error:', error);
         return throwError(() => new Error('Failed to delete guest event'));
+      })
+    );
+  }
+
+  // Update mentor check status for a logsheet
+  updateMentorCheck(logsheetId: number, mentorCheck: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    const body = { logsheetId, mentor_check: mentorCheck };
+    return this.http.post(`${this.apiUrl}/update-mentor-check`, body, { headers }).pipe(
+      catchError((error) => {
+        console.error('Error updating mentor check:', error);
+        return throwError(() => new Error(error?.error?.message || 'Failed to update mentor check'));
       })
     );
   }

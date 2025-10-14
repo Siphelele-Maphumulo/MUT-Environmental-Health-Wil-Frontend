@@ -338,3 +338,25 @@ input[type="file"]:focus {
   outline: 2px solid #007bff;
   outline-offset: 2px;
 }
+
+.text-warning {
+  color: #856404;
+  background-color: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 4px;
+  padding: 8px;
+  font-size: 0.875rem;
+  margin-top: 4px;
+}
+
+.text-danger {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 4px;
+}
+
+.form-text.text-muted {
+  font-size: 0.8rem;
+  color: #6c757d !important;
+  margin-top: 4px;
+}

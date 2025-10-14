@@ -95,10 +95,8 @@ onSubmit(): void {
         
         // The tap operator in authService should have already stored the data
         // But we can double-check here
-        console.log('📋 Session storage after login:');
-        console.log('- Token:', sessionStorage.getItem('token'));
-        console.log('- Email:', sessionStorage.getItem('userEmail'));
-        console.log('- Role:', sessionStorage.getItem('userRole'));
+  // Let AuthService handle storage; show debug state
+  this.authService.debugAuthState();
         
         // Show success message and navigate
         this.snackBar.open('Login successful!', 'Close', { duration: 3000 });

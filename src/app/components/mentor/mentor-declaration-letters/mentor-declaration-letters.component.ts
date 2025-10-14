@@ -18,13 +18,13 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MatChipsModule } from '@angular/material/chips';
 
 export interface Declaration {
   id: number;
   student_name: string;
-  student_number: string; // ✅ Add this line
+  student_number: string;
   supervisor_name: string;
   hi_number: string;
   employer: string;
@@ -38,9 +38,11 @@ export interface Declaration {
   interaction: 'Good' | 'Bad';
   responsibility: 'Good' | 'Bad';
   report_writing: 'Good' | 'Bad';
-  comments: string;
-  signature: string | null;
-  submitted_date: string;
+  general_comments: string; // Make sure this matches your data
+  supervisor_signature: string | null; // ✅ This is the correct field name
+  signature_date: string;
+  created_at?: string;
+  submittedDate: string;
 }
 
 @Component({
@@ -71,7 +73,7 @@ export class MentorDeclarationLettersComponent implements OnInit {
   isLoading = true;
   currentDate = new Date();
 
-  displayedColumns: string[] = [
+  displayedColumns = [
     'student_number',
     'supervisor',
     'employer',
@@ -79,7 +81,7 @@ export class MentorDeclarationLettersComponent implements OnInit {
     'dateRange',
     'evaluations',
     'comments',
-    'signature',
+    'supervisor_signature', // ✅ Changed from 'signature' to 'supervisor_signature'
     'submittedDate',
     'actions',
   ];
@@ -94,6 +96,7 @@ export class MentorDeclarationLettersComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private location: Location,
+    private sanitizer: DomSanitizer,
     private router: Router,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
@@ -214,19 +217,90 @@ export class MentorDeclarationLettersComponent implements OnInit {
           'http://localhost:8080/api/declaration-letters'
         )
       );
+      console.log('✅ Declaration letters loaded:', declarations.length);
       this.declarations = declarations;
       this.filteredDeclarations = [...this.declarations];
-    } catch (error) {
-      console.error('Error fetching declarations:', error);
-      this.showError('Failed to load declarations. Please try again later.');
+    } catch (error: any) {
+      console.error('❌ Error fetching declarations:', error);
+      
+      let errorMessage = 'Failed to load declarations.';
+      
+      if (error.status === 500) {
+        errorMessage = 'Server error: The backend is experiencing issues. Please check the backend logs and database connection.';
+        console.error('Backend 500 error details:', {
+          url: error.url,
+          message: error.error?.message,
+          status: error.status
+        });
+      } else if (error.status === 404) {
+        errorMessage = 'API endpoint not found. Please verify the backend route exists.';
+      } else if (error.status === 0) {
+        errorMessage = 'Network error: Cannot connect to backend server. Is it running on http://localhost:8080?';
+      } else if (error?.error?.message) {
+        errorMessage = error.error.message;
+      }
+      
+      this.showError(errorMessage);
+      this.declarations = [];
+      this.filteredDeclarations = [];
     } finally {
       this.isLoading = false;
     }
   }
 
-  getSignatureUrl(signatureUrl: string | null): string {
-    return signatureUrl ? `${signatureUrl}?${this.currentDate.getTime()}` : '';
+  getSafeUrl(filename: string | null): SafeResourceUrl {
+    if (!filename) return this.sanitizer.bypassSecurityTrustResourceUrl('');
+
+    let fullUrl: string;
+    
+    // Check if already a full URL
+    if (filename.startsWith('http://') || filename.startsWith('https://')) {
+      // Fix double uploads/uploads/ issue
+      fullUrl = filename.replace('/uploads/uploads/', '/uploads/');
+    } 
+    // Check if path starts with 'uploads/' (backend format)
+    else if (filename.startsWith('uploads/')) {
+      fullUrl = `http://localhost:8080/${filename}`;
+    } 
+    // Check if path starts with '/uploads/'
+    else if (filename.startsWith('/uploads/')) {
+      fullUrl = `http://localhost:8080${filename}`;
+    } 
+    // Fallback - just a filename, add full path
+    else {
+      fullUrl = `http://localhost:8080/uploads/signatures/${filename}`;
+    }
+
+    console.log(`[ViewDeclaration] Signature URL: "${filename}" -> "${fullUrl}"`);
+    return this.sanitizer.bypassSecurityTrustResourceUrl(fullUrl);
   }
+
+  // Keep old method name for backward compatibility
+  getSignatureUrl(signatureUrl: string | null): SafeResourceUrl {
+    return this.getSafeUrl(signatureUrl);
+  }
+
+  onSignatureError(event: Event, signaturePath: string): void {
+    console.error('Error loading signature:', signaturePath, event);
+    
+    // Try alternative URL patterns if the first attempt fails
+    const imgElement = event.target as HTMLImageElement;
+    
+    // If it's just a filename, try with student directory
+    if (signaturePath && !signaturePath.includes('/')) {
+      // Extract student number from the declaration if available
+      const studentNumber = (this.declarations || []).find(d => 
+        d.supervisor_signature === signaturePath
+      )?.student_number;
+      
+      if (studentNumber) {
+        const alternativeUrl = `http://localhost:8080/uploads/${studentNumber}/${signaturePath}`;
+        console.log(`Trying alternative URL: ${alternativeUrl}`);
+        imgElement.src = alternativeUrl;
+      }
+    }
+  }
+
 
   async deleteDeclaration(id: number): Promise<void> {
     const confirmed = await this.showConfirmationDialog(

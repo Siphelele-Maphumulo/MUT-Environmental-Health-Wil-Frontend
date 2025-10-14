@@ -71,25 +71,9 @@ export class StaffLoginComponent {
         next: (response) => {
           console.log('🔐 Staff Login Response:', response);
   
-          // Store authentication data in sessionStorage
-          if (response.token) {
-            sessionStorage.setItem('token', response.token);
-          }
-          if (response.user?.email || response.email) {
-            const email = response.user?.email || response.email;
-            sessionStorage.setItem('userEmail', email);
-          }
-          if (response.user?.userRole || response.userRole) {
-            const role = response.user?.userRole || response.userRole;
-            sessionStorage.setItem('userRole', role);
-          }
-  
-          // Debug: Check what was stored
-          console.log('📦 Stored authentication data:');
-          console.log('- Token:', !!sessionStorage.getItem('token'));
-          console.log('- Email:', sessionStorage.getItem('userEmail'));
-          console.log('- Role:', sessionStorage.getItem('userRole'));
-  
+          // AuthService.staffLogin stores the auth data; call debug helper to log stored state
+          this.authService.debugAuthState();
+
           // Show success message and navigate to the dashboard
           this.snackBar.open('Staff Logged in successfully!', 'Close', {
             duration: 3000,

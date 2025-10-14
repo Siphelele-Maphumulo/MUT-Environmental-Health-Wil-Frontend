@@ -286,8 +286,78 @@ export class MentorLogsheetsComponent implements OnInit {
     return activities;
   }
 
-  getSignatureUrl(signatureUrl: string | null): string {
-    return signatureUrl || '';
+getSignatureUrl(filename: string | null): string {
+  if (!filename) return '';
+
+  let fullUrl: string;
+  const baseUrl = 'http://localhost:8080';
+  
+  // Normalize the filename
+  const normalizedFilename = filename.trim().replace(/\\/g, '/');
+
+  // console.log(`[Viewlogsheets] Processing filename: "${filename}"`);
+
+  // Handle different URL formats
+  if (normalizedFilename.startsWith('http://') || normalizedFilename.startsWith('https://')) {
+    // Already a full URL - use as is
+    fullUrl = normalizedFilename;
+  } 
+  else if (normalizedFilename.includes('uploads/signatures/')) {
+    // If it already contains the full path structure, just add base URL
+    if (normalizedFilename.startsWith('/')) {
+      fullUrl = `${baseUrl}${normalizedFilename}`;
+    } else {
+      fullUrl = `${baseUrl}/${normalizedFilename}`;
+    }
+  }
+  else if (normalizedFilename.startsWith('uploads/')) {
+    // Path starting with uploads/ - check if it's already the signatures path
+    if (normalizedFilename.startsWith('uploads/signatures/')) {
+      fullUrl = `${baseUrl}/${normalizedFilename}`;
+    } else {
+      // It's just "uploads/filename" - redirect to signatures folder
+      const justFilename = normalizedFilename.replace('uploads/', '');
+      fullUrl = `${baseUrl}/uploads/signatures/${justFilename}`;
+    }
+  } 
+  else if (normalizedFilename.startsWith('/uploads/')) {
+    // Path starting with /uploads/ - check if it's already the signatures path
+    if (normalizedFilename.startsWith('/uploads/signatures/')) {
+      fullUrl = `${baseUrl}${normalizedFilename}`;
+    } else {
+      // It's just "/uploads/filename" - redirect to signatures folder
+      const justFilename = normalizedFilename.replace('/uploads/', '');
+      fullUrl = `${baseUrl}/uploads/signatures/${justFilename}`;
+    }
+  } 
+  else {
+    // Just a filename without any path - add the full signatures path
+    fullUrl = `${baseUrl}/uploads/signatures/${normalizedFilename}`;
+  }
+
+  // Fix any double path issues
+  fullUrl = fullUrl
+    .replace('/uploads/signatures/uploads/signatures/', '/uploads/signatures/')
+    .replace('/uploads/uploads/signatures/', '/uploads/signatures/')
+    .replace('//uploads/', '/uploads/')
+    .replace(/\/\//g, '/') // Replace double slashes with single
+    .replace(':/', '://'); // Fix protocol
+
+  // console.log(`[Viewlogsheets] Signature URL:`, {
+  //   original: filename,
+  //   normalized: normalizedFilename,
+  //   final: fullUrl
+  // });
+
+  return fullUrl;
+}
+
+  onImageError(event: Event, logId: number): void {
+    const img = event.target as HTMLImageElement;
+    console.warn(`[Viewlogsheets] Image load failed for log ${logId}:`, img.src);
+    
+    // Optionally show a placeholder or hide the image
+    img.style.display = 'none';
   }
 
   private buildFormData(data: any): FormData {
@@ -334,24 +404,6 @@ export class MentorLogsheetsComponent implements OnInit {
     return formData;
   }
 
-  async deleteLogSheet(id: number): Promise<void> {
-    const confirmed = await this.showConfirmationDialog(
-      'Are you sure you want to delete this logsheet?'
-    );
-    if (!confirmed) return;
-
-    try {
-      const response = await lastValueFrom(this.authService.deleteLogSheet(id));
-      if (response.status === 200) {
-        this.showSuccess('Logsheet deleted successfully');
-        this.viewlogSheets = this.viewlogSheets.filter((log) => log.id !== id);
-        this.applyFilters();
-      }
-    } catch (error) {
-      console.error('Delete error:', error);
-      this.showError('Failed to delete logsheet');
-    }
-  }
 
   async updateLogSheet(
     id: number,
@@ -363,7 +415,7 @@ export class MentorLogsheetsComponent implements OnInit {
       this.showSuccess('Logsheet updated successfully');
       await this.fetchLogSheets();
     } catch (error) {
-      console.error('Update error:', error);
+      console.error('Update error:', JSON.stringify(error, null, 2));
       this.showError('Failed to update logsheet');
     }
   }
@@ -378,7 +430,7 @@ export class MentorLogsheetsComponent implements OnInit {
       this.showSuccess('Logsheet signed successfully');
       await this.fetchLogSheets();
     } catch (error) {
-      console.error('Sign error:', error);
+      console.error('Sign error:', JSON.stringify(error, null, 2));
       this.showError('Failed to sign logsheet');
     }
   }
@@ -398,19 +450,26 @@ openSignDialog(log: any): void {
 
   dialogRef.afterClosed().subscribe((result: string) => {
     if (result === 'checked' || result === 'unChecked') {
-this.http.post('http://localhost:8080/api/update-mentor-check', {
-  logsheetId: log.id,
-  mentor_check: result
-      }).subscribe({
+      const url = `${this.authService.getApiUrl()}/update-mentor-check`;
+      const body = {
+        logsheetId: log.id,
+        mentor_check: result,
+      };
+
+      const headers = this.authService.getAuthHeaders();
+
+      this.http.post(url, body, { headers }).subscribe({
         next: (response: any) => {
-          alert(response.message);
-          // Reload or refresh data here if needed
-          this.fetchLogSheets(); // Your method to reload the table
+          const msg = response?.message || 'Mentor check updated';
+          this.showSuccess(msg);
+          // Refresh the table
+          this.fetchLogSheets();
         },
         error: (err) => {
-          alert('Error updating mentor check');
-          console.error(err);
-        }
+          console.error('Error updating mentor check:', err);
+          const errMsg = err?.error?.message || 'Error updating mentor check';
+          this.showError(errMsg);
+        },
       });
     }
   });

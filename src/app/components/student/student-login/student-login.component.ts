@@ -74,7 +74,7 @@ export class StudentLoginComponent implements OnInit {
 
   onSubmit(): void {
     if (this.loginForm.valid) {
-      this.authService.login(this.loginForm.value).subscribe({
+      this.authService.studentLogin(this.loginForm.value).subscribe({
         next: (response) => {
           console.log('Login successful:', response);
           this.router.navigate(['/dashboard']);

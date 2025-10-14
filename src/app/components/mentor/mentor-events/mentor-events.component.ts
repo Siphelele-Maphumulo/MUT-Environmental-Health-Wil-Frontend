@@ -41,89 +41,85 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './mentor-events.component.scss'
 })
 export class MentorEventsComponent implements OnInit {
-  // Filter Controls
+   [x: string]: any;
   titleControl = new FormControl('');
   guestNameControl = new FormControl('');
   eventTypeControl = new FormControl('all');
   eventDateControl = new FormControl<Date | null>(null);
 
-  // Data Arrays
+
   lectures: any[] = [];
   filteredLectures: any[] = [];
 
-  // Displayed Columns
   displayedColumns: string[] = [
     'title',
     'guest_name',
     'event_type',
     'event_date',
+    'register_status',
     'actions',
   ];
 
-  // Loading States
   loadingStates: { [key: number]: boolean } = {};
   isFromAdmin = false;
   isAdminUser = false;
   userEmail: string | null = null;
-
-  private isBrowser: boolean;
-  private baseUrl = 'http://localhost:8080'; // Hardcoded base URL
+  snackBar: any;
 
   constructor(
-    private dialog: MatDialog,
     private authService: AuthService,
     private http: HttpClient,
     private router: Router,
     private route: ActivatedRoute,
-    private snackBar: MatSnackBar,
+    private dialog: MatDialog,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) {
-    this.isBrowser = isPlatformBrowser(this.platformId);
-  }
+  ) {}
 
   ngOnInit(): void {
     if (!this.authService.isAuthenticated()) {
       this.router.navigate(['/staff-login']);
-    } else {
-      this.userEmail = this.authService.getCurrentUserEmail ? this.authService.getCurrentUserEmail() : localStorage.getItem('userEmail');
+      return;
     }
 
-    // Scroll to top
-    if (this.isBrowser) {
+    this.userEmail = this.authService.getUserEmail();
+
+    if (isPlatformBrowser(this.platformId)) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
 
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd && this.isBrowser) {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-    });
-
-    // ✅ This works after navigation AND page reload
-    this.isFromAdmin = history.state?.from === 'admin-dashboard';
-    console.log('isFromAdmin:', this.isFromAdmin);
-
-    if (this.isBrowser) {
       const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
       this.isAdminUser = user?.role === 'admin';
+
+      this.router.events.subscribe((event) => {
+        if (event instanceof NavigationEnd) {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
     }
+    this.checkAdminStatus();
+    this.isFromAdmin = history.state?.from === 'admin-dashboard';
 
     this.fetchLectures();
     this.setupFilterListeners();
   }
 
+  private checkAdminStatus(): void {
+  // Check if user is admin (adjust based on your auth system)
+  const userRole = this.authService.getUserRole();
+  this.isAdminUser = userRole === 'admin' || userRole === 'supervisor';
+}
+
   fetchLectures(): void {
     this.authService.getGuestLectures().subscribe({
-      next: (response: any) => {
-        this.lectures = response.data || [];
+      next: (response) => {
+        this.lectures = (response.data || []).map((item: any) => ({
+          ...item,
+          register_status: item.register_status ?? item.RegisterStatus ?? item.status ?? 'N/A'
+        }));
         this.filteredLectures = [...this.lectures];
       },
       error: (error) => {
         console.error('Error fetching guest lectures:', error);
-        this.snackBar.open('Failed to load guest lectures. Please try again.', 'Close', { 
-          duration: 5000, 
-          panelClass: ['red-snackbar'] 
-        });
+        alert('Failed to load guest lectures. Please try again.');
       },
     });
   }
@@ -131,95 +127,62 @@ export class MentorEventsComponent implements OnInit {
 toggleRegisterStatus(lecture: any): void {
   this.loadingStates[lecture.id] = true;
 
-  const headers = this.getAuthHeaders();
-  
-  // FIXED: Using getApiUrl() method
   this.http.put<{ success: boolean; message: string; newStatus: string }>(
     `${this.authService.getApiUrl()}/guest-lecture/toggle-status/${lecture.id}`,
-    {},
-    { headers }
+    {}
   ).subscribe({
     next: (res) => {
       if (res.success) {
         lecture.register_status = res.newStatus;
-        this.snackBar.open(res.message, 'Close', { 
-          duration: 3000, 
-          panelClass: ['green-snackbar'] 
-        });
+        alert(res.message);
       } else {
-        this.snackBar.open('Failed to toggle status', 'Close', { 
-          duration: 3000, 
-          panelClass: ['red-snackbar'] 
-        });
+        alert('Failed to toggle status');
       }
       this.loadingStates[lecture.id] = false;
     },
     error: (err) => {
       console.error('Error toggling status:', err);
-      this.snackBar.open('Error toggling status. Please try again.', 'Close', { 
-        duration: 5000, 
-        panelClass: ['red-snackbar'] 
-      });
+      alert('Error toggling status. Please try again.');
       this.loadingStates[lecture.id] = false;
     }
   });
 }
 
+
   setupFilterListeners(): void {
-    // Title Filter
-    this.titleControl.valueChanges
-      .pipe(debounceTime(300))
-      .subscribe(() => this.applyFilters());
-
-    // Guest Name Filter
-    this.guestNameControl.valueChanges
-      .pipe(debounceTime(300))
-      .subscribe(() => this.applyFilters());
-
-    // Event Type Filter
+    this.titleControl.valueChanges.pipe(debounceTime(300)).subscribe(() => this.applyFilters());
+    this.guestNameControl.valueChanges.pipe(debounceTime(300)).subscribe(() => this.applyFilters());
     this.eventTypeControl.valueChanges.subscribe(() => this.applyFilters());
-
-    // Event Date Filter
     this.eventDateControl.valueChanges.subscribe(() => this.applyFilters());
   }
 
   applyFilters(): void {
-    this.filteredLectures = this.lectures.filter((lecture) => {
-      const matchesTitle = this.checkTitleFilter(lecture.title);
-      const matchesGuestName = this.checkGuestNameFilter(lecture.guest_name);
-      const matchesEventType = this.checkEventTypeFilter(lecture.event_type);
-      const matchesEventDate = this.checkEventDateFilter(lecture.event_date);
-
-      return (
-        matchesTitle && matchesGuestName && matchesEventType && matchesEventDate
-      );
-    });
+    this.filteredLectures = this.lectures.filter((lecture) =>
+      this.checkTitleFilter(lecture.title) &&
+      this.checkGuestNameFilter(lecture.guest_name) &&
+      this.checkEventTypeFilter(lecture.event_type) &&
+      this.checkEventDateFilter(lecture.event_date)
+    );
   }
 
   private checkTitleFilter(title: string): boolean {
     const titleFilter = this.titleControl.value?.toLowerCase() || '';
-    if (!titleFilter) return true;
-    return title.toLowerCase().includes(titleFilter);
+    return !titleFilter || title.toLowerCase().includes(titleFilter);
   }
 
   private checkGuestNameFilter(guestName: string): boolean {
     const guestNameFilter = this.guestNameControl.value?.toLowerCase() || '';
-    if (!guestNameFilter) return true;
-    return guestName.toLowerCase().includes(guestNameFilter);
+    return !guestNameFilter || guestName.toLowerCase().includes(guestNameFilter);
   }
 
   private checkEventTypeFilter(eventType: string): boolean {
     const eventTypeFilter = this.eventTypeControl.value;
-    if (!eventTypeFilter || eventTypeFilter === 'all') return true;
-    return eventType.toLowerCase() === eventTypeFilter.toLowerCase();
+    return !eventTypeFilter || eventTypeFilter === 'all' || eventType.toLowerCase() === eventTypeFilter.toLowerCase();
   }
 
   private checkEventDateFilter(eventDate: string): boolean {
     if (!this.eventDateControl.value || !eventDate) return true;
-    return (
-      new Date(eventDate).toDateString() ===
-      new Date(this.eventDateControl.value).toDateString()
-    );
+    return new Date(eventDate).toDateString() === new Date(this.eventDateControl.value).toDateString();
   }
 
   clearFilters(): void {
@@ -230,189 +193,157 @@ toggleRegisterStatus(lecture: any): void {
     this.applyFilters();
   }
 
-  // Fixed downloadDocument method with proper error handling
   downloadDocument(id: number, documentPath: string): void {
-    if (!documentPath) {
-      this.snackBar.open('No document path provided.', 'Close', { 
-        duration: 5000, 
-        panelClass: ['orange-snackbar'] 
-      });
-      return;
-    }
+  if (!documentPath) {
+    this.snackBar.open('No document path provided.', 'Close', { 
+      duration: 5000, 
+      panelClass: ['orange-snackbar'] 
+    });
+    return;
+  }
 
-    this.loadingStates[id] = true;
-    
-    // Clean the document path and construct full URL
-    const cleanPath = documentPath.replace(/^\/+/, '');
-    const fullUrl = `${this.baseUrl}/${cleanPath}`;
-    
-    console.log(`📥 Downloading document from: ${fullUrl}`);
-    
-    // Get authentication headers
-    const headers = this.getAuthHeaders();
-    
-    const options = {
-      responseType: 'blob' as 'blob',
-      headers: headers
-    };
+  this.loadingStates[id] = true;
 
-    this.http.get(fullUrl, options).subscribe({
-      next: (blob: Blob) => {
-        try {
-          // Validate the blob
-          if (blob.size === 0) {
-            throw new Error('Downloaded file is empty');
-          }
+  // FIX: Use getApiUrl() instead of accessing private apiUrl directly
+  const baseUrl = this.authService.getApiUrl().replace('/api', '');
+  const fullUrl = `${baseUrl}/${documentPath}`;
 
-          // Extract filename from path
-          const filename = this.extractFilename(documentPath);
-          
-          // Create download link
-          const url = window.URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = url;
-          link.download = filename;
-          
-          // Trigger download
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          
-          // Clean up
-          window.URL.revokeObjectURL(url);
-          
-          console.log(`✅ Successfully downloaded: ${filename}`);
-          this.snackBar.open(`Document downloaded: ${filename}`, 'Close', { 
-            duration: 3000, 
-            panelClass: ['green-snackbar'] 
-          });
-          
-        } catch (error) {
-          console.error('Error processing the downloaded file:', error);
-          this.snackBar.open('Error processing downloaded file. The file may be corrupted.', 'Close', { 
-            duration: 5000, 
-            panelClass: ['red-snackbar'] 
-          });
-        } finally {
-          this.loadingStates[id] = false;
-        }
-      },
-      error: (err) => {
-        console.error('Error downloading document:', err);
+  // FIX: Add authentication headers
+  const headers = this.getAuthHeaders();
+  
+  this.http.get(fullUrl, { 
+    responseType: 'blob',
+    headers: headers 
+  }).subscribe({
+    next: (blob: Blob) => {
+      try {
+        const link = document.createElement('a');
+        const url = window.URL.createObjectURL(blob);
+        link.href = url;
+        link.download = documentPath.split('/').pop() || 'document.pdf';
+        link.click();
+        window.URL.revokeObjectURL(url);
         this.loadingStates[id] = false;
         
-        let errorMessage = 'Failed to download document. Please try again.';
-        
-        if (err.status === 0) {
-          errorMessage = 'Network error: Cannot connect to server. Please check your connection.';
-        } else if (err.status === 404) {
-          errorMessage = 'Document not found. The file may have been moved or deleted.';
-        } else if (err.status === 401) {
-          errorMessage = 'Authentication required. Please log in again.';
-        } else if (err.status === 403) {
-          errorMessage = 'Access denied. You do not have permission to download this document.';
-        } else if (err.status === 500) {
-          errorMessage = 'Server error. Please try again later.';
-        } else if (err.message?.includes('CORS')) {
-          errorMessage = 'CORS error: Cannot download from this server.';
-        }
-        
+        this.snackBar.open('Document downloaded successfully', 'Close', { 
+          duration: 3000, 
+          panelClass: ['green-snackbar'] 
+        });
+      } catch (error) {
+        console.error('Error processing the downloaded file:', error);
+        this.snackBar.open('Error processing downloaded file.', 'Close', { 
+          duration: 5000, 
+          panelClass: ['red-snackbar'] 
+        });
+        this.loadingStates[id] = false;
+      }
+    },
+    error: (err) => {
+      console.error('Error downloading document:', err);
+      
+      let errorMessage = 'Failed to download the document. Please try again.';
+      
+      if (err.status === 0) {
+        errorMessage = 'Network error: Cannot connect to server.';
+      } else if (err.status === 404) {
+        errorMessage = 'Document not found.';
+      } else if (err.status === 401) {
+        errorMessage = 'Authentication required. Please log in again.';
+      }
+      
+      if (err.status !== 0 && !err.message.includes('CORS')) {
         this.snackBar.open(errorMessage, 'Close', { 
-          duration: 6000, 
+          duration: 5000, 
           panelClass: ['red-snackbar'] 
         });
       }
-    });
-  }
+      
+      this.loadingStates[id] = false;
+    },
+  });
+}
 
-  // Helper method to extract filename from path
-  private extractFilename(path: string): string {
-    if (!path) return 'document.pdf';
-    
-    // Remove query parameters if any
-    const cleanPath = path.split('?')[0];
-    
-    // Extract the last part of the path
-    const filename = cleanPath.split('/').pop() || 'document';
-    
-    // Ensure it has a proper extension
-    if (!filename.includes('.')) {
-      return `${filename}.pdf`;
-    }
-    
-    return filename;
-  }
-
-  // Local method to get auth headers
-  private getAuthHeaders(): HttpHeaders {
-    const token = localStorage.getItem('authToken');
-    
-    if (token) {
-      return new HttpHeaders({
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      });
-    }
-    
+// Local method to get auth headers
+private getAuthHeaders(): HttpHeaders {
+  const token = this.authService.getToken();
+  
+  if (token) {
     return new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Authorization': `Bearer ${token}`
     });
   }
-
-  // Alternative download method using window.open
-  downloadDocumentAlternative(id: number, documentPath: string): void {
-    if (!documentPath) {
-      this.snackBar.open('No document path provided.', 'Close', { 
-        duration: 5000, 
-        panelClass: ['orange-snackbar'] 
-      });
-      return;
-    }
-
-    const cleanPath = documentPath.replace(/^\/+/, '');
-    const fullUrl = `${this.baseUrl}/${cleanPath}`;
-    
-    console.log(`📥 Opening document: ${fullUrl}`);
-    
-    const newWindow = window.open(fullUrl, '_blank');
-    
-    if (!newWindow) {
-      this.snackBar.open('Popup blocked. Please allow popups for this site.', 'Close', { 
-        duration: 5000, 
-        panelClass: ['orange-snackbar'] 
-      });
-    }
-    
-    this.loadingStates[id] = false;
-  }
+  
+  return new HttpHeaders();
+}
 
   deleteLecture(id: number): void {
     if (confirm('Are you sure you want to delete this record?')) {
       this.authService.deleteGuestLecture(id).subscribe({
         next: () => {
-          this.snackBar.open('Guest lecture deleted successfully.', 'Close', { 
-            duration: 5000, 
-            panelClass: ['green-snackbar'] 
-          });
+          alert('Guest lecture deleted successfully.');
           this.fetchLectures();
         },
         error: (error) => {
           console.error('Error deleting guest lecture:', error);
-          this.snackBar.open('Failed to delete guest lecture. Please try again.', 'Close', { 
-            duration: 5000, 
-            panelClass: ['red-snackbar'] 
-          });
+          alert('Failed to delete guest lecture. Please try again.');
         },
       });
     }
   }
 
+  // In your GuestEventsComponent
+deleteEvent(lecture: any): void {
+  if (!confirm(`Are you sure you want to delete the event "${lecture.title}"? This action cannot be undone and will also delete all attendance records.`)) {
+    return;
+  }
+
+  this.loadingStates[lecture.id] = true;
+
+  this.authService.deleteEvent(lecture.id).subscribe({
+    next: (response) => {
+      this.loadingStates[lecture.id] = false;
+      this.snackBar.open(response.message, 'Close', { 
+        duration: 5000, 
+        panelClass: ['green-snackbar'] 
+      });
+      
+      // Remove the event from the local array
+      this.lectures = this.lectures.filter(l => l.id !== lecture.id);
+      this.filteredLectures = this.filteredLectures.filter(l => l.id !== lecture.id);
+      
+      console.log('✅ Event deleted successfully:', response);
+    },
+    error: (error) => {
+      this.loadingStates[lecture.id] = false;
+      
+      let errorMessage = 'Failed to delete event. Please try again.';
+      
+      if (error.error && error.error.message) {
+        errorMessage = error.error.message;
+      } else if (error.status === 404) {
+        errorMessage = 'Event not found. It may have already been deleted.';
+      } else if (error.status === 0) {
+        errorMessage = 'Network error: Could not connect to server';
+      }
+
+      this.snackBar.open(errorMessage, 'Close', { 
+        duration: 5000,
+        panelClass: ['red-snackbar']
+      });
+      
+      console.error('❌ Error deleting event:', error);
+    }
+  });
+}
+
+
   openAttendanceRegister(): void {
     this.dialog.open(AttendanceRegisterComponent, {
       width: '90vw',
       height: '90vh',
-      disableClose: true,
-      panelClass: 'custom-modal-container'
+      disableClose: true, // Prevent closing on backdrop click
+      panelClass: 'custom-modal-container' // optional for styling
     });
   }
+
 }
