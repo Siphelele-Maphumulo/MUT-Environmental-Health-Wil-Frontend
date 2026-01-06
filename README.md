@@ -1,254 +1,151 @@
-🌱 Environmental Health WIL Management System
+# 🌱 Environmental Health WIL Management System
 
-A full-stack web-based information system designed to manage Work-Integrated Learning (WIL) programmes in Environmental Health, supporting students, mentors, and administrators while ensuring regulatory compliance.
+[![Angular](https://img.shields.io/badge/Angular-18+-red.svg)](https://angular.io/)
+[![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
+[![Express](https://img.shields.io/badge/Express-4+-lightgrey.svg)](https://expressjs.com/)
+[![MySQL](https://img.shields.io/badge/MySQL-8-blue.svg)](https://www.mysql.com/)
 
-📘 Introduction & Background
+> **A full-stack web-based information system designed to manage Work-Integrated Learning (WIL) programmes in Environmental Health, supporting students, mentors, and administrators while ensuring regulatory compliance.**
 
-Work-Integrated Learning (WIL) is a mandatory component of Environmental Health qualifications in South Africa. Students are required to complete supervised practical training to meet academic and HPCSA (Health Professions Council of South Africa) requirements.
+---
 
-However, institutions often face challenges related to:
+## 📘 Introduction & Background
 
-Monitoring student progress
+Work-Integrated Learning (WIL) is a mandatory component of Environmental Health qualifications in South Africa. Students are required to complete supervised practical training to meet academic and **HPCSA (Health Professions Council of South Africa)** requirements.
 
-Managing mentor assignments
+This system provides a centralized digital platform to improve oversight, communication, and compliance throughout the WIL lifecycle.
 
-Tracking applications and placements
+---
 
-Ensuring regulatory compliance
+## 🎯 Objectives
 
-Maintaining clear communication between stakeholders
+- Digitally manage WIL applications and placements  
+- Improve communication between students, mentors, and administrators  
+- Provide real-time progress tracking and analytics  
+- Support institutional compliance with HPCSA requirements  
+- Reduce administrative overhead through automation  
 
-This system addresses these challenges by providing a centralized, digital platform that improves oversight, efficiency, and accountability throughout the WIL lifecycle.
+---
 
-🎯 Objectives
+## 🏗️ System Architecture
 
-The primary objectives of this system are to:
+### Frontend (Angular)
+- Component-based architecture
+- Role-based access control (Admin, Mentor, Student)
+- Server-side rendering (Angular Universal)
+- Responsive UI using Angular Material and Bootstrap
 
-Digitally manage the WIL application and placement process
+### Backend (Node.js & Express)
+- RESTful API
+- JWT-based authentication and authorization
+- Secure role-based endpoint access
 
-Improve communication between students, mentors, and administrators
+### Database
+- MySQL relational database
+- Normalized schema with referential integrity
 
-Provide real-time visibility into student progress and programme performance
+---
 
-Support institutional compliance with HPCSA requirements
+## ⚙️ Core Functionalities
 
-Reduce administrative overhead through automation
+### Student Module
+- Registration and authentication
+- Profile management
+- WIL application tracking
+- Document uploads
+- Mentor communication
 
-🏗️ System Architecture
+### Mentor Module
+- Profile management
+- Student supervision
+- Progress monitoring
+- Feedback submission
 
-The application follows a client–server architecture using modern web technologies.
+### Administrator Module
+- User and role management
+- Application oversight
+- Analytics and reporting
+- HPCSA compliance monitoring
 
-Frontend (Angular)
+---
 
-Component-based architecture for scalability and maintainability
+## 🔐 Security
 
-Role-based access control at the UI level (Admin, Mentor, Student)
+- JWT authentication
+- Role-Based Access Control (RBAC)
+- Protected frontend routes
+- Secure environment configuration
 
-Angular Universal (SSR) to improve performance and SEO
+---
 
-Responsive UI built with Angular Material and Bootstrap
+## 📦 Installation & Setup
 
-Backend (Node.js & Express)
+### Prerequisites
+- Node.js 18+
+- Angular CLI 18+
+- MySQL 8+
 
-RESTful API architecture
+### Setup
 
-JWT-based authentication and authorization
-
-Secure role-based endpoint access
-
-Centralized business logic and validation
-
-Database Layer
-
-MySQL relational database
-
-Normalized schema supporting users, applications, placements, progress logs, and compliance data
-
-Referential integrity enforced via constraints
-
-⚙️ Core Functionalities
-Student Module
-
-Account registration and authentication
-
-Profile management (academic & personal data)
-
-WIL programme application and tracking
-
-Secure document uploads
-
-Communication with assigned mentors
-
-Mentor Module
-
-Mentor profile management
-
-Student assignment and supervision
-
-Progress monitoring and feedback submission
-
-Direct communication with students
-
-Administrator Module
-
-System-wide user management
-
-Application and placement oversight
-
-Programme analytics and reporting
-
-HPCSA compliance monitoring
-
-🔐 Security & Access Control
-
-JWT-based authentication
-
-Role-based authorization (RBAC)
-
-Secure API access
-
-Protected routes on frontend and backend
-
-Environment-based configuration management
-
-📦 Installation & Setup
-Prerequisites
-
-Node.js 18+
-
-Angular CLI 18+
-
-MySQL 8+
-
-Setup Instructions
-# Clone the repository
+```bash
 git clone https://github.com/your-username/environmental-health-wil-frontend.git
-
-# Navigate to the project directory
 cd environmental-health-wil-frontend
-
-# Install dependencies
 npm install
-
-# Configure the database
-# - Create a MySQL database
-# - Import environmental_health_wil_db.sql
-
-# Create environment variables
-# .env file:
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=your_password
-DB_NAME=environmental_health_wil
-JWT_SECRET=your_secret_key
-
-# Run the application
 ng serve
+```
 
-
-
-Access the system at:
-
+Access the application at:
+```
 http://localhost:4200
+```
 
-🛠️ Technology Stack
-| Layer          | Technology                           |
-| -------------- | ------------------------------------ |
-| Frontend       | Angular, Angular Material, Bootstrap |
-| Backend        | Node.js, Express                     |
-| Database       | MySQL                                |
-| Authentication | JSON Web Tokens (JWT)                |
-| Visualization  | Chart.js                             |
+---
 
-📁 Project Structure
+## 🛠️ Technology Stack
+
+- Angular
+- Node.js
+- Express
+- MySQL
+- JWT
+- Chart.js
+
+---
+
+## 📁 Project Structure
+
+```
 environmental-health-wil-frontend/
 ├── src/
 │   ├── app/
 │   │   ├── components/
-│   │   │   ├── admin/
-│   │   │   ├── mentor/
-│   │   │   └── student/
 │   │   ├── services/
-│   │   ├── models/
+│   │   └── models/
 │   └── assets/
-├── environments/
 ├── angular.json
 ├── package.json
 └── README.md
+```
 
+---
 
-📊 Performance Indicators
-Student Metrics
+## 🚀 Future Enhancements
 
-Application success rate
+- Real-time notifications
+- Advanced analytics dashboards
+- Mobile application
+- CI/CD pipeline
 
-Placement rate
+---
 
-Programme completion rate
+## 👤 Author
 
-Mentor Metrics
+**Siphelele Maphumulo**  
+LinkedIn: https://www.linkedin.com/in/siphelele-maphumulo-52a787355/  
+GitHub: https://github.com/Siphelele-Maphumulo/
 
-Student-to-mentor ratio
+---
 
-Student performance trends
+## 📄 License
 
-Student satisfaction indicators
-
-Programme Metrics
-
-Total placements
-
-Industry partnerships
-
-HPCSA compliance rate
-
-📈 Analytical Value
-
-The system enables stakeholders to answer key operational and strategic questions, including:
-
-Student placement progress and completion status
-
-Mentor workload distribution
-
-Programme growth and partnership trends
-
-Regulatory compliance levels
-
-🧠 Educational & Professional Value
-
-This project demonstrates competency in:
-
-Full-stack system development
-
-Secure authentication and authorization
-
-Relational database design
-
-Modular frontend architecture
-
-RESTful API design
-
-Software documentation and system modeling
-
-🚀 Future Enhancements
-
-Real-time notifications
-
-Advanced analytics dashboards
-
-University system integration
-
-Mobile application development
-
-CI/CD automation
-
-👤 Author
-
-Siphelele Maphumulo
-🔗 LinkedIn: https://www.linkedin.com/in/siphelele-maphumulo-52a787355/
-
-💻 GitHub: https://github.com/Siphelele-Maphumulo/
-
-📄 License
-
-This project is released under the MIT License and is intended for educational, research, and portfolio use.
+This project is released under the **MIT License** for educational and portfolio use.
