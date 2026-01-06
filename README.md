@@ -146,17 +146,20 @@ JWT_SECRET=your_secret_key
 ng serve
 
 
+
 Access the system at:
 
 http://localhost:4200
 
 🛠️ Technology Stack
-Layer	Technology
-Frontend	Angular, Angular Material, Bootstrap
-Backend	Node.js, Express
-Database	MySQL
-Authentication	JSON Web Tokens (JWT)
-Visualization	Chart.js
+| Layer          | Technology                           |
+| -------------- | ------------------------------------ |
+| Frontend       | Angular, Angular Material, Bootstrap |
+| Backend        | Node.js, Express                     |
+| Database       | MySQL                                |
+| Authentication | JSON Web Tokens (JWT)                |
+| Visualization  | Chart.js                             |
+
 📁 Project Structure
 environmental-health-wil-frontend/
 ├── src/
@@ -172,6 +175,7 @@ environmental-health-wil-frontend/
 ├── angular.json
 ├── package.json
 └── README.md
+
 
 📊 Performance Indicators
 Student Metrics
